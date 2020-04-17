@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>HomeForm.ui.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>delegates/StallDelegate.qml</file>
+        <file>delegates/StallDelegateForm.ui.qml</file>
+        <file>delegates/StallDelegateModel.qml</file>
+        <file>placeholders/200.png</file>
+        <file>StallMenuForm.ui.qml</file>
+        <file>delegates/MenuDelegate.qml</file>
+        <file>delegates/MenuDelegateForm.ui.qml</file>
+        <file>delegates/MenuDelegateModel.qml</file>
+    </qresource>
+</RCC>
