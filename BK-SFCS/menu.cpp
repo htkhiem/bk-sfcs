@@ -1,10 +1,29 @@
 #include "menu.h"
 
-menu::menu()
+stall::stall()
 {
 
 }
-void  menulist::loadMenu(const string filename){
+
+
+void stall::getMenu(){   //Important for Display food
+
+};
+void stall::addFood(){   //Menu editing
+
+};
+void stall::removeFood(){ //Menu editing
+
+};
+
+QString stall::getStallName(){
+    return this->stallName;
+};
+
+
+
+
+void  stalllist::loadStall(const string filename){
     FILE* local;
     errno_t open_result = fopen_s(&local, filename.c_str(), "rb");
 
@@ -50,7 +69,7 @@ void  menulist::loadMenu(const string filename){
     fclose(local);
 
 }
-void  menulist::writeMenu(const string filename){
+void  stalllist::writeStall(const string filename){
     FILE* local;
     errno_t open_result = fopen_s(&local, filename.c_str(), "wb");
     if (open_result) throw runtime_error("Failed to write data to local storage.");
@@ -60,9 +79,9 @@ void  menulist::writeMenu(const string filename){
     PrettyWriter<FileWriteStream> writer(os);
 
     writer.StartArray();
-    for (auto p : menulist) {
-        menu m = menulist.front();
-        menulist.pop_front();
+    for (auto p : stallList) {
+        stall m = stallList.front();
+        stallList.pop_front();
         writer.StartObject();
 
         writer.String("Stall name");
@@ -70,7 +89,7 @@ void  menulist::writeMenu(const string filename){
 
         writer.String("Menu");
         writer.StartArray();
-        for (auto f : m.foodlist) {
+        for (auto f : m.menu) {
             writer.StartObject();
 
             writer.String("Name");

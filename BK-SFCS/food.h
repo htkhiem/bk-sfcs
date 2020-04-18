@@ -8,7 +8,8 @@ class QFood {
 
 public:
     QFood();
-    string name, type,description;
+    bool select;
+    QString name, type,description;
     double price=0;
 public slots:
     QString getName();

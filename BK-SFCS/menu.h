@@ -3,7 +3,7 @@
 #include "food.h"
 
 using namespace rapidjson;
-class menu
+class stall
 {
     Q_OBJECT
     Q_PROPERTY(QString stallName READ getStallName)
@@ -11,21 +11,21 @@ class menu
     Q_PROPERTY(void removeFood WRITE removeFood)
     QString stallName;
 public:
-    QVector<QFood> foodlist;
+    QVector<QFood> menu;
 
 public slots:
-        menu();
-    void getFoodList();
+       stall();
+    void getMenu();
     void addFood();
     void removeFood();
 
     QString getStallName();
 
 };
-class menulist{
-    QVector<menu> menulist;
-    void loadMenu(const string filename);
-    void writeMenu(const string filename);
+class stalllist{
+    QVector<stall> stallList;
+    void loadStall(const string filename);
+    void writeStall(const string filename);
 };
 
 #endif // MENU_H
