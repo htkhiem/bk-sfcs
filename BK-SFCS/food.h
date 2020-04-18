@@ -1,14 +1,15 @@
 #ifndef FOOD_H
 #define FOOD_H
 #include "common.h"
-class QFood : public QObject {
+class QFood {
     Q_OBJECT
     Q_PROPERTY(QString name READ getName)
     Q_PROPERTY(QString type READ getType)
-    string name, type,description;
-    double price=0;
+
 public:
     QFood();
+    string name, type,description;
+    double price=0;
 public slots:
     QString getName();
     QString getType();

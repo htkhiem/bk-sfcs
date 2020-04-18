@@ -2,6 +2,7 @@
 #define MENU_H
 #include "food.h"
 
+using namespace rapidjson;
 class menu
 {
     Q_OBJECT
@@ -9,6 +10,7 @@ class menu
     Q_PROPERTY(void addFood WRITE addFood)
     Q_PROPERTY(void removeFood WRITE removeFood)
     QString stallName;
+public:
     QVector<QFood> foodlist;
 
 public slots:
@@ -16,10 +18,14 @@ public slots:
     void getFoodList();
     void addFood();
     void removeFood();
-    void loadMenu();
-    void writeMenu();
+
     QString getStallName();
 
+};
+class menulist{
+    QVector<menu> menulist;
+    void loadMenu(const string filename);
+    void writeMenu(const string filename);
 };
 
 #endif // MENU_H
