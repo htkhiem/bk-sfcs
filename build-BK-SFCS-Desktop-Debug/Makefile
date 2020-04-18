@@ -509,8 +509,10 @@ compiler_rcc_clean:
 qrc_qml.cpp: ../BK-SFCS/qml.qrc \
 		/usr/bin/rcc \
 		../BK-SFCS/StallMenuForm.ui.qml \
+		../BK-SFCS/OrderPopupForm.ui.qml \
 		../BK-SFCS/HomeForm.ui.qml \
 		../BK-SFCS/qtquickcontrols2.conf \
+		../BK-SFCS/OrderPopup.qml \
 		../BK-SFCS/main.qml \
 		../BK-SFCS/placeholders/200.png \
 		../BK-SFCS/delegates/StallDelegateModel.qml \

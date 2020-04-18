@@ -11,5 +11,7 @@
         <file>delegates/MenuDelegate.qml</file>
         <file>delegates/MenuDelegateForm.ui.qml</file>
         <file>delegates/MenuDelegateModel.qml</file>
+        <file>OrderPopup.qml</file>
+        <file>OrderPopupForm.ui.qml</file>
     </qresource>
 </RCC>
