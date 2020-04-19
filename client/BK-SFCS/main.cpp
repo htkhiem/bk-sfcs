@@ -20,9 +20,9 @@ int main(int argc, char *argv[])
 //    return app.exec();
 
 
+loadStall("stall.json");
 
-
-for(int i=0;i<10;i++){
+/*for(int i=0;i<10;i++){
     Stall stall;
     stall.stallName = i;
     for(int i = 0;i<5;i++){
@@ -35,7 +35,7 @@ for(int i=0;i<10;i++){
     stall.menu.push_back(food);
     }
     stallist.push_back(stall);
-}
-    writeStall("stall.json");
+}*/
+    writeStall("testLoad.json");
 
 }

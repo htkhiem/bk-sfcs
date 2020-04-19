@@ -77,4 +77,5 @@ HEADERS += \
     rapidjson/writer.h
 
 DISTFILES += \
-    stall.json
+    stall.json \
+    testLoad.json

@@ -60,18 +60,19 @@ void  loadStall(const string filename){
         stall.stallName = v["Stall name"].GetString();
 
 
-        Value& srv = v["Servicing"];
-        for (auto& r :srv["Menu"].GetArray()) {
+
+        assert(v.HasMember("Menu"));
+        for (auto& x :v["Menu"].GetArray()) {
             QFood f;
 
-            assert(r.HasMember("Name"));
-            assert(r.HasMember("Type"));
-            assert(r.HasMember("Description"));
-            assert(r.HasMember("Price"));
-            f.name = r["name"].GetString();
-            f.type = r["Type"].GetString();
-            f.description = r["Description"].GetString();
-            f.price = r["date"].GetInt();
+            assert(x.HasMember("Name"));
+            assert(x.HasMember("Type"));
+            assert(x.HasMember("Description"));
+            assert(x.HasMember("Price"));
+            f.name = x["Name"].GetString();
+            f.type = x["Type"].GetString();
+            f.description = x["Description"].GetString();
+            f.price = x["Price"].GetDouble();
 
             stall.menu.push_back(f);
         }
@@ -109,7 +110,7 @@ FILE* local;
             writer.String("Name");
             writer.String(stallist.data()->menu.data()->getName().toUtf8().constData());
 
-            writer.String("type");
+            writer.String("Type");
             writer.String(stallist.data()->menu.data()->getType().toUtf8().constData());
 
             writer.String("Description");
