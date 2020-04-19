@@ -9,11 +9,15 @@ stall::stall()
 void stall::getMenu(){   //Important for Display food
 
 };
-void stall::addFood(){   //Menu editing
-
+void stall::addFood(QFood item){   //Menu editing
+this->menu.push_back(item);
 };
-void stall::removeFood(){ //Menu editing
-
+void stall::removeFood(QFood item){ //Menu editing
+QString name = item.getName();
+for (int i = 0; i < this->menu.size();i++){
+    if (this->menu[i].getName() == name)
+        this->menu.erase(this->menu.begin()+i);
+}
 };
 
 QString stall::getStallName(){

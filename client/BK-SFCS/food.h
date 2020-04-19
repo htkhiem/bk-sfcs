@@ -13,9 +13,13 @@ public:
     double price=0;
 public slots:
     QString getName();
+    void setName(QString name);
     QString getType();
+    void setType(QString type);
     QString getDescription();
+    void setDescription(QString des);
     double getPrice();
+    void setPrice(double price);
     bool isSelected();
     void setSelected(bool _sel);
 };

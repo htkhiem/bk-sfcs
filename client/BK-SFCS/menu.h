@@ -16,8 +16,8 @@ public:
 public slots:
        stall();
     void getMenu();
-    void addFood();
-    void removeFood();
+    void addFood(QFood item);
+    void removeFood(QFood item);
 
     QString getStallName();
 
