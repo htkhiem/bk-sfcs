@@ -42,7 +42,7 @@ extern QList<QObject*> fleet_list;
 extern QList<QObject*> contracts_list;
 
 using namespace std;
-
+using namespace rapidjson;
 
 
 

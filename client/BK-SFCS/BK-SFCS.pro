@@ -75,3 +75,6 @@ HEADERS += \
     rapidjson/stream.h \
     rapidjson/stringbuffer.h \
     rapidjson/writer.h
+
+DISTFILES += \
+    stall.json
