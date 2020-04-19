@@ -11,7 +11,10 @@ Window {
         loginForm.stallSelector.currentIndex = index;
     }
     function login() { // totally useless login function used just for mockup
-
+        login_window.close();
+        var main_window = Qt.createComponent("main.qml");
+        var window = main_window.createObject(this);
+        window.show();
     }
 
     LoginForm {
@@ -19,6 +22,7 @@ Window {
         width: 640
         height: 530
         anchors.fill: parent
+        loginButton.onClicked: login();
     }
 }
 
