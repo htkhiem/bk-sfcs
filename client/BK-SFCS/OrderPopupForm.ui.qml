@@ -6,6 +6,7 @@ Popup {
     property alias name: name
     width: 670
     height: 670
+    property alias paymentMethodBox: paymentMethodBox
     rightPadding: 0
     leftPadding: 0
     bottomPadding: 0
@@ -27,9 +28,10 @@ Popup {
 
         DelayButton {
             id: orderButton
-            y: 0
-            height: 170
+            y: 579
+            height: 85
             text: qsTr("Order")
+            delay: 2000
             font.bold: true
             font.pointSize: 12
             anchors.right: parent.right
@@ -42,7 +44,7 @@ Popup {
 
         Tumbler {
             id: quantitySelector
-            anchors.bottom: orderButton.top
+            anchors.bottom: paymentMethodBox.top
             anchors.bottomMargin: 0
             anchors.right: parent.right
             anchors.rightMargin: 0
@@ -95,13 +97,25 @@ Popup {
             fillMode: Image.PreserveAspectFit
             source: "qrc:/qtquickplugin/images/template_image.png"
         }
+
+        ComboBox {
+            id: paymentMethodBox
+            y: 534
+            height: 85
+            anchors.bottom: orderButton.top
+            anchors.bottomMargin: 0
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+            anchors.left: infoBg.right
+            anchors.leftMargin: 0
+        }
     }
 }
 
 /*##^##
 Designer {
-    D{i:2;anchors_width:170;anchors_x:500}D{i:3;anchors_height:250;anchors_width:80;anchors_x:0;anchors_y:500}
-D{i:4;anchors_height:400;anchors_width:200;anchors_x:0}D{i:1;anchors_height:200;anchors_width:200}
+    D{i:0;formeditorZoom:0.8999999761581421}D{i:2;anchors_width:170;anchors_x:500}D{i:3;anchors_height:250;anchors_width:80;anchors_x:0;anchors_y:500}
+D{i:4;anchors_height:400;anchors_width:200;anchors_x:0}D{i:7;anchors_x:541}D{i:1;anchors_height:200;anchors_width:200}
 }
 ##^##*/
 

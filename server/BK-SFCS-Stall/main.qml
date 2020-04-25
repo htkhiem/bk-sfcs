@@ -59,7 +59,16 @@ ApplicationWindow {
 
     StackView {
         id: stackView
-        initialItem: "HomeForm.ui.qml"
+        initialItem: homeForm
+        anchors.fill: parent
+    }
+    HomeForm { // sales report right here
+        id: homeForm
+        anchors.fill: parent
+
+    }
+    MenuEditor {
+        id: menuEditor
         anchors.fill: parent
     }
 }
