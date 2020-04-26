@@ -12,7 +12,7 @@ Stall::Stall(const Stall& _stall){
 Stall& Stall::operator=(const Stall &){
     return *this;
 };
-void Stall::getMenu() const{   //Important for Display food
+QVector<QFood> Stall::getMenu() const{   //Important for Display food
 
 };
 bool Stall::addFood(QFood item){   //Menu editing

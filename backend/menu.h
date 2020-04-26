@@ -15,12 +15,14 @@ public:
     Stall();
     Stall(const Stall &_stall);
     Stall& operator=(const Stall &);
+    string imagePath;
 public slots:
 
-    void getMenu() const;
+    QVector<QFood> getMenu() const;
     bool addFood(QFood item);
     bool removeFood(QFood item);
-
+    void getImage();
+    void setImage();
     QString getStallName();
 
 };
