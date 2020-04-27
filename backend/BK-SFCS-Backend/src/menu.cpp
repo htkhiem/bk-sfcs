@@ -2,12 +2,12 @@
 
 QVector<Stall> stallist;
 Stall::Stall(QObject *parent) :
-QObject(parent)
+Jsonable(parent)
 {
 }
 
 Stall::Stall(const Stall& _stall, QObject *parent) :
-QObject(parent)
+Jsonable(parent)
 {
     this->menu = _stall.menu;
     stallName = _stall.stallName;
@@ -17,7 +17,7 @@ Stall& Stall::operator=(const Stall &){
     return *this;
 }
 QVector<QFood> Stall::getMenu() const{   //Important for Display food
-
+    return menu;
 }
 bool Stall::addFood(QFood item){   //Menu editing
 menu.push_back(item);
@@ -39,7 +39,7 @@ QString Stall::getStallName(){
 }
 
 
-
+/*
 void  loadStall(const string filename){
     FILE* local;
     local = fopen( filename.c_str(), "rb");
@@ -134,3 +134,4 @@ FILE* local;
     writer.EndArray();
     fclose(local);
 }
+*/

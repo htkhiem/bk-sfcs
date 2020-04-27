@@ -18,7 +18,6 @@ SOURCES += \
         main.cpp \
         src/controller.cpp \
         src/food.cpp \
-        src/jsonable.cpp \
         src/menu.cpp \
         src/orderinfo.cpp
 

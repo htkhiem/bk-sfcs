@@ -1,13 +1,12 @@
 #include "food.h"
 QFood::QFood(QObject *parent) :
-QObject(parent) {}
+Jsonable(parent) {}
 QFood::QFood(const QFood &_food, QObject *parent) :
-    QObject(parent)
+    Jsonable(parent)
 {
     name = _food.name;
     price = _food.price;
     description = _food.description;
-    select = _food.select;
 }
 QFood& QFood::operator=(const QFood &){
     return *this;
@@ -36,9 +35,4 @@ double QFood::getPrice()const{
 void QFood::setPrice(double price){
     this->price = price;
 };
-bool QFood::isSelected()const{
-    return this->select;
-};
-void QFood::setSelected(bool _sel){
-    this->select = _sel;
-};
+

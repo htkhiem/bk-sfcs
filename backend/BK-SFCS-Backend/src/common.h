@@ -1,8 +1,6 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -19,13 +17,11 @@
 
 #define DATEFORMAT "%F %X"
 
-// RapidJSON
-#include "../rapidjson/rapidjson.h"
-#include "../rapidjson/document.h"
-#include "../rapidjson/prettywriter.h"
-#include "../rapidjson/stringbuffer.h"
-#include "../rapidjson/filereadstream.h"
-#include "../rapidjson/filewritestream.h"
+// Qt JSON
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
 
 // Qt Quick
 #include <QObject>
@@ -35,8 +31,5 @@
 #include <QtCore>
 
 using namespace std;
-using namespace rapidjson;
-
-
 
 #endif // COMMON_H
