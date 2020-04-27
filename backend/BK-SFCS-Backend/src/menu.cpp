@@ -1,24 +1,28 @@
 #include "menu.h"
 
 QVector<Stall> stallist;
-Stall::Stall(){
+Stall::Stall(QObject *parent) :
+QObject(parent)
+{
 }
 
-Stall::Stall(const Stall& _stall){
+Stall::Stall(const Stall& _stall, QObject *parent) :
+QObject(parent)
+{
     this->menu = _stall.menu;
     stallName = _stall.stallName;
 }
 
 Stall& Stall::operator=(const Stall &){
     return *this;
-};
+}
 QVector<QFood> Stall::getMenu() const{   //Important for Display food
 
-};
+}
 bool Stall::addFood(QFood item){   //Menu editing
 menu.push_back(item);
 return 1;
-};
+}
 bool Stall::removeFood(QFood item){ //Menu editing
 QString name = item.getName();
 for (int i = 0; i < menu.size();i++){
@@ -32,7 +36,7 @@ return 0;
 
 QString Stall::getStallName(){
     return this->stallName;
-};
+}
 
 
 

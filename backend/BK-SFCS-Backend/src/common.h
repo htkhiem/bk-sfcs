@@ -32,10 +32,7 @@
 #include <QString>
 #include <QDate>
 #include <QList>
-
-// Globals (QML and C++)
-extern QList<QObject*> fleet_list;
-extern QList<QObject*> contracts_list;
+#include <QtCore>
 
 using namespace std;
 using namespace rapidjson;

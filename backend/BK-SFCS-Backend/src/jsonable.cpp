@@ -1,6 +1,7 @@
 #include "jsonable.h"
 
-Jsonable::Jsonable()
+Jsonable::Jsonable(QObject *parent) :
+    QObject(parent)
 {
 
 }

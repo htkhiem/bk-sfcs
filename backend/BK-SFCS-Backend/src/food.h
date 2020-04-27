@@ -1,15 +1,15 @@
 #ifndef FOOD_H
 #define FOOD_H
 #include "common.h"
-class QFood:public QObject {
+class QFood : public QObject {
 
     Q_OBJECT
     Q_PROPERTY(QString name READ getName)
     Q_PROPERTY(QString type READ getType)
 public:
 
-    QFood();
-    QFood(const QFood &_food);
+    QFood(QObject *parent = nullptr);
+    QFood(const QFood &_food, QObject *parent = nullptr);
     QFood& operator=(const QFood &);
     bool select;
     QString name, type,description;

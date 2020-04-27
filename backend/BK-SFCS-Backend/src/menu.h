@@ -1,19 +1,18 @@
 #ifndef MENU_H
 #define MENU_H
-#include "food.h"
 
+#include "common.h"
+#include "food.h"
 
 class Stall: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString stallName READ getStallName)
-
-
 public:
     QString stallName;
     QVector<QFood> menu;
-    Stall();
-    Stall(const Stall &_stall);
+    Stall(QObject *parent = nullptr);
+    Stall(const Stall &_stall, QObject *parent = nullptr);
     Stall& operator=(const Stall &);
     string imagePath;
 public slots:
@@ -21,8 +20,8 @@ public slots:
     QVector<QFood> getMenu() const;
     bool addFood(QFood item);
     bool removeFood(QFood item);
-    void getImage();
-    void setImage();
+    string getImagePath();
+    void setImagePath();
     QString getStallName();
 
 };

@@ -15,11 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        ../src/food.cpp \
-        ../src/jsonable.cpp \
-        ../src/menu.cpp \
-        ../src/orderinfo.cpp \
         main.cpp \
+        src/controller.cpp \
         src/food.cpp \
         src/jsonable.cpp \
         src/menu.cpp \
@@ -34,12 +31,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    ../src/common.h \
-    ../src/food.h \
-    ../src/jsonable.h \
-    ../src/menu.h \
-    ../src/orderinfo.h \
     src/common.h \
+    src/controller.h \
     src/food.h \
     src/jsonable.h \
     src/menu.h \

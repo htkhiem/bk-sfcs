@@ -1,5 +1,9 @@
 #include "food.h"
-QFood::QFood(const QFood &_food){
+QFood::QFood(QObject *parent) :
+QObject(parent) {}
+QFood::QFood(const QFood &_food, QObject *parent) :
+    QObject(parent)
+{
     name = _food.name;
     price = _food.price;
     description = _food.description;
@@ -8,7 +12,6 @@ QFood::QFood(const QFood &_food){
 QFood& QFood::operator=(const QFood &){
     return *this;
 }
-QFood::QFood(){}
 QString QFood::getName()const{
     return this->name;
 };

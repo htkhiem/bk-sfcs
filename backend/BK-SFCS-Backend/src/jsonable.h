@@ -1,13 +1,12 @@
 #ifndef JSONABLE_H
 #define JSONABLE_H
 
-#include <QObject>
-#include"../../backend/common.h"
-class Jsonable
+#include"common.h"
+class Jsonable : public QObject
 {
     Q_OBJECT
 public:
-    Jsonable();
+    Jsonable(QObject *parent = nullptr);
     virtual void readfromJson(string _path) = 0;
     virtual string writetoJson() = 0;
 

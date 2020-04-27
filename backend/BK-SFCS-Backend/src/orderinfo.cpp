@@ -1,6 +1,7 @@
 #include "orderinfo.h"
 
-OrderInfo::OrderInfo()
+OrderInfo::OrderInfo(QObject *parent) :
+    QObject(parent)
 {
 
 

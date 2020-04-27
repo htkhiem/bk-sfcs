@@ -1,11 +1,11 @@
 #ifndef ORDERINFO_H
 #define ORDERINFO_H
 
-#include <QObject>
-#include"../../backend/food.h"
+#include "common.h"
+#include"food.h"
 enum class OrderStatus{waiting,processing,finished,rejected};
 //#include "../../backend/orderinfo.h"
-class OrderInfo
+class OrderInfo : public QObject
 {
     Q_OBJECT
     size_t timestamp;   //time_t?
@@ -14,7 +14,7 @@ class OrderInfo
     int quantity;
 
 public:
-    OrderInfo();
+    OrderInfo(QObject *parent = nullptr);
 
     bool checkWaiting();
     OrderStatus checkStatus();
