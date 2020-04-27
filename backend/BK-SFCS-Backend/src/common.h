@@ -20,22 +20,18 @@
 #define DATEFORMAT "%F %X"
 
 // RapidJSON
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/document.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/filereadstream.h"
-#include "rapidjson/filewritestream.h"
+#include "../rapidjson/rapidjson.h"
+#include "../rapidjson/document.h"
+#include "../rapidjson/prettywriter.h"
+#include "../rapidjson/stringbuffer.h"
+#include "../rapidjson/filereadstream.h"
+#include "../rapidjson/filewritestream.h"
 
 // Qt Quick
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
 #include <QObject>
 #include <QString>
 #include <QDate>
 #include <QList>
-#include <QQuickItem>
 
 // Globals (QML and C++)
 extern QList<QObject*> fleet_list;
