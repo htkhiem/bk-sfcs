@@ -11,5 +11,7 @@
         <file>placeholders/200.png</file>
         <file>delegates/StallDelegate.qml</file>
         <file>delegates/StallDelegateForm.ui.qml</file>
+        <file>delegates/MenuDelegate.qml</file>
+        <file>delegates/MenuDelegateForm.ui.qml</file>
     </qresource>
 </RCC>
