@@ -36,3 +36,6 @@ client/build*
 server/build*
 client/build*/*
 server/build*/*
+backend/build*
+backend/build/*
+
