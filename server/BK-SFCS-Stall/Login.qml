@@ -4,8 +4,8 @@ import QtQuick.Window 2.3
 Window {
     id: login_window
     title: qsTr("Login")
-    width: loginForm.width
-    height: loginForm.height
+    width: 640
+    height: 530
     visible: true
     function setCurrentIdx(index) {
         loginForm.stallSelector.currentIndex = index;

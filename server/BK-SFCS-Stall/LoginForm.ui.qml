@@ -8,6 +8,7 @@ Page {
     property alias loginButton: loginButton
     property alias stallSelector: stallSelector
     height: 530
+    property alias page: page
     Text {
         id: title
         x: 308

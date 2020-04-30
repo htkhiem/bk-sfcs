@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import "./delegates"
 
 Page {
     id: page
@@ -22,48 +23,32 @@ Page {
 
         ListView {
             id: listView
-            width: 110
+            width: scrollView.width
             height: 160
+            bottomMargin: 0
             model: ListModel {
                 ListElement {
-                    name: "Grey"
-                    colorCode: "grey"
+                    image: "placeholders/200.png"
+                    name: "Item name here"
+                    desc: "Some descriptions about this item."
+                    price: 10000
+                    isOOS: false
                 }
-
                 ListElement {
-                    name: "Red"
-                    colorCode: "red"
-                }
-
-                ListElement {
-                    name: "Blue"
-                    colorCode: "blue"
-                }
-
-                ListElement {
-                    name: "Green"
-                    colorCode: "green"
+                    image: "placeholders/200.png"
+                    name: "Another item"
+                    desc: "Another meaningless description."
+                    price: 15000
+                    isOOS: true
                 }
             }
-            delegate: Item {
-                x: 5
-                width: 80
-                height: 40
-                Row {
-                    id: row1
-                    spacing: 10
-                    Rectangle {
-                        width: 40
-                        height: 40
-                        color: colorCode
-                    }
-
-                    Text {
-                        text: name
-                        font.bold: true
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
+            delegate: MenuDelegateForm {
+                width: listView.width
+                itemImage.source: image
+                nameField.text: name
+                descField.text: desc
+                priceField.text: price + qsTr("VND")
+                oosCheckbox.checked: isOOS
             }
         }
     }
@@ -78,3 +63,10 @@ Page {
         font.pixelSize: 14
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.75}
+}
+##^##*/
+

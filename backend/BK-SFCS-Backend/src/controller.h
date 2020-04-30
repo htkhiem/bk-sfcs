@@ -10,12 +10,25 @@ public:
 public slots:
   
   /** Main program loop Emits finished() after leaving loop. */
-  void run() {
-    cout << "BK-SFCS ADMINISTRATIVE CONTROL PANEL\n";
-    emit finished();
-  }
+  void run();
 signals:
   void finished();
+private:
+  size_t DisplayStallList();
+  void RegisterStall();
+  void RemoveStall();
+
+  void Login();
+  void Logout();
+
+  size_t current_stall_idx;
+
+  void AddFoodItem();
+  void RemoveFoodItem();
+  void EditFoodItem();
+
+  void WriteData();
+  void ReadData();
 };
 
 #endif // CONTROLLER_H
