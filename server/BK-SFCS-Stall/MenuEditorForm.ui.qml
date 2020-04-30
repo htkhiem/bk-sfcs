@@ -6,18 +6,21 @@ Page {
     id: page
     width: 1280
     height: 720
+    property alias revertButton: revertButton
+    property alias confirmButton: confirmButton
     anchors.fill: parent
 
-    title: qsTr("Page 1")
+    title: qsTr("Menu Editor")
 
     ScrollView {
         id: scrollView
+        anchors.bottomMargin: 10
         clip: true
         anchors.top: instr.bottom
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
         anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.bottom: confirmButton.top
         anchors.left: parent.left
         anchors.topMargin: 10
 
@@ -42,7 +45,7 @@ Page {
                     isOOS: true
                 }
             }
-            delegate: MenuDelegateForm {
+            delegate: MenuDelegate {
                 width: listView.width
                 itemImage.source: image
                 nameField.text: name
@@ -62,11 +65,38 @@ Page {
         anchors.topMargin: 10
         font.pixelSize: 14
     }
+
+    DelayButton {
+        id: confirmButton
+        y: 673
+        text: qsTr("Confirm change proposal")
+        enabled: false
+        delay: 5000
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.left: revertButton.right
+        anchors.leftMargin: 10
+    }
+
+    DelayButton {
+        id: revertButton
+        y: 570
+        width: 240
+        text: qsTr("Revert")
+        anchors.left: parent.left
+        anchors.bottomMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 10
+        enabled: false
+        delay: 5000
+    }
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.75}
+    D{i:0;formeditorZoom:0.5}D{i:8;anchors_x:589}
 }
 ##^##*/
 

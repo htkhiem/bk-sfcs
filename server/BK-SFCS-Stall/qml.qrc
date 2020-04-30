@@ -2,8 +2,8 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>HomeForm.ui.qml</file>
-        <file>MenuEditor.ui.qml</file>
-        <file>Orders.ui.qml</file>
+        <file>MenuEditorForm.ui.qml</file>
+        <file>WaitlistForm.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Login.qml</file>
         <file>LoginForm.ui.qml</file>
@@ -14,5 +14,10 @@
         <file>delegates/MenuDelegateForm.ui.qml</file>
         <file>delegates/OrderDelegate.qml</file>
         <file>delegates/OrderDelegateForm.ui.qml</file>
+        <file>MenuEditor.qml</file>
+        <file>delegates/MenuDelegate.qml</file>
+        <file>WaitList.qml</file>
+        <file>Main.qml</file>
+        <file>MainForm.ui.qml</file>
     </qresource>
 </RCC>

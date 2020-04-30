@@ -91,7 +91,7 @@ Rectangle {
         x: 1170
         y: 132
         text: qsTr("Remove item")
-        delay: 5000
+        delay: 1000
         anchors.right: parent.right
         anchors.rightMargin: 10
         anchors.bottom: parent.bottom

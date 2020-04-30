@@ -5,6 +5,9 @@ Rectangle {
     id: bg
     width: 1280
     height: 180
+    property alias rejectButton: rejectButton
+    property alias stepButton: stepButton
+    property alias priceText: priceText
     property alias nameText: nameText
     property alias qtyNumber: qtyNumber
     property alias itemImage: itemImage
