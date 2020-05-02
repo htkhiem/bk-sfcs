@@ -19,5 +19,6 @@
         <file>WaitList.qml</file>
         <file>Main.qml</file>
         <file>MainForm.ui.qml</file>
+        <file>Home.qml</file>
     </qresource>
 </RCC>
