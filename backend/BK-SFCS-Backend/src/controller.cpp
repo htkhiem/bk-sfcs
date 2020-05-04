@@ -51,7 +51,8 @@ void Controller::WriteData() {
 
     // Write stall menu and data
     data_cursor.cd("stall_menus");
-    for (auto stall : stall_db) {
+    for (auto ptr : stall_db) {
+        Stall& stall = *((Stall* )ptr);
         QFile stall_data_file(data_cursor.filePath(stall.getStallName() + QString(".json")));
         if (!stall_data_file.open(QIODevice::WriteOnly)) {
             throw runtime_error(
@@ -86,8 +87,9 @@ void Controller::ReadData() {
             throw runtime_error("Cannot read data file: " + qstr.toStdString());
          }
          QJsonDocument stall_data_json_doc(QJsonDocument::fromJson(stall_data_file.readAll()));
-         Stall stall;
-         stall.read(stall_data_json_doc.object());
+         Stall* stall = new Stall();
+         stall->read(stall_data_json_doc.object());
+         stall_db.append(stall);
     }
 
     // TODO: Load logs

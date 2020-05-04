@@ -16,7 +16,7 @@ signals:
   void finished();
 private:
 
-  vector<Stall> stall_db;
+  QList<QObject*> stall_db;
 
   size_t DisplayStallList();
   void RegisterStall();
