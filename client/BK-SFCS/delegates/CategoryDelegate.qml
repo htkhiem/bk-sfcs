@@ -1,11 +1,18 @@
 import QtQuick 2.4
 
 CategoryDelegateForm {
-    property bool selected: true
-    mouseArea.onClicked: {
-        selected = !selected;
-        if (selected == true) color = "8a8a8a"
-        else color = "404040"
-        console.log(selected)
+    property color enabledGradStart: gradStart.color
+    property color enabledGradEnd: gradEnd.color
+    property color disabledGradStart: Qt.lighter(gradStart.color)
+    property color disabledGradEnd: Qt.lighter(gradEnd.color)
+    onClicked: {
+        if (checked) {
+            gradStart.color = enabledGradStart;
+            gradEnd.color = enabledGradEnd;
+        }
+        else {
+            gradStart.color = disabledGradStart;
+            gradEnd.color = disabledGradEnd;
+        }
     }
 }

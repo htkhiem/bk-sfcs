@@ -46,20 +46,10 @@ Page {
                     font.family: "Arial"
                     checkable: true
                     checked: true
-                    background: Rectangle {
-                        color: "#d23e3e"
-                        anchors.fill: parent
-                        gradient: Gradient {
-                            GradientStop {
-                                position: 0
-                                color: colorStart
-                            }
-                            GradientStop {
-                                position: 1
-                                color: colorEnd
-                            }
-                            orientation: Gradient.Vertical
-                        }
+                    background: CategoryDelegate {
+                        text: symbol + ' ' + name
+                        gradStart.color: colorStart
+                        gradEnd.color: colorEnd
                     }
                 }
             }
