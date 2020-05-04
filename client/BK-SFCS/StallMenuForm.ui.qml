@@ -1,4 +1,4 @@
-import QtQuick 2.12
+import QtQuick 2.14
 import QtQuick.Controls 2.5
 import "./delegates"
 
@@ -6,28 +6,91 @@ Page {
     id: page
     width: 1280
     height: 720
-    property alias menuGrid: menuGrid
-
-    // title:
-    GridView {
-        id: menuGrid
-        anchors.rightMargin: 10
-        anchors.leftMargin: 10
-        anchors.bottomMargin: 10
-        anchors.topMargin: 10
-        bottomMargin: 5
-        cacheBuffer: 16
-        rightMargin: 5
-        leftMargin: 5
-        topMargin: 5
-        cellHeight: 284
-        cellWidth: 210
+    property alias listView: listView
+    property alias gridView: gridView
+    ScrollView {
+        id: scrollView
+        spacing: 10
+        contentHeight: 1000
+        contentWidth: 1280
         anchors.fill: parent
-        model: MenuDelegateModel {}
-        delegate: MenuDelegate {
-            itemName.text: name
-            itemImage.source: image
-            itemPrice.text: price
+
+        Column {
+            id: column
+            padding: 10
+            rightPadding: 10
+            leftPadding: 10
+            topPadding: 10
+            anchors.fill: parent
+            spacing: 10
+
+            ListView {
+                id: listView
+                width: 1280
+                height: 70
+                contentWidth: 110
+                spacing: 10
+                cacheBuffer: 10
+                contentHeight: 100
+                rightMargin: 0
+                leftMargin: 0
+                bottomMargin: 0
+                topMargin: 0
+                orientation: ListView.Horizontal
+                model: CategoryDelegateModel {}
+                delegate: Button {
+                    height: 70
+                    width: 200
+                    text: symbol + ' ' + name
+                    font.pointSize: 16
+                    font.family: "Arial"
+                    checkable: true
+                    checked: true
+                    background: Rectangle {
+                        color: "#d23e3e"
+                        anchors.fill: parent
+                        gradient: Gradient {
+                            GradientStop {
+                                position: 0
+                                color: colorStart
+                            }
+                            GradientStop {
+                                position: 1
+                                color: colorEnd
+                            }
+                            orientation: Gradient.Vertical
+                        }
+                    }
+                }
+            }
+
+            GridView {
+                id: gridView
+                width: 1280
+                height: 720
+                boundsMovement: Flickable.FollowBoundsBehavior
+                boundsBehavior: Flickable.StopAtBounds
+                flickableDirection: Flickable.AutoFlickDirection
+                contentWidth: gridView.width
+                contentHeight: gridView.height
+
+                cacheBuffer: 10
+                model: MenuDelegateModel {}
+                cellHeight: 338
+                cellWidth: 210
+                delegate: MenuDelegate {
+                    itemPrice.text: price
+                    itemImage.source: image
+                    itemName.text: name
+                }
+            }
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:2}D{i:2;anchors_height:400;anchors_width:200}
+}
+##^##*/
+
