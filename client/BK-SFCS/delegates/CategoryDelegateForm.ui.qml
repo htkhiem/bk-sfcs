@@ -1,50 +1,33 @@
 import QtQuick 2.4
+import QtQuick.Controls 2.12
 
-Rectangle {
-    id: bg
-    width: 100
-    height: 100
-    color: "#737373"
-    radius: 10
-    property alias categorySymbol: categorySymbol
-    property alias mouseArea: mouseArea
-    property alias categoryName: categoryName
+Button {
+    height: 70
+    width: 200
+    property alias gradEnd: gradEnd
+    property alias gradStart: gradStart
+    checkable: true
+    checked: true
 
-    Text {
-        id: categoryName
-        x: 38
-        y: 77
-        text: qsTr("Text")
-        horizontalAlignment: Text.AlignHCenter
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        anchors.horizontalCenter: parent.horizontalCenter
-        font.pixelSize: 14
-    }
-
-    Text {
-        id: categorySymbol
-        x: 32
-        y: 8
-        color: "#ffffff"
-        text: qsTr("C")
-        anchors.top: parent.top
-        anchors.topMargin: 8
-        horizontalAlignment: Text.AlignHCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        font.pixelSize: 48
-    }
-    MouseArea {
-        id: mouseArea
-        x: 0
-        y: 0
+    background: Rectangle {
         anchors.fill: parent
+        radius: 10
+        gradient: Gradient {
+            GradientStop {
+                id: gradStart
+                position: 0
+            }
+            GradientStop {
+                id: gradEnd
+                position: 1
+            }
+        }
     }
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:8}D{i:2;anchors_y:8}D{i:3;anchors_y:8}
+    D{i:0;formeditorZoom:1.75}
 }
 ##^##*/
 
