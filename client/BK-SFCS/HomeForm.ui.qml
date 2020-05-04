@@ -13,6 +13,7 @@ Page {
         id: stallGrid
         x: 10
         y: 10
+        flickableDirection: Flickable.AutoFlickDirection
         anchors.rightMargin: 10
         anchors.leftMargin: 10
         anchors.bottomMargin: 10

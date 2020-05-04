@@ -1,13 +1,16 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.5
 import "./delegates"
+import QtQuick.Controls.Material 2.12
 
 Page {
+    Rectangle{
     id: page
     width: 1280
     height: 720
     property alias listView: listView
     property alias gridView: gridView
+    color: "orange"
     ScrollView {
         id: scrollView
         spacing: 10
@@ -23,8 +26,8 @@ Page {
             topPadding: 10
             anchors.fill: parent
             spacing: 10
-
             ListView {
+
                 id: listView
                 width: 1280
                 height: 70
@@ -76,11 +79,12 @@ Page {
             }
         }
     }
+    }
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:2}D{i:2;anchors_height:400;anchors_width:200}
+    D{i:0;formeditorZoom:0.8999999761581421}
 }
 ##^##*/
 
