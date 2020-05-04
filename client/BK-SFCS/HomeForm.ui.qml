@@ -29,12 +29,8 @@ Page {
         delegate: StallDelegate {
             stallImage.source: image
             stallName.text: name
+            gradStart.color: colorStart
+            gradEnd.color: colorEnd
         }
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:0.5}
-}
-##^##*/
