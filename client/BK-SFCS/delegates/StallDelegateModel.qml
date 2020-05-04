@@ -2,19 +2,19 @@ import QtQuick 2.0
 
 ListModel { // all placeholders - real stall list to be loaded from C++
     ListElement {
-        name: "Jimmy's Cock...tail bar"
+        name: "Com ga P77"
         image: "placeholders/200.png"
     }
     ListElement {
-        name: "Ga ran 33"
+        name: "Bun moc Hung map"
         image: "placeholders/200.png"
     }
     ListElement {
-        name: "Hell's Kitchen"
+        name: "Mon Viet"
         image: "placeholders/200.png"
     }
     ListElement {
-        name: "Manjaro Mojito"
+        name: "Mountain Pearl coffee"
         image: "placeholders/200.png"
     }
     ListElement {
