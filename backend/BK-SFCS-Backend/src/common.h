@@ -30,6 +30,10 @@
 #include <QList>
 #include <QtCore>
 
+// Qt File IO
+#include <QFile>
+#include <QDir>
+
 using namespace std;
 
 #endif // COMMON_H
