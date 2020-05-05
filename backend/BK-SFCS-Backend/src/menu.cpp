@@ -38,8 +38,24 @@ QString Stall::getStallName(){
     return this->stallName;
 }
 
+/*void Stall::read(const QJsonObject &json){
+        // Check file validity
+        QString stallName;
+            Stall stall;
+            if(json.contains("Stall name") && json["Stall name"].isString())
+            this->stallName = json["Stall name"].toString();
 
-/*
+            if(json.contains("Menu") && json["Menu"].isArray()){
+                QJsonArray MenuArray = json["Menu"].toArray();
+                QFood fodder;
+                for(int i = 0; i < MenuArray.size();++i){
+                    QJsonObject MenuObject = MenuArray[i].toObject();
+                    fodder.read(MenuObject);
+                    this->menu.append(fodder);
+            }
+}
+}
+
 void  loadStall(const string filename){
     FILE* local;
     local = fopen( filename.c_str(), "rb");
@@ -62,8 +78,6 @@ void  loadStall(const string filename){
         Stall stall;
         assert(v.HasMember("Stall name"));
         stall.stallName = v["Stall name"].GetString();
-
-
 
         assert(v.HasMember("Menu"));
         for (auto& x :v["Menu"].GetArray()) {

@@ -4,6 +4,7 @@
 #include "common.h"
 #include "food.h"
 #include "jsonable.h"
+#include <chrono>
 enum class OrderStatus { waiting, processing, finished, rejected };
 class OrderInfo : public Jsonable {
   Q_OBJECT
@@ -11,6 +12,10 @@ class OrderInfo : public Jsonable {
   OrderStatus status;
   QFood food;
   int quantity;
+  std::chrono::high_resolution_clock::time_point received_start;
+  std::chrono::high_resolution_clock::time_point accepted_start;
+  std::chrono::duration<double> received_duration;
+  std::chrono::duration<double> accepted_duration;
 public:
   
   /**
@@ -20,6 +25,10 @@ public:
   OrderInfo(QObject *parent = nullptr);
 
   /** Basic getters/setters */
+  void setReceived();
+  void getReceived();
+  void setAccepted();
+  void getAccepted();
   OrderStatus checkStatus();
   void setStatus(OrderStatus _status);
   size_t getTimeStamp();
@@ -27,7 +36,6 @@ public:
   double getTotal();
   int getQuantity();
   void setQuantity(int);
-  
   /**
    * Read from a JSON object from disk.
    * @param json JSON object to read from.
