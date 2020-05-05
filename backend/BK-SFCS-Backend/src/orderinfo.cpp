@@ -46,3 +46,7 @@ int OrderInfo::getQuantity(){
 void OrderInfo::setQuantity(int quantity){
     this->quantity = quantity;
 }
+
+double OrderInfo::getTotal(){
+    return (this->food.price * this->quantity);
+}
