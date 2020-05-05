@@ -40,7 +40,7 @@ public:
   void setTimeStamp(size_t _time);
   double getTotal();
   int getQuantity();
-  void setQuantity(int);
+  void setQuantity(int quantity);
   /**
    * Read from a JSON object from disk.
    * @param json JSON object to read from.

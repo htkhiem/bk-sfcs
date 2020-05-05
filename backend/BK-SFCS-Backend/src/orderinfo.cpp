@@ -34,3 +34,15 @@ void OrderInfo::setAccepted(){
         this->accepted.duration = finish - this->accepted.start;
     }
 }
+size_t OrderInfo::getTimeStamp(){
+   return this->timestamp;
+}
+void OrderInfo::setTimeStamp(size_t _time){
+   this->timestamp = _time;
+}
+int OrderInfo::getQuantity(){
+    return this->quantity;
+}
+void OrderInfo::setQuantity(int quantity){
+    this->quantity = quantity;
+}
