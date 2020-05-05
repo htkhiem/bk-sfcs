@@ -6,6 +6,7 @@ Page {
     id: menuEditor
     width: 1280
     height: 720
+    property alias addButton: addButton
     property alias mgrPswField: mgrPswField
     property alias authorizeButton: authorizeButton
     property alias revertButton: revertButton
@@ -93,7 +94,19 @@ Page {
         anchors.rightMargin: 10
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
-        placeholderText: qsTr("Text Field")
+        placeholderText: qsTr("Manager password")
+    }
+
+    RoundButton {
+        enabled: false
+        id: addButton
+        text: "+"
+        highlighted: false
+        flat: false
+        anchors.bottom: scrollView.bottom
+        anchors.bottomMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
     }
     states: [
         State {
@@ -123,14 +136,18 @@ Page {
                 target: listViewLoader
                 source: "MenuEditorFullListView.qml"
             }
+            PropertyChanges {
+                target: addButton
+                enabled: true
+            }
         }
     ]
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.75}D{i:3;anchors_x:589}D{i:4;anchors_x:589}D{i:5;anchors_x:30}
-D{i:6;anchors_x:30}D{i:9;anchors_x:589}D{i:11;anchors_x:30}
+    D{i:0;formeditorZoom:1.5}D{i:10;anchors_x:589}D{i:11;anchors_x:30}D{i:12;anchors_x:30}
+D{i:9;anchors_x:589}D{i:3;anchors_x:589}D{i:4;anchors_x:589}D{i:5;anchors_x:30}D{i:6;anchors_x:30}
 }
 ##^##*/
 
