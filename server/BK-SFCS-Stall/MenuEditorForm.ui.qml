@@ -3,9 +3,11 @@ import QtQuick.Controls 2.5
 import "./delegates"
 
 Page {
-    id: page
+    id: menuEditor
     width: 1280
     height: 720
+    property alias mgrPswField: mgrPswField
+    property alias authorizeButton: authorizeButton
     property alias revertButton: revertButton
     property alias confirmButton: confirmButton
     anchors.fill: parent
@@ -24,41 +26,16 @@ Page {
         anchors.left: parent.left
         anchors.topMargin: 10
 
-        ListView {
-            id: listView
-            width: scrollView.width
-            height: 160
-            bottomMargin: 0
-            model: ListModel {
-                ListElement {
-                    image: "placeholders/200.png"
-                    name: "Item name here"
-                    desc: "Some descriptions about this item."
-                    price: 10000
-                    isOOS: false
-                }
-                ListElement {
-                    image: "placeholders/200.png"
-                    name: "Another item"
-                    desc: "Another meaningless description."
-                    price: 15000
-                    isOOS: true
-                }
-            }
-            delegate: MenuDelegate {
-                width: listView.width
-                itemImage.source: image
-                nameField.text: name
-                descField.text: desc
-                priceField.text: price + qsTr("VND")
-                oosCheckbox.checked: isOOS
-            }
+        Loader {
+            id: listViewLoader
+            anchors.fill: parent
+            source: "MenuEditorSimpleListView.qml"
         }
     }
 
     Text {
         id: instr
-        text: qsTr("Select a food item to edit its information (price, description, image, etc.)")
+        text: qsTr("You can quickly set items as out of order or not here.You need to authorize yourself with manager rights in order to edit other information.")
         anchors.left: parent.left
         anchors.leftMargin: 10
         anchors.top: parent.top
@@ -69,7 +46,9 @@ Page {
     DelayButton {
         id: confirmButton
         y: 673
-        text: qsTr("Confirm change proposal")
+        width: 200
+        text: qsTr("Confirm changes")
+        visible: false
         enabled: false
         delay: 5000
         anchors.bottom: parent.bottom
@@ -85,6 +64,7 @@ Page {
         y: 570
         width: 240
         text: qsTr("Revert")
+        visible: false
         anchors.left: parent.left
         anchors.bottomMargin: 10
         anchors.bottom: parent.bottom
@@ -92,11 +72,65 @@ Page {
         enabled: false
         delay: 5000
     }
+
+    Button {
+        id: authorizeButton
+        x: 30
+        y: 849
+        text: qsTr("Authorize editing")
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+    }
+
+    TextField {
+        visible: true
+        id: mgrPswField
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.right: authorizeButton.left
+        anchors.rightMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        placeholderText: qsTr("Text Field")
+    }
+    states: [
+        State {
+            name: "authorized"
+
+            PropertyChanges {
+                target: mgrPswField
+                visible: false
+            }
+
+            PropertyChanges {
+                target: confirmButton
+                visible: true
+            }
+
+            PropertyChanges {
+                target: revertButton
+                visible: true
+            }
+
+            PropertyChanges {
+                target: authorizeButton
+                visible: false
+            }
+
+            PropertyChanges {
+                target: listViewLoader
+                source: "MenuEditorFullListView.qml"
+            }
+        }
+    ]
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.5}D{i:8;anchors_x:589}
+    D{i:0;formeditorZoom:0.75}D{i:3;anchors_x:589}D{i:4;anchors_x:589}D{i:5;anchors_x:30}
+D{i:6;anchors_x:30}D{i:9;anchors_x:589}D{i:11;anchors_x:30}
 }
 ##^##*/
 
