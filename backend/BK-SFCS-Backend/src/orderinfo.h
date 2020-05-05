@@ -6,16 +6,21 @@
 #include "jsonable.h"
 #include <chrono>
 enum class OrderStatus { waiting, processing, finished, rejected };
+
+class Timer{
+public:
+    std::chrono::high_resolution_clock::time_point start;
+    std::chrono::duration<double> duration;
+};
+
 class OrderInfo : public Jsonable {
   Q_OBJECT
   size_t timestamp; // time_t?
   OrderStatus status;
   QFood food;
   int quantity;
-  std::chrono::high_resolution_clock::time_point received_start;
-  std::chrono::high_resolution_clock::time_point accepted_start;
-  std::chrono::duration<double> received_duration;
-  std::chrono::duration<double> accepted_duration;
+  Timer received;
+  Timer accepted;
 public:
   
   /**
