@@ -11,6 +11,11 @@ public:
    * @param parent Pointer to parent QObject if any.
    */
   Jsonable(QObject *parent = nullptr);
+
+  /**
+   * Destructor for QObject-based Jsonable
+   */
+  ~Jsonable();
   
   /**
    * Pure virtual read function from JSON object from file.
