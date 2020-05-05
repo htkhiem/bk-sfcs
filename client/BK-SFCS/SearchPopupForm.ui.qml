@@ -2,8 +2,10 @@ import QtQuick 2.4
 import QtQuick.Controls 2.5
 
 Popup {
-    width: 800
+    width: 600
     height: 70
+    leftMargin: -1
+    rightPadding: 12
     property alias searchButton: searchButton
     property alias searchField: searchField
 
@@ -11,6 +13,7 @@ Popup {
         id: bg
         color: "#ffffff"
         radius: 0
+        anchors.rightMargin: 0
         anchors.fill: parent
 
         TextField {
@@ -33,7 +36,7 @@ Popup {
             width: 80
             height: 55
             text: qsTr("Search")
-            font.pointSize: 16
+            font.pointSize: 11
             anchors.right: parent.right
             anchors.rightMargin: 10
             anchors.verticalCenter: parent.verticalCenter

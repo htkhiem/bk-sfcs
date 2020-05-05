@@ -8,9 +8,20 @@ Page {
     id: page
     width: 1280
     height: 720
+    color: "#43e97b"
+    gradient: Gradient {
+        GradientStop {
+            position: 0
+            color: "#43e97b"
+        }
+
+        GradientStop {
+            position: 1
+            color: "#38f9d7"
+        }
+    }
     property alias listView: listView
     property alias gridView: gridView
-    color: "orange"
     ScrollView {
         id: scrollView
         spacing: 10
