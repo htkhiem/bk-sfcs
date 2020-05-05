@@ -1,31 +1,22 @@
 import QtQuick 2.0
 MenuDelegateForm {
     property int itemImageChangeTimes: 0;
-    property int nameFieldChangeTimes: 0;
-    property int descFieldChangeTimes: 0;
-    property int priceFieldChangeTimes: 0;
     property int oosCheckboxChangeTimes: 0;
     itemImage.onSourceChanged: {
         itemImageChangeTimes++;
         if (itemImageChangeTimes > 1)
-            require_confirmation()
+            enable_buttons()
     }
-    nameField.onTextChanged: {
-        nameFieldChangeTimes++;
-        if (nameFieldChangeTimes > 1)
-            require_confirmation()
+    nameField.onEditingFinished: {
+        enable_buttons()
     }
 
-    descField.onTextChanged: {
-        descFieldChangeTimes++;
-        if (descFieldChangeTimes > 1)
-            require_confirmation()
+    descField.onEditingFinished: {
+        enable_buttons()
     }
 
-    priceField.onTextChanged: {
-        priceFieldChangeTimes++;
-        if (priceFieldChangeTimes > 1)
-            require_confirmation()
+    priceField.onEditingFinished: {
+        enable_buttons()
     }
 
     oosCheckbox.onCheckedChanged: {
