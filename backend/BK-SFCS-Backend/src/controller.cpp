@@ -46,13 +46,12 @@ void Controller::WriteData() {
     QDir data_cursor = QDir::current();
     data_cursor.mkdir("sfcs_data");
     data_cursor.cd("sfcs_data");
-    data_cursor.mkdir("stall_menus");
-    data_cursor.mkdir("stall_logs");
 
     // Write stall menu and data
-    data_cursor.cd("stall_menus");
     for (auto ptr : stall_db) {
         Stall& stall = *((Stall* )ptr);
+        data_cursor.mkdir(stall.getStallName());
+        data_cursor.cd(stall.getStallName());
         QFile stall_data_file(data_cursor.filePath(stall.getStallName() + QString(".json")));
         if (!stall_data_file.open(QIODevice::WriteOnly)) {
             throw runtime_error(
@@ -63,9 +62,11 @@ void Controller::WriteData() {
         stall.write(stall_data_json_obj);
         QJsonDocument stall_data_json_doc(stall_data_json_obj);
         stall_data_file.write(stall_data_json_doc.toJson());
+        stall_data_file.close();
+        data_cursor.cdUp();
     }
-
     // TODO: logging
+    data_cursor.cdUp();
 }
 
 void Controller::ReadData() {
@@ -75,14 +76,11 @@ void Controller::ReadData() {
     }
 
     // Load stall menu and data
-    if (!data_cursor.cd("stall_menus")) {
-        throw runtime_error("Data has been corrupted.");
-    }
-    data_cursor.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
-    data_cursor.setNameFilters(QStringList("*.json"));
-    QStringList stall_data_list = data_cursor.entryList();
-    for (auto qstr : stall_data_list) {
-        QFile stall_data_file(data_cursor.filePath(qstr));
+    data_cursor.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+    QStringList stall_dirs = data_cursor.entryList();
+    for (auto qstr : stall_dirs) {
+        data_cursor.cd(qstr);
+        QFile stall_data_file(data_cursor.filePath(qstr + QString(".json")));
          if (!stall_data_file.open(QIODevice::ReadOnly)) {
             throw runtime_error("Cannot read data file: " + qstr.toStdString());
          }
@@ -90,7 +88,9 @@ void Controller::ReadData() {
          Stall* stall = new Stall();
          stall->read(stall_data_json_doc.object());
          stall_db.append(stall);
+         stall_data_file.close();
+         data_cursor.cdUp();
     }
-
     // TODO: Load logs
+    data_cursor.cdUp();
 }
