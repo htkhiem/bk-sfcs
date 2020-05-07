@@ -38,24 +38,48 @@ QString Stall::getStallName(){
     return this->stallName;
 }
 
-/*void Stall::read(const QJsonObject &json){
-        // Check file validity
-        QString stallName;
-            Stall stall;
-            if(json.contains("Stall name") && json["Stall name"].isString())
-            this->stallName = json["Stall name"].toString();
+void Stall::read(const QJsonObject &json){
+    if (json.contains("stall name") && json["stall name"].isString())
+        stallName = json["name"].toString();
 
-            if(json.contains("Menu") && json["Menu"].isArray()){
-                QJsonArray MenuArray = json["Menu"].toArray();
-                QFood fodder;
-                for(int i = 0; i < MenuArray.size();++i){
-                    QJsonObject MenuObject = MenuArray[i].toObject();
-                    fodder.read(MenuObject);
-                    this->menu.append(fodder);
-            }
-}
+    if (json.contains("image path") && json["image path"].isString())
+        imagePath = json["image path"].toString();
+
+    if (json.contains("menu") && json["menu"].isArray()) {
+        QJsonArray menuArr = json["menu"].toArray();
+        menu.clear();
+        menu.reserve(menuArr.size());
+    for(int i = 0; i < menuArr.size(); ++i){
+        QFood temp;
+           QJsonObject obj = menuArr[i].toObject();
+        if (obj.contains("name") && obj["name"].isString())
+            temp.name = obj["name"].toString();
+        if (obj.contains("description") && obj["description"].isString())
+            temp.description = obj["description"].toString();
+        if (obj.contains("type") && obj["type"].isString())
+            temp.type = obj["category"].toString();
+        if (obj.contains("price") && obj["price"].isDouble())
+            temp.price = obj["price"].toDouble();
+        menu.push_back(temp);
+        }
+    }
 }
 
+void Stall::write(QJsonObject &json) const{
+    json["stall name"] = stallName;
+    json["image path"] = imagePath;
+    QJsonArray menuArr;
+    for (const QFood &items : menu) {
+        QJsonObject temp;
+        temp["name"] = items.name;
+        temp["description"] = items.description;
+        temp["type"] = items.type;
+        temp["price"] = items.price;
+        menuArr.append(temp);
+    }
+    json["menu"] = menuArr;
+}
+/*
 void  loadStall(const string filename){
     FILE* local;
     local = fopen( filename.c_str(), "rb");
