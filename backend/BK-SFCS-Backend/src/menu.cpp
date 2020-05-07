@@ -61,15 +61,7 @@ void Stall::read(const QJsonObject &json){
         menu.reserve(menuArr.size());
     for(int i = 0; i < menuArr.size(); ++i){
         QFood temp;
-           QJsonObject obj = menuArr[i].toObject();
-        if (obj.contains("name") && obj["name"].isString())
-            temp.name = obj["name"].toString();
-        if (obj.contains("description") && obj["description"].isString())
-            temp.description = obj["description"].toString();
-        if (obj.contains("type") && obj["type"].isString())
-            temp.type = obj["category"].toString();
-        if (obj.contains("price") && obj["price"].isDouble())
-            temp.price = obj["price"].toDouble();
+        temp.read(json);
         menu.push_back(temp);
         }
     }
@@ -81,10 +73,7 @@ void Stall::write(QJsonObject &json) const{
     QJsonArray menuArr;
     for (const QFood &items : menu) {
         QJsonObject temp;
-        temp["name"] = items.name;
-        temp["description"] = items.description;
-        temp["type"] = items.type;
-        temp["price"] = items.price;
+        items.write(temp);
         menuArr.append(temp);
     }
     json["menu"] = menuArr;
