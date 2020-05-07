@@ -60,7 +60,6 @@ void Stall::read(const QJsonObject &json){
     if (json.contains("menu") && json["menu"].isArray()) {
 QString Stall::getImagePath(){
         QJsonArray menuArr = json["menu"].toArray();
-    return this->imagePath;
         menu.clear();
         menu.reserve(menuArr.size());
     for(int i = 0; i < menuArr.size(); ++i){
