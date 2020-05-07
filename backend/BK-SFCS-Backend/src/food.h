@@ -27,7 +27,7 @@ public:
   QFood &operator=(const QFood &);
   
   /** Basic fields  */
-  QString name, type, description,imagepath;
+  QString name, type, description,image_path;
   double price = 0;
   
   /**

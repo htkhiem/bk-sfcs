@@ -12,7 +12,7 @@ QFood& QFood::operator=(const QFood &){
     return *this;
 };
 QString QFood::getImagePath()const{
-    return this->imagepath;
+    return this->image_path;
 };
 void QFood::setImagePath(QString imagepath){
   this->imagepath = imagepath;
@@ -49,7 +49,7 @@ void QFood::setPrice(double price){
 void QFood::read(const QJsonObject &json){
 
       if (json.contains("image path") && json["image path"].isString())
-          imagepath = json["image path"].toString();
+          image_path = json["image path"].toString();
       if (json.contains("name") && json["name"].isString())
               name = json["name"].toString();
       if (json.contains("description") && json["description"].isString())
@@ -61,7 +61,7 @@ void QFood::read(const QJsonObject &json){
 };
 
 void QFood::write(QJsonObject &json) const{
-     json["image path"] = imagepath;
+     json["image path"] = image_path;
          json["name"] = name;
          json["description"] = description;
          json["type"] = type;
