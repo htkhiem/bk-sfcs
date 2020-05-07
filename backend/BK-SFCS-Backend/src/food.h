@@ -44,7 +44,7 @@ public:
 public slots:
   /** Basic getters/setters */
   QString getImagePath()const;
-  void setImagePath(QString imagepath);
+  void setImagePath(QString image_path);
   QString getName() const;
   void setName(QString name);
   QString getType() const;
