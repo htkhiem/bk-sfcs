@@ -50,3 +50,10 @@ void OrderInfo::setQuantity(int quantity){
 double OrderInfo::getTotal(){
     return (this->food.price * this->quantity);
 }
+
+void OrderInfo::read(const QJsonObject &json){
+
+}
+void OrderInfo::write(QJsonObject &json) const{
+
+}
