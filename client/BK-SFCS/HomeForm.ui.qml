@@ -4,13 +4,16 @@ import "./delegates"
 
 Page {
     width: 1280
-    height: 400
+    height: 720
     property alias stallGrid: stallGrid
 
     title: qsTr("Select a stall")
 
     GridView {
         id: stallGrid
+        x: 10
+        y: 10
+        flickableDirection: Flickable.AutoFlickDirection
         anchors.rightMargin: 10
         anchors.leftMargin: 10
         anchors.bottomMargin: 10
@@ -27,6 +30,8 @@ Page {
         delegate: StallDelegate {
             stallImage.source: image
             stallName.text: name
+            gradStart.color: colorStart
+            gradEnd.color: colorEnd
         }
     }
 }

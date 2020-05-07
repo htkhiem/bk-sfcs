@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.11
 
 ApplicationWindow {
     id: window
@@ -10,24 +11,35 @@ ApplicationWindow {
 
     header: ToolBar {
         contentHeight: backButton.implicitHeight
-
-        ToolButton {
-            id: backButton
-            text: "\u25c0"  // icon
-            visible: stackView.depth > 1 ? true : false
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
-            onClicked: {
-                if (stackView.depth > 1) {
+        RowLayout {
+            anchors.fill: parent
+            ToolButton {
+                id: backButton
+                text: "‹ Back"  // icon
+                visible: stackView.depth > 1 ? true : false
+                font.pixelSize: Qt.application.font.pixelSize * 1.6
+                onClicked: {
                     stackView.pop()
-                } else {
-                    drawer.open()
                 }
             }
-        }
 
-        Label {
-            text: stackView.currentItem.title
-            anchors.centerIn: parent
+            Label {
+                text: stackView.currentItem.title
+                anchors.centerIn: parent
+                Layout.fillWidth: true
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+            }
+
+            ToolButton {
+                id: searchButton
+                text: "Search 🔎"
+                visible: stackView.depth > 1 ? true : false
+                onClicked: {
+                    searchPopup.open()
+                }
+            }
         }
     }
     HomeForm {
@@ -43,6 +55,10 @@ ApplicationWindow {
         initialItem: homeForm
         anchors.fill: parent
     }
+    SearchPopup {
+        id: searchPopup
+    }
+
     function openMenu(stallName) {
         stallMenuForm.title = stallName;
         stackView.push(stallMenuForm)

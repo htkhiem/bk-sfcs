@@ -20,5 +20,9 @@
         <file>Main.qml</file>
         <file>MainForm.ui.qml</file>
         <file>Home.qml</file>
+        <file>delegates/SimpleMenuDelegate.qml</file>
+        <file>delegates/SimpleMenuDelegateForm.ui.qml</file>
+        <file>MenuEditorSimpleListView.qml</file>
+        <file>MenuEditorFullListView.qml</file>
     </qresource>
 </RCC>

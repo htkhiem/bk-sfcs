@@ -31,6 +31,7 @@ Rectangle {
 
     Button {
         id: changeImageButton
+        enabled: false
         text: qsTr("Change")
         anchors.right: descField.left
         anchors.rightMargin: 10
@@ -41,6 +42,7 @@ Rectangle {
     }
 
     TextField {
+        enabled: false
         id: nameField
         text: ""
         anchors.right: priceField.left
@@ -54,6 +56,7 @@ Rectangle {
     }
 
     TextField {
+        enabled: false
         id: descField
         anchors.right: priceField.left
         anchors.rightMargin: 10
@@ -67,6 +70,7 @@ Rectangle {
     }
 
     TextField {
+        enabled: false
         id: priceField
         anchors.left: oosCheckbox.left
         anchors.leftMargin: 0
@@ -89,6 +93,7 @@ Rectangle {
     }
 
     DelayButton {
+        enabled: false
         id: removeButton
         x: 1170
         y: 132
@@ -101,6 +106,7 @@ Rectangle {
     }
 
     TextField {
+        enabled: false
         id: estTimeField
         anchors.left: oosCheckbox.left
         anchors.leftMargin: 0
@@ -113,6 +119,7 @@ Rectangle {
     }
 
     ComboBox {
+        enabled: false
         id: categoryBox
         textRole: ""
         anchors.top: estTimeField.bottom
@@ -126,9 +133,7 @@ Rectangle {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.6600000262260437}D{i:2;anchors_x:15;anchors_y:177}D{i:3;anchors_x:304;anchors_y:60}
-D{i:4;anchors_x:304;anchors_y:112}D{i:5;anchors_width:350;anchors_x:968;anchors_y:25}
-D{i:6;anchors_y:56}D{i:8;anchors_width:350;anchors_x:1072;anchors_y:25}D{i:9;anchors_x:1130;anchors_y:106}
+    D{i:0;formeditorZoom:0.6600000262260437}
 }
 ##^##*/
 
