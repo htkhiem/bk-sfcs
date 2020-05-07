@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 
 #include "common.h"
+#include "menu.h"
 
 class Controller : public QObject {
   Q_OBJECT
@@ -14,6 +15,9 @@ public slots:
 signals:
   void finished();
 private:
+
+  QList<QObject*> stall_db;
+
   size_t DisplayStallList();
   void RegisterStall();
   void RemoveStall();

@@ -8,7 +8,8 @@ Rectangle {
     property alias stallMouseArea: stallMouseArea
     property alias stallImage: stallImage
     property alias stallName: stallName
-
+    property alias gradEnd: gradEnd
+    property alias gradStart: gradStart
     Text {
         id: stallName
         x: 85
@@ -33,6 +34,16 @@ Rectangle {
     MouseArea {
         id: stallMouseArea
         anchors.fill: parent
+    }
+    gradient: Gradient {
+        GradientStop {
+            id: gradStart
+            position: 0
+        }
+        GradientStop {
+            id: gradEnd
+            position: 1
+        }
     }
 }
 
