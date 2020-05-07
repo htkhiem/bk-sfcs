@@ -14,8 +14,8 @@ QFood& QFood::operator=(const QFood &){
 QString QFood::getImagePath()const{
     return this->image_path;
 };
-void QFood::setImagePath(QString imagepath){
-  this->imagepath = imagepath;
+void QFood::setImagePath(QString image_path){
+  this->image_path = image_path;
 };
 QString QFood::getName()const{
     return this->name;
@@ -61,7 +61,7 @@ void QFood::read(const QJsonObject &json){
 };
 
 void QFood::write(QJsonObject &json) const{
-     json["image path"] = image_path;
+         json["image path"] = image_path;
          json["name"] = name;
          json["description"] = description;
          json["type"] = type;
