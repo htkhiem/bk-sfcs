@@ -15,15 +15,16 @@ public slots:
 signals:
   void finished();
 private:
-
+  bool logged_in;
   QList<QObject*> stall_db;
+  Stall current_stall;
 
   size_t DisplayStallList();
   void RegisterStall();
-  void RemoveStall();
+  bool RemoveStall();
 
-  void Login();
-  void Logout();
+  int Login();
+  bool Logout();
 
   size_t current_stall_idx;
 
