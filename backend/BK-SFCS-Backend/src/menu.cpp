@@ -45,9 +45,36 @@ QString Stall::getImagePath(){
 void Stall::setImagePath(){
 
 }
-void Stall::read(const QJsonObject &json){
 
-}
 void Stall::write(QJsonObject &json) const{
 
+}
+void Stall::read(const QJsonObject &json){
+    if (json.contains("stall name") && json["stall name"].isString())
+        stallName = json["name"].toString();
+
+    if (json.contains("image path") && json["image path"].isString())
+        imagePath = json["image path"].toString();
+
+
+    if (json.contains("menu") && json["menu"].isArray()) {
+QString Stall::getImagePath(){
+        QJsonArray menuArr = json["menu"].toArray();
+    return this->imagePath;
+        menu.clear();
+        menu.reserve(menuArr.size());
+    for(int i = 0; i < menuArr.size(); ++i){
+        QFood temp;
+           QJsonObject obj = menuArr[i].toObject();
+        if (obj.contains("name") && obj["name"].isString())
+            temp.name = obj["name"].toString();
+        if (obj.contains("description") && obj["description"].isString())
+            temp.description = obj["description"].toString();
+        if (obj.contains("type") && obj["type"].isString())
+            temp.type = obj["category"].toString();
+        if (obj.contains("price") && obj["price"].isDouble())
+            temp.price = obj["price"].toDouble();
+        menu.push_back(temp);
+        }
+    }
 }
