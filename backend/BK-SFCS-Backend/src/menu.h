@@ -26,6 +26,8 @@ public:
   QString stallName;
   QVector<QFood> menu;
   QString imagePath;
+  QString password;
+  QString mgmt_password;
   
   /**
    * Explict operator= overload.

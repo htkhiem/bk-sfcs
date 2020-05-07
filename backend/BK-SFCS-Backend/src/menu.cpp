@@ -48,11 +48,11 @@ void Stall::setImagePath(){
 
 
 void Stall::read(const QJsonObject &json){
-    if (json.contains("stall name") && json["stall name"].isString())
-        stallName = json["name"].toString();
+    if (json.contains("stall_name") && json["stall_name"].isString())
+        stallName = json["stall_name"].toString();
 
-    if (json.contains("image path") && json["image path"].isString())
-        imagePath = json["image path"].toString();
+    if (json.contains("image_path") && json["image_path"].isString())
+        imagePath = json["image_path"].toString();
 
 
     if (json.contains("menu") && json["menu"].isArray()) {
@@ -68,8 +68,8 @@ void Stall::read(const QJsonObject &json){
 }
 
 void Stall::write(QJsonObject &json) const{
-    json["stall name"] = stallName;
-    json["image path"] = imagePath;
+    json["stall_name"] = stallName;
+    json["image_path"] = imagePath;
     QJsonArray menuArr;
     for (const QFood &items : menu) {
         QJsonObject temp;
