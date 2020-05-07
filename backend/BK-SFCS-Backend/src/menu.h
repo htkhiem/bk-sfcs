@@ -50,7 +50,7 @@ public slots:
   QVector<QFood> getMenu() const;
   bool addFood(QFood item);
   bool removeFood(QFood item);
-  string getImagePath();
+  QString getImagePath();
   void setImagePath();
   QString getStallName();
 };

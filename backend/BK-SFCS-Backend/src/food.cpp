@@ -40,3 +40,9 @@ void QFood::setPrice(double price){
     this->price = price;
 };
 
+void QFood::read(const QJsonObject &json){
+
+}
+void QFood::write(QJsonObject &json) const{
+
+}

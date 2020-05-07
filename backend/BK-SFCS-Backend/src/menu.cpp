@@ -38,6 +38,18 @@ QString Stall::getStallName(){
     return this->stallName;
 }
 
+QString Stall::getImagePath(){
+    return this->imagePath;
+}
+void Stall::setImagePath(){
+
+}
+void Stall::read(const QJsonObject &json){
+
+}
+void Stall::write(QJsonObject &json) const{
+
+}
 /*void Stall::read(const QJsonObject &json){
         // Check file validity
         QString stallName;
