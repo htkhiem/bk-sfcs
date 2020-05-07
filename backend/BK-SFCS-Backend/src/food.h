@@ -27,7 +27,7 @@ public:
   QFood &operator=(const QFood &);
   
   /** Basic fields  */
-  QString name, type, description;
+  QString name, type, description,imagepath;
   double price = 0;
   
   /**
@@ -43,6 +43,8 @@ public:
   void write(QJsonObject &json) const;
 public slots:
   /** Basic getters/setters */
+  QString getImagePath()const;
+  void setImagePath(QString imagepath);
   QString getName() const;
   void setName(QString name);
   QString getType() const;

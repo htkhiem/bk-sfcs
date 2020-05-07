@@ -10,7 +10,13 @@ QFood::QFood(const QFood &_food, QObject *parent) :
 }
 QFood& QFood::operator=(const QFood &){
     return *this;
-}
+};
+QString QFood::getImagePath()const{
+    return this->imagepath;
+};
+void QFood::setImagePath(QString imagepath){
+  this->imagepath = imagepath;
+};
 QString QFood::getName()const{
     return this->name;
 };
@@ -42,7 +48,22 @@ void QFood::setPrice(double price){
 
 void QFood::read(const QJsonObject &json){
 
-}
-void QFood::write(QJsonObject &json) const{
+      if (json.contains("image path") && json["image path"].isString())
+          imagepath = json["image path"].toString();
+      if (json.contains("name") && json["name"].isString())
+              name = json["name"].toString();
+      if (json.contains("description") && json["description"].isString())
+              description = json["description"].toString();
+      if (json.contains("type") && json["type"].isString())
+              type = json["category"].toString();
+      if (json.contains("price") && json["price"].isDouble())
+              price = json["price"].toDouble();
+};
 
-}
+void QFood::write(QJsonObject &json) const{
+     json["image path"] = imagepath;
+         json["name"] = name;
+         json["description"] = description;
+         json["type"] = type;
+         json["price"] = price;
+};

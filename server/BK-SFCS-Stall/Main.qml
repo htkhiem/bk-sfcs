@@ -11,4 +11,5 @@ ApplicationWindow {
     Main {
         id: navLayout
         anchors.fill: parent
+    }
 }
