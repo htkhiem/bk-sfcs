@@ -85,6 +85,7 @@ int Controller::Login() {
         if (((Stall*)stall_db[i])->getStallName() == qname) {
             //if (((Stall*)stall_db[i])->getPassword() == qpsw) { // TODO here
                 current_stall = *((Stall*)stall_db[i]);
+                logged_in = true;
                 return 0; // Success
             //}
             //return 1; // Wrong password
