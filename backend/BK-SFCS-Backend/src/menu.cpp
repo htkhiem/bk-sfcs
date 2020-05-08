@@ -42,8 +42,8 @@ QString Stall::getStallName(){
 QString Stall::getImagePath(){
     return this->imagePath;
 }
-void Stall::setImagePath(){
-
+void Stall::setImagePath(const QString imagePath){
+    this->imagePath = imagePath;
 }
 
 
@@ -77,4 +77,20 @@ void Stall::write(QJsonObject &json) const{
         menuArr.append(temp);
     }
     json["menu"] = menuArr;
+}
+
+QString Stall::getPassword(){
+    return this->password;
+}
+
+void Stall::setPassword(QString password){
+    this->password = password;
+}
+
+QString Stall::getMgmtPassword(){
+    return this->mgmt_password;
+}
+
+void Stall::setMgmtPassword(QString mgmt_password){
+    this->mgmt_password = mgmt_password;
 }
