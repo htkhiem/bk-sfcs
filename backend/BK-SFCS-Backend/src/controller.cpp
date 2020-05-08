@@ -120,6 +120,7 @@ void Controller::EditFoodItem() {
 
 void Controller::WriteData() {
     QDir data_cursor = QDir::current();
+    data_cursor.cd("../../");
     data_cursor.mkdir("sfcs_data");
     data_cursor.cd("sfcs_data");
 
