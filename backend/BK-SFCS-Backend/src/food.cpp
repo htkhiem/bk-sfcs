@@ -7,6 +7,7 @@ QFood::QFood(const QFood &_food, QObject *parent) :
     name = _food.name;
     price = _food.price;
     description = _food.description;
+    type = _food.type;
 }
 QFood& QFood::operator=(const QFood &){
     return *this;

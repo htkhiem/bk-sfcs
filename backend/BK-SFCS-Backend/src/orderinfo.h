@@ -5,7 +5,7 @@
 #include "food.h"
 #include "jsonable.h"
 #include <time.h>
-enum class OrderStatus { waiting, processing, finished, rejected };
+enum OrderStatus { waiting, processing, finished, rejected };
 
 
 

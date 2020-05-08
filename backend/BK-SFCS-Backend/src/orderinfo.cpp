@@ -26,6 +26,7 @@ int OrderInfo::getQuantity(){
     return this->quantity;
 }
 void OrderInfo::setQuantity(int quantity){
+  if (quantity <= 0) throw std::invalid_argument( "Quantity must not be negative or zero" );
     this->quantity = quantity;
 }
 
@@ -58,8 +59,63 @@ int OrderInfo::getProcessingTime(){
     return this->time_answered.time().secsTo(this->time_finished.time());
 }
 void OrderInfo::read(const QJsonObject &json){
+  food.read(json);
+  if (json.contains("quantity") && json["quantity"].isDouble())
+    quantity= json["quantity"].toInt();
+
+  if (json.contains("status") && json["status"].isDouble())
+    {
+    int ienum = json["status"].toInt();
+    status = static_cast<OrderStatus>(ienum);
+    }
+
+  if (json.contains("time answered") && json["time answered"].isDouble())
+    {
+      int t_ans = json["time answered"].toInt();
+      time_answered = QDateTime::fromMSecsSinceEpoch(t_ans);
+    }
+
+  if (json.contains("time finished") && json["time finished"].isDouble())
+    {
+      int t_fin = json["time finished"].toInt();
+      time_finished = QDateTime::fromMSecsSinceEpoch(t_fin);
+    }
+
 
 }
 void OrderInfo::write(QJsonObject &json) const{
 
+  QJsonObject temp;
+  food.write(temp);
+  temp["quantity"] = quantity;
+  json["order:"] = temp;
+  json["status"] = status;
+  switch (status)
+    {
+  case OrderStatus::processing :
+      {
+      double t_ans = time_answered.toMSecsSinceEpoch();
+      json["time answered"] = t_ans;
+      break;
+      }
+  case OrderStatus::finished :
+      {
+      double t_fin = time_finished.toMSecsSinceEpoch();
+      json["time finished"] = t_fin;
+      break;
+      }
+  case OrderStatus::rejected :
+      {
+      double t_ans = time_answered.toMSecsSinceEpoch();
+      json["time answered"] = t_ans;
+      double t_fin = time_finished.toMSecsSinceEpoch();
+      json["time finished"] = t_fin;
+      break;
+      }
+  case OrderStatus::waiting :
+      {
+        json["time answered"] = NULL;
+        json["time finished"] = NULL;
+      }
+    }
 }
