@@ -99,6 +99,7 @@ bool Controller::Logout() {
     for (int i = 0; i < stall_db.size(); ++i) {
         if (((Stall*)stall_db[i])->getStallName() == current_stall.getStallName()) {
             *((Stall*)stall_db[i]) = current_stall;
+            logged_in = false;
             break;
         }
     }
