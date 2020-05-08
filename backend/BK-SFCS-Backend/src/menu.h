@@ -27,6 +27,8 @@ public:
   QString stallName;
   QVector<QFood> menu;
   QString imagePath;
+  QString password;
+  QString mgmt_password;
   
   /**
    * Explict operator= overload.
@@ -51,9 +53,14 @@ public slots:
   QVector<QFood> getMenu() const;
   bool addFood(QFood item);
   bool removeFood(QFood item);
-  QString getImagePath() const;
-  void setImagePath();
-  QString getStallName() const;
-  void setStallName(const QString& name);
+
+  QString getImagePath();
+  void setImagePath(const QString imagePath);
+  QString getStallName();
+  QString getPassword();
+  void setPassword(QString password);
+  QString getMgmtPassword();
+  void setMgmtPassword(QString mgmt_password);
+
 };
 #endif // MENU_H

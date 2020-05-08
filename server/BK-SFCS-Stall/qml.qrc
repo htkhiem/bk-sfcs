@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>Window.qml</file>
         <file>HomeForm.ui.qml</file>
         <file>MenuEditorForm.ui.qml</file>
         <file>WaitlistForm.ui.qml</file>

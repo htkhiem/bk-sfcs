@@ -13,7 +13,7 @@ Window {
     }
     function login() { // totally useless login function used just for mockup
         login_window.close();
-        var main_window = Qt.createComponent("main.qml");
+        var main_window = Qt.createComponent("Window.qml");
         var window = main_window.createObject(this);
         window.show();
     }
