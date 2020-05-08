@@ -1,18 +1,47 @@
 import QtQuick 2.4
+import QtGraphicalEffects 1.14
 
-Rectangle {
-    id: stallBg
+Item {
     width: 200
     height: 264
-    color: "#c8c8c8"
     property alias stallMouseArea: stallMouseArea
     property alias stallImage: stallImage
     property alias stallName: stallName
     property alias gradEnd: gradEnd
     property alias gradStart: gradStart
+
+    Rectangle {
+        id: stallBg
+        width: parent.width
+        height: parent.height
+        color: "#c8c8c8"
+        radius: 10
+        border.width: 0
+        gradient: Gradient {
+            GradientStop {
+                id: gradStart
+                position: 0
+            }
+            GradientStop {
+                id: gradEnd
+                position: 1
+            }
+        }
+    }
+    DropShadow {
+        anchors.fill: parent
+        horizontalOffset: 0
+        verticalOffset: 3
+        radius: 8.0
+        samples: 12
+        color: "#80000000"
+        source: stallBg
+        cached: true
+    }
     Text {
         id: stallName
         x: 85
+        verticalAlignment: Text.AlignVCenter
         anchors.horizontalCenterOffset: 1
         anchors.top: stallImage.bottom
         anchors.topMargin: 28
@@ -21,35 +50,39 @@ Rectangle {
         font.bold: false
         font.pixelSize: 14
     }
-
     Image {
         id: stallImage
         x: 0
-        y: 0
-        width: 200
-        height: 200
+        width: 190
+        height: 190
+        anchors.top: parent.top
+        anchors.topMargin: 5
+        anchors.horizontalCenter: parent.horizontalCenter
         source: "qrc:/qtquickplugin/images/template_image.png"
         fillMode: Image.PreserveAspectFit
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            maskSource: Item {
+                width: stallImage.width
+                height: stallImage.height
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: stallImage.width
+                    height: stallImage.height
+                    radius: 5
+                }
+            }
+        }
     }
     MouseArea {
         id: stallMouseArea
         anchors.fill: parent
     }
-    gradient: Gradient {
-        GradientStop {
-            id: gradStart
-            position: 0
-        }
-        GradientStop {
-            id: gradEnd
-            position: 1
-        }
-    }
 }
 
 /*##^##
 Designer {
-    D{i:1;anchors_x:85;anchors_y:24}
+    D{i:0;formeditorZoom:2}
 }
 ##^##*/
 

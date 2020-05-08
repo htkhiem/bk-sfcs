@@ -8,6 +8,10 @@ Page {
     property alias stallGrid: stallGrid
 
     title: qsTr("Select a stall")
+    Rectangle {
+        anchors.fill: parent
+        color: "#ffffd3"
+    }
 
     GridView {
         id: stallGrid
