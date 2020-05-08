@@ -1,0 +1,24 @@
+{
+    "image path": "",
+    "menu": [
+        {
+            "description": "deep fried chicken wings/thighs",
+            "name": "ga_chien",
+            "price": 20000,
+            "type": ""
+        },
+        {
+            "description": "ga chien + com xao voi sot",
+            "name": "com_ga",
+            "price": 25000,
+            "type": ""
+        },
+        {
+            "description": "my xao sot voi xuc xich",
+            "name": "my_xao",
+            "price": 20000,
+            "type": ""
+        }
+    ],
+    "stall name": "com_ga_P77"
+}

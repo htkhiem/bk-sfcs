@@ -1,0 +1,12 @@
+{
+    "image path": "",
+    "menu": [
+        {
+            "description": "bun cha truyen thong Ha Noi",
+            "name": "bun_cha",
+            "price": 25000,
+            "type": ""
+        }
+    ],
+    "stall name": "bun_cha_obama"
+}

@@ -8,6 +8,8 @@ class Controller : public QObject {
   Q_OBJECT
 public:
   explicit Controller(QObject *parent = nullptr);
+    void WriteData();
+    void RegisterStall();
 public slots:
   
   /** Main program loop Emits finished() after leaving loop. */
@@ -15,15 +17,16 @@ public slots:
 signals:
   void finished();
 private:
-
+  bool logged_in;
   QList<QObject*> stall_db;
+  Stall current_stall;
 
   size_t DisplayStallList();
-  void RegisterStall();
-  void RemoveStall();
+  //void RegisterStall();
+  bool RemoveStall();
 
-  void Login();
-  void Logout();
+  int Login();
+  bool Logout();
 
   size_t current_stall_idx;
 
@@ -31,7 +34,7 @@ private:
   void RemoveFoodItem();
   void EditFoodItem();
 
-  void WriteData();
+  //void WriteData();
   void ReadData();
 };
 

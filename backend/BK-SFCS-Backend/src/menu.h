@@ -7,7 +7,8 @@
 
 class Stall : public Jsonable {
   Q_OBJECT
-  Q_PROPERTY(QString stallName READ getStallName)
+  Q_PROPERTY(QString stallName READ getStallName WRITE setStallName)
+
 public:
   /**
    * Basic constructor.
@@ -52,6 +53,7 @@ public slots:
   QVector<QFood> getMenu() const;
   bool addFood(QFood item);
   bool removeFood(QFood item);
+
   QString getImagePath();
   void setImagePath(const QString imagePath);
   QString getStallName();
@@ -59,5 +61,6 @@ public slots:
   void setPassword(QString password);
   QString getMgmtPassword();
   void setMgmtPassword(QString mgmt_password);
+
 };
 #endif // MENU_H

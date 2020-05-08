@@ -34,12 +34,17 @@ for (int i = 0; i < menu.size();i++){
 return 0;
 };
 
-QString Stall::getStallName(){
+QString Stall::getStallName() const {
     return this->stallName;
 }
 
+void Stall::setStallName(const QString& name) {
+    if (name.isEmpty()) throw runtime_error("Stall name cannot be empty.");
+    stallName = name;
+}
 
-QString Stall::getImagePath(){
+
+QString Stall::getImagePath() const {
     return this->imagePath;
 }
 void Stall::setImagePath(const QString imagePath){

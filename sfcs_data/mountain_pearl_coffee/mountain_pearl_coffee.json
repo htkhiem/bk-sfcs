@@ -1,0 +1,24 @@
+{
+    "image path": "",
+    "menu": [
+        {
+            "description": "ca phe phin",
+            "name": "coffee",
+            "price": 15000,
+            "type": ""
+        },
+        {
+            "description": "da bao voi syrup",
+            "name": "shaved_ice",
+            "price": 15000,
+            "type": ""
+        },
+        {
+            "description": "nuoc uong co ga",
+            "name": "soda",
+            "price": 10000,
+            "type": ""
+        }
+    ],
+    "stall name": "mountain_pearl_coffee"
+}

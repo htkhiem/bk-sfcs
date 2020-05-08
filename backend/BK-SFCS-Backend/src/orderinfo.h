@@ -15,6 +15,8 @@ public:
 
 class OrderInfo : public Jsonable {
   Q_OBJECT
+    Q_PROPERTY(int quantity READ getQuantity WRITE setQuantity)
+
   size_t timestamp; // time_t?
   OrderStatus status;
   QFood food;
