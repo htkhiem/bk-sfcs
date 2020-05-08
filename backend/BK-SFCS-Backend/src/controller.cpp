@@ -31,9 +31,29 @@ void Controller::RegisterStall() {
             return;
         }
     }
+
     stall->setStallName(QString::fromStdString(buf));
     // TODO: passwords
-
+    cout<<"Add food?(Y/n): ";
+    getline(cin, buf);
+    while(buf=="Y"){
+          QFood food;
+          cout<<"Food name:";
+          getline(cin,buf);
+          food.setName(QString::fromStdString(buf));
+          cout<<"Food description:";
+          getline(cin,buf);
+          food.setDescription(QString::fromStdString(buf));
+          cout<<"Food type:";
+          getline(cin,buf);
+          food.setType(QString::fromStdString(buf));
+          cout<<"Food price:";
+          getline(cin,buf);
+          food.setPrice(stod(buf));
+          stall->addFood(food);
+          cout<<"Would you like to add another item?(Y/n): ";
+          getline(cin, buf);
+    }
     stall_db.append(stall);
     cout << "Stall created.\n";
 }

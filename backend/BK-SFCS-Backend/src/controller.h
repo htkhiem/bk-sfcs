@@ -8,6 +8,8 @@ class Controller : public QObject {
   Q_OBJECT
 public:
   explicit Controller(QObject *parent = nullptr);
+    void WriteData();
+    void RegisterStall();
 public slots:
   
   /** Main program loop Emits finished() after leaving loop. */
@@ -20,7 +22,7 @@ private:
   Stall current_stall;
 
   size_t DisplayStallList();
-  void RegisterStall();
+  //void RegisterStall();
   bool RemoveStall();
 
   int Login();
@@ -32,7 +34,7 @@ private:
   void RemoveFoodItem();
   void EditFoodItem();
 
-  void WriteData();
+  //void WriteData();
   void ReadData();
 };
 

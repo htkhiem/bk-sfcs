@@ -5,8 +5,10 @@
 class QFood : public Jsonable {
 
   Q_OBJECT
-  Q_PROPERTY(QString name READ getName)
-  Q_PROPERTY(QString type READ getType)
+  Q_PROPERTY(QString name READ getName WRITE setName)
+  Q_PROPERTY(QString type READ getType WRITE setType)
+  Q_PROPERTY(QString description READ getDescription WRITE setDescription)
+  Q_PROPERTY(double price READ getPrice WRITE setPrice)
 public:
   
   /**
