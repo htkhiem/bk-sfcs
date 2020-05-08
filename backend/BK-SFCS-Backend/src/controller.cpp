@@ -148,6 +148,7 @@ void Controller::WriteData() {
 
 void Controller::ReadData() {
     QDir data_cursor = QDir::current();
+    data_cursor.cd("../../");
     if (!data_cursor.cd("sfcs_data")) {
         throw runtime_error("Data folder not found. A blank folder will be created after this run.");
     }
