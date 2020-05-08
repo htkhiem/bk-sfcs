@@ -42,17 +42,17 @@ QString Stall::getStallName(){
 QString Stall::getImagePath(){
     return this->imagePath;
 }
-void Stall::setImagePath(){
-
+void Stall::setImagePath(const QString imagePath){
+    this->imagePath = imagePath;
 }
 
 
 void Stall::read(const QJsonObject &json){
-    if (json.contains("stall name") && json["stall name"].isString())
-        stallName = json["name"].toString();
+    if (json.contains("stall_name") && json["stall_name"].isString())
+        stallName = json["stall_name"].toString();
 
-    if (json.contains("image path") && json["image path"].isString())
-        imagePath = json["image path"].toString();
+    if (json.contains("image_path") && json["image_path"].isString())
+        imagePath = json["image_path"].toString();
 
 
     if (json.contains("menu") && json["menu"].isArray()) {
@@ -61,31 +61,36 @@ void Stall::read(const QJsonObject &json){
         menu.reserve(menuArr.size());
     for(int i = 0; i < menuArr.size(); ++i){
         QFood temp;
-           QJsonObject obj = menuArr[i].toObject();
-        if (obj.contains("name") && obj["name"].isString())
-            temp.name = obj["name"].toString();
-        if (obj.contains("description") && obj["description"].isString())
-            temp.description = obj["description"].toString();
-        if (obj.contains("type") && obj["type"].isString())
-            temp.type = obj["category"].toString();
-        if (obj.contains("price") && obj["price"].isDouble())
-            temp.price = obj["price"].toDouble();
+        temp.read(json);
         menu.push_back(temp);
         }
     }
 }
 
 void Stall::write(QJsonObject &json) const{
-    json["stall name"] = stallName;
-    json["image path"] = imagePath;
+    json["stall_name"] = stallName;
+    json["image_path"] = imagePath;
     QJsonArray menuArr;
     for (const QFood &items : menu) {
         QJsonObject temp;
-        temp["name"] = items.name;
-        temp["description"] = items.description;
-        temp["type"] = items.type;
-        temp["price"] = items.price;
+        items.write(temp);
         menuArr.append(temp);
     }
     json["menu"] = menuArr;
+}
+
+QString Stall::getPassword(){
+    return this->password;
+}
+
+void Stall::setPassword(QString password){
+    this->password = password;
+}
+
+QString Stall::getMgmtPassword(){
+    return this->mgmt_password;
+}
+
+void Stall::setMgmtPassword(QString mgmt_password){
+    this->mgmt_password = mgmt_password;
 }
