@@ -11,6 +11,8 @@ enum OrderStatus { waiting, processing, finished, rejected };
 
 class OrderInfo : public Jsonable {
   Q_OBJECT
+  Q_PROPERTY(int quantity READ getQuantity WRITE setQuantity)
+    
   OrderStatus status;
   QFood food;
   int quantity;
