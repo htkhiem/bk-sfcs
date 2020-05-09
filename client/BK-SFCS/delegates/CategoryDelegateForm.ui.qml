@@ -1,8 +1,19 @@
-import QtQuick 2.4
+import QtQuick 2.7
 import QtQuick.Controls 2.12
 
 Button {
+    id: button
+    contentItem: Text {
+        text: button.text
+        font: button.font
+        color: "#FFFFFFFF"
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
+    }
     height: 70
+    font.family: "Arial"
+    font.pointSize: 15
     width: 200
     property alias gradEnd: gradEnd
     property alias gradStart: gradStart
