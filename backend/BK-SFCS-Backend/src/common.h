@@ -17,6 +17,10 @@
 
 #define DATEFORMAT "%F %X"
 
+// QML engines
+#include <QQmlApplicationEngine>
+#include <QGuiApplication>
+
 // Qt JSON
 #include <QJsonDocument>
 #include <QJsonObject>

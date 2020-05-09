@@ -1,4 +1,5 @@
-QT -= gui
+# QT -= gui
+QT += qml
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -16,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
+        src/abstractcontroller.cpp \
         src/controller.cpp \
         src/food.cpp \
         src/jsonable.cpp \
@@ -31,6 +33,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    src/abstractcontroller.h \
     src/common.h \
     src/controller.h \
     src/food.h \
