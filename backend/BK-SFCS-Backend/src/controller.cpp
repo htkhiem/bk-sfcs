@@ -2,18 +2,55 @@
 
 void Controller::run() {
     cout << "BK-SFCS ADMINISTRATIVE CONTROL PANEL\n";
+    while (true) {
+        cout << "1. Add stall\n2. Remove stall\n3. List stalls\n4. Login\n5. Logout\n6. Add item\n7. Remove item\n8. List items\n9. Exit\n> ";
+        string command;
+        getline(cin, command);
+        int idx = strtol(command.c_str(), NULL, 10);
+        switch (idx) {
+        case 1:
+            RegisterStall();
+            break;
+        case 2:
+            RemoveStall();
+            break;
+        case 3:
+            DisplayStallList();
+            break;
+        case 4:
+            Login();
+            break;
+        case 5:
+            Logout();
+            break;
+        case 6:
+            AddFoodItem();
+            break;
+        case 7:
+            RemoveFoodItem();
+            break;
+        case 8:
+            cout << "unimplemented\n";
+            break;
+        case 9:
+            return;
+        default:
+            cout << "Invalid input\n";
+        }
+    }
     emit finished();
 }
 
 Controller::Controller(QObject *parent) : QObject(parent), logged_in(false)
 {
+    ReadData();
 }
 
 size_t Controller::DisplayStallList() {
     for (auto ptr : stall_db) {
         const Stall& stall = *((Stall*)ptr);
         cout << "\nName: " << stall.getStallName().toStdString() << '\n';
-        cout << "\nMenu size: " << stall.getMenu().size() << '\n';
+        cout << "Menu size: " << stall.getMenu()->size() << '\n';
     }
     return stall_db.size();
 }
@@ -83,12 +120,12 @@ int Controller::Login() {
     QString qpsw = QString::fromStdString(psw);
     for (int i = 0; i < stall_db.size(); ++i) {
         if (((Stall*)stall_db[i])->getStallName() == qname) {
-            //if (((Stall*)stall_db[i])->getPassword() == qpsw) { // TODO here
+            if (((Stall*)stall_db[i])->getPassword() == qpsw) {
                 current_stall = *((Stall*)stall_db[i]);
                 logged_in = true;
                 return 0; // Success
-            //}
-            //return 1; // Wrong password
+            }
+            return 1; // Wrong password
         }
     }
     return -1; // Stall not found
@@ -121,8 +158,7 @@ void Controller::EditFoodItem() {
 }
 
 void Controller::WriteData() {
-    QDir data_cursor = QDir::current();
-    data_cursor.cd("../../");
+    QDir data_cursor = QDir::home();
     data_cursor.mkdir("sfcs_data");
     data_cursor.cd("sfcs_data");
 
@@ -144,13 +180,12 @@ void Controller::WriteData() {
         stall_data_file.close();
         data_cursor.cdUp();
     }
-    // TODO: logging
     data_cursor.cdUp();
 }
 
 void Controller::ReadData() {
-    QDir data_cursor = QDir::current();
-    data_cursor.cd("../../");
+    QDir data_cursor = QDir::home();
+    cout << "Data path: " << data_cursor.absolutePath().toStdString() << '\n';
     if (!data_cursor.cd("sfcs_data")) {
         throw runtime_error("Data folder not found. A blank folder will be created after this run.");
     }
@@ -170,7 +205,7 @@ void Controller::ReadData() {
          stall_db.append(stall);
          stall_data_file.close();
          data_cursor.cdUp();
+         cout << "Loaded stall " << stall->getStallName().toStdString() << '\n';
     }
-    // TODO: Load logs
     data_cursor.cdUp();
 }

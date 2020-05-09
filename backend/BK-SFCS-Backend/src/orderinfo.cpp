@@ -71,7 +71,7 @@ void OrderInfo::read(const QJsonObject &json){
 
   if (json.contains("time received") && json["time received"].isDouble())
     {
-      if (status = OrderStatus::waiting) time_received = QDateTime::currentDateTime();
+      if (status == OrderStatus::waiting) time_received = QDateTime::currentDateTime();
       else
         {
           int t_rcv = json["time received"].toInt();

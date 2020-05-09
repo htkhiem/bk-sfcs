@@ -8,5 +8,5 @@ int main(int argc, char *argv[])
     Controller *controller = new Controller(&a);
     QObject::connect(controller, SIGNAL(finished()), &a, SLOT(quit()));
     controller->run();
-    return a.exec();
+    return 0;
 }
