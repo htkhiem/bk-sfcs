@@ -21,6 +21,9 @@ Page {
         TabButton {
             text: qsTr("Menu")
         }
+        TabButton {
+            text: qsTr("Stall")
+        }
     }
     StackLayout {
         id: mainLayout
@@ -52,13 +55,20 @@ Page {
                 z: 0
             }
         }
+        Item {
+            id: stallEditor
+            StallEditor {
+                anchors.fill: parent
+                z: 0
+            }
+        }
     }
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.6600000262260437}D{i:7;anchors_height:720;anchors_width:1280}
-D{i:5;anchors_height:720;anchors_width:640}
+    D{i:0;formeditorZoom:0.6600000262260437}D{i:8;anchors_height:720;anchors_width:1280}
+D{i:6;anchors_height:720;anchors_width:640}
 }
 ##^##*/
 

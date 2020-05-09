@@ -24,5 +24,7 @@
         <file>delegates/SimpleMenuDelegateForm.ui.qml</file>
         <file>MenuEditorSimpleListView.qml</file>
         <file>MenuEditorFullListView.qml</file>
+        <file>StallEditor.qml</file>
+        <file>StallEditorForm.ui.qml</file>
     </qresource>
 </RCC>
