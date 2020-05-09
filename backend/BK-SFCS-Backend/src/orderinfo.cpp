@@ -69,6 +69,17 @@ void OrderInfo::read(const QJsonObject &json){
     status = static_cast<OrderStatus>(ienum);
     }
 
+  if (json.contains("time received") && json["time received"].isDouble())
+    {
+      if (status = OrderStatus::waiting) time_received = QDateTime::currentDateTime();
+      else
+        {
+          int t_rcv = json["time received"].toInt();
+          time_received = QDateTime::fromMSecsSinceEpoch(t_rcv);
+        }
+    }
+
+
   if (json.contains("time answered") && json["time answered"].isDouble())
     {
       int t_ans = json["time answered"].toInt();
@@ -90,6 +101,7 @@ void OrderInfo::write(QJsonObject &json) const{
   temp["quantity"] = quantity;
   json["order:"] = temp;
   json["status"] = status;
+  json["time received"] = time_received.toMSecsSinceEpoch();
   switch (status)
     {
   case OrderStatus::processing :
@@ -114,8 +126,8 @@ void OrderInfo::write(QJsonObject &json) const{
       }
   case OrderStatus::waiting :
       {
-        json["time answered"] = NULL;
-        json["time finished"] = NULL;
+        json["time answered"] = 0;
+        json["time finished"] = 0;
       }
     }
 }
