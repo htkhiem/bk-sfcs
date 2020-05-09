@@ -15,13 +15,26 @@ void AbstractController::populateStallViewModel() {
 
 }
 QString AbstractController::getCurrentStallName() {
-
+    return current_stall.getStallName();
 }
 QString AbstractController::getCurrentStallImagePath() {
-
+    return current_stall.getImagePath();
 }
 bool AbstractController::setCurrentStall(const QString& name) {
-
+    for (auto sptr : stall_view_model) {
+        const Stall& stall = *((Stall *) sptr);
+        if (stall.getStallName() == name) {
+            current_stall = stall;
+            return true;
+        }
+    }
+    return false;
+}
+bool AbstractController::setCurrentStall(Stall* const sptr) {
+    if (!sptr)
+        return false;
+    current_stall = *(sptr);
+    return true;
 }
 void AbstractController::loadData() {
     QDir data_cursor = QDir::current();

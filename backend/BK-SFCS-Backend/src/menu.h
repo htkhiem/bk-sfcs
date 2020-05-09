@@ -54,12 +54,12 @@ public slots:
   bool addFood(QFood item);
   bool removeFood(QFood item);
 
-  QString getImagePath();
+  QString getImagePath() const;
   void setImagePath(const QString imagePath);
-  QString getStallName();
-  QString getPassword();
+  QString getStallName() const;
+  QString getPassword() const;
   void setPassword(QString password);
-  QString getMgmtPassword();
+  QString getMgmtPassword() const;
   void setMgmtPassword(QString mgmt_password);
 
 };

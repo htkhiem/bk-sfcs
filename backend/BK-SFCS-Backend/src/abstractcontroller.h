@@ -26,6 +26,7 @@ public slots:
     QString getCurrentStallName();
     QString getCurrentStallImagePath();
     bool setCurrentStall(const QString& name);
+    bool setCurrentStall(Stall* const sptr);
 signals:
 };
 
