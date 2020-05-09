@@ -50,16 +50,17 @@ public:
   void write(QJsonObject &json) const;
 public slots:
   /** Basic getters/setters */
-  QVector<QFood> getMenu() const;
+  const QVector<QFood>* getMenu() const;
   bool addFood(QFood item);
   bool removeFood(QFood item);
 
-  QString getImagePath();
+  QString getImagePath() const;
   void setImagePath(const QString imagePath);
-  QString getStallName();
-  QString getPassword();
+  QString getStallName() const;
+  void setStallName(const QString& name);
+  QString getPassword() const;
   void setPassword(QString password);
-  QString getMgmtPassword();
+  QString getMgmtPassword() const;
   void setMgmtPassword(QString mgmt_password);
 
 };
