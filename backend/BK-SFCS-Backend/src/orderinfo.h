@@ -4,25 +4,21 @@
 #include "common.h"
 #include "food.h"
 #include "jsonable.h"
-#include <chrono>
-enum class OrderStatus { waiting, processing, finished, rejected };
+#include <time.h>
+enum OrderStatus { waiting, processing, finished, rejected };
 
-class Timer{
-public:
-    std::chrono::high_resolution_clock::time_point start;
-    std::chrono::duration<double> duration;
-};
+
 
 class OrderInfo : public Jsonable {
   Q_OBJECT
-    Q_PROPERTY(int quantity READ getQuantity WRITE setQuantity)
-
-  size_t timestamp; // time_t?
+  Q_PROPERTY(int quantity READ getQuantity WRITE setQuantity)
+    
   OrderStatus status;
   QFood food;
   int quantity;
-  Timer received;
-  Timer accepted;
+  QDateTime time_received;
+  QDateTime time_answered;
+  QDateTime time_finished;
 public:
   
   /**
@@ -32,17 +28,19 @@ public:
   OrderInfo(QObject *parent = nullptr);
 
   /** Basic getters/setters */
-  void setReceived();
-  void getReceived();
-  void setAccepted();
-  void getAccepted();
-  OrderStatus checkStatus();
+  OrderStatus getStatus();
   void setStatus(OrderStatus _status);
-  size_t getTimeStamp();
-  void setTimeStamp(size_t _time);
   double getTotal();
   int getQuantity();
   void setQuantity(int quantity);
+  QDateTime getReceived();
+  void setReceived();
+  QDateTime getAnswered();
+  void setAnswered();
+  QDateTime getFinished();
+  void setFinished();
+  int getResponseTime();
+  int getProcessingTime();
   /**
    * Read from a JSON object from disk.
    * @param json JSON object to read from.
