@@ -16,8 +16,8 @@ Jsonable(parent)
 Stall& Stall::operator=(const Stall &){
     return *this;
 }
-QVector<QFood> Stall::getMenu() const{   //Important for Display food
-    return menu;
+const QVector<QFood>* Stall::getMenu() const{   //Important for Display food
+    return &menu;
 }
 bool Stall::addFood(QFood item){   //Menu editing
 menu.push_back(item);
@@ -39,7 +39,7 @@ QString Stall::getStallName() const {
 }
 
 void Stall::setStallName(const QString& name) {
-    if (name.isEmpty()) throw runtime_error("Stall name cannot be empty.");
+    if (name.isEmpty()) throw invalid_argument("Stall name cannot be empty.");
     stallName = name;
 }
 
@@ -72,7 +72,7 @@ void Stall::read(const QJsonObject &json){
     }
 }
 
-void Stall::write(QJsonObject &json) const{
+void Stall::write(QJsonObject &json) const {
     json["stall_name"] = stallName;
     json["image_path"] = imagePath;
     QJsonArray menuArr;
@@ -84,7 +84,7 @@ void Stall::write(QJsonObject &json) const{
     json["menu"] = menuArr;
 }
 
-QString Stall::getPassword(){
+QString Stall::getPassword() const {
     return this->password;
 }
 
@@ -92,7 +92,7 @@ void Stall::setPassword(QString password){
     this->password = password;
 }
 
-QString Stall::getMgmtPassword(){
+QString Stall::getMgmtPassword() const {
     return this->mgmt_password;
 }
 

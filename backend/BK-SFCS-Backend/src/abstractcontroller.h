@@ -3,15 +3,19 @@
 
 #include <QObject>
 #include "menu.h"
+#include "category.h"
 
 class AbstractController : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString currentStallName READ getCurrentStallName)
+    Q_PROPERTY(QString currentSTallImagePath READ getCurrentStallImagePath)
     QQmlApplicationEngine* p_engine; // for connecting backend to the thing
     Stall current_stall;
 
     void loadData();
     void saveData();
+    bool categoryIsVisible(const QString& cat_name) const;
 public:
     explicit AbstractController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
 
@@ -22,7 +26,7 @@ public:
 public slots:
     void populateCategoryViewModel();
     void populateMenuViewModel();
-    void populateStallViewModel();
+    void repopulateStallViewModel();
     QString getCurrentStallName();
     QString getCurrentStallImagePath();
     bool setCurrentStall(const QString& name);

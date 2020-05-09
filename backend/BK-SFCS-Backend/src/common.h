@@ -21,6 +21,8 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
 #include <QColor>
+#include <QQmlContext>
+#include <QVector>
 
 // Qt C++ JSON
 #include <QJsonDocument>

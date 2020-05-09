@@ -1,18 +1,45 @@
 #include "abstractcontroller.h"
-
+#include "category.h"
+#include "food.h"
 AbstractController::AbstractController(QQmlApplicationEngine *eng, QObject *parent)
     : QObject(parent), p_engine(eng)
 {
     // TODO: Load data right here
 }
+bool AbstractController::categoryIsVisible(const QString& cat_name) const {
+    for (auto pcat : category_view_model) {
+        Category& cat = *((Category *) pcat);
+        if (cat_name == cat.getName())
+            return cat.isVisible();
+    }
+    return false; // Category not found
+}
 void AbstractController::populateCategoryViewModel() {
+    category_view_model.clear();
+    // Run only once on startup
+    category_view_model.append(new Category("Main dishes", QChar(127837), "#EF5350", "#EF5350"));
+    category_view_model.append(new Category("Side dishes", QChar(129367), "#9CCC65", "#9CCC65"));
+    category_view_model.append(new Category("Drinks", QChar(129380), "#03A9F4", "#03A9F4"));
+    category_view_model.append(new Category("Desserts", QChar(127848), "#F48FB1", "#F48FB1"));
+    category_view_model.append(new Category("Specials", QChar(127841), "#FFFF00", "#FFFF00"));
 
+    p_engine->rootContext()->setContextProperty("categoryViewModel", QVariant::fromValue(category_view_model));
 }
 void AbstractController::populateMenuViewModel() {
+    menu_view_model.clear(); // do not deallocate pointers - they're not dynamically allocated
+    const QVector<QFood>& temp = *(current_stall.getMenu());
+    for (auto qfood : temp) {
+        if (categoryIsVisible(qfood.getType()))
+            menu_view_model.append(&qfood);
+    }
 
+    p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
 }
-void AbstractController::populateStallViewModel() {
-
+void AbstractController::repopulateStallViewModel() {
+    // deallocate, since we'll freshly load from JSON
+    for (auto p : stall_view_model) delete p;
+    stall_view_model.clear();
+    loadData();
 }
 QString AbstractController::getCurrentStallName() {
     return current_stall.getStallName();
@@ -59,7 +86,6 @@ void AbstractController::loadData() {
          stall_data_file.close();
          data_cursor.cdUp();
     }
-    // TODO: Load logs
     data_cursor.cdUp();
 }
 void AbstractController::saveData() {
@@ -86,6 +112,5 @@ void AbstractController::saveData() {
         stall_data_file.close();
         data_cursor.cdUp();
     }
-    // TODO: logging
     data_cursor.cdUp();
 }
