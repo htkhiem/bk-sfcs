@@ -17,7 +17,7 @@ public:
       void populateMgmtGraphs();
       bool loginAsManager(const QString& psw);
       void addFood(QFood * food);
-      void editFood(QFood *food);
+      void editFood(QFood * food);
       bool removeFood(const QString& name);
 signals:
 
