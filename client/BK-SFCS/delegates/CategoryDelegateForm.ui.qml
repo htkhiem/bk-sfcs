@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.12
+import QtGraphicalEffects 1.14
 
 Button {
     id: button
@@ -20,18 +21,31 @@ Button {
     checkable: true
     checked: true
 
-    background: Rectangle {
-        anchors.fill: parent
-        radius: 10
-        gradient: Gradient {
-            GradientStop {
-                id: gradStart
-                position: 0
+    background: Item {
+        Rectangle {
+            id: buttonBg
+            anchors.fill: parent
+            radius: 10
+            gradient: Gradient {
+                GradientStop {
+                    id: gradStart
+                    position: 0
+                }
+                GradientStop {
+                    id: gradEnd
+                    position: 1
+                }
             }
-            GradientStop {
-                id: gradEnd
-                position: 1
-            }
+        }
+        DropShadow {
+            anchors.fill: parent
+            horizontalOffset: 0
+            verticalOffset: 3
+            radius: 8.0
+            samples: 12
+            color: "#80000000"
+            source: buttonBg
+            cached: true
         }
     }
 }
