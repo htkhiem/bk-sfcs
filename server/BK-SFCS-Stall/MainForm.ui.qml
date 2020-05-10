@@ -14,54 +14,30 @@ Page {
         currentIndex: 1
         TabButton {
             text: qsTr("Sales report")
+            onClicked: tabLoader.source = "Home.qml"
         }
         TabButton {
             text: qsTr("Waitlist")
+            onClicked: tabLoader.source = "WaitList.qml"
         }
         TabButton {
             text: qsTr("Menu")
+            onClicked: tabLoader.source = "MenuEditor.qml"
         }
         TabButton {
             text: qsTr("Stall")
+            onClicked: tabLoader.source = "StallEditor.qml"
         }
     }
-    StackLayout {
-        id: mainLayout
+    Loader {
+        id: tabLoader
         width: 1280
         anchors.top: navBar.bottom
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.topMargin: 0
-        currentIndex: navBar.currentIndex
-        Item {
-            id: homeForm
-            HomeForm {
-                anchors.fill: parent
-                z: 0
-            }
-        }
-        Item {
-            id: waitListForm
-            WaitList {
-                anchors.fill: parent
-                z: 0
-            }
-        }
-        Item {
-            id: menuEditor
-            MenuEditor {
-                anchors.fill: parent
-                z: 0
-            }
-        }
-        Item {
-            id: stallEditor
-            StallEditor {
-                anchors.fill: parent
-                z: 0
-            }
-        }
+        source: "WaitList.qml"
     }
 }
 
