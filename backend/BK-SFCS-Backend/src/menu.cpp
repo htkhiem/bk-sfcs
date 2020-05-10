@@ -13,17 +13,20 @@ Jsonable(parent)
     stallName = _stall.stallName;
 }
 
-Stall& Stall::operator=(const Stall &){
+Stall& Stall::operator=(const Stall &) {
     return *this;
 }
-const QVector<QFood>* Stall::getMenu() const{   //Important for Display food
+const QVector<QFood>* Stall::getMenu() const {   //Important for Display food
+    return &menu;
+}
+QVector<QFood>* Stall::getEditableMenu() {   //Important for Display food
     return &menu;
 }
 bool Stall::addFood(QFood item){   //Menu editing
 menu.push_back(item);
 return 1;
 }
-bool Stall::removeFood(QFood item){ //Menu editing
+bool Stall::removeFood(QFood item) { //Menu editing
 QString name = item.getName();
 for (int i = 0; i < menu.size();i++){
     if (menu[i].getName() == name){

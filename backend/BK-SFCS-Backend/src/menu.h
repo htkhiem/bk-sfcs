@@ -51,6 +51,7 @@ public:
 public slots:
   /** Basic getters/setters */
   const QVector<QFood>* getMenu() const;
+  QVector<QFood>* getEditableMenu();
   bool addFood(QFood item);
   bool removeFood(QFood item);
 
