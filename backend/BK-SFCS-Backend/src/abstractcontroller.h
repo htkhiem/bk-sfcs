@@ -11,8 +11,8 @@ class AbstractController : public QObject
     Q_PROPERTY(QString currentStallName READ getCurrentStallName)
     Q_PROPERTY(QString currentSTallImagePath READ getCurrentStallImagePath)
     QQmlApplicationEngine* p_engine; // for connecting backend to the thing
+protected:
     Stall current_stall;
-
     void loadData();
     void saveData();
     bool categoryIsVisible(const QString& cat_name) const;
