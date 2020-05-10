@@ -33,6 +33,7 @@ void Controller::run() {
             cout << "unimplemented\n";
             break;
         case 9:
+            WriteData();
             return;
         default:
             cout << "Invalid input\n";
@@ -68,9 +69,11 @@ void Controller::RegisterStall() {
             return;
         }
     }
-
     stall->setStallName(QString::fromStdString(buf));
     // TODO: passwords
+    cout << "Password: ";
+    getline(cin, buf);
+    stall->setPassword(QString::fromStdString(buf));
     cout<<"Add food?(Y/n): ";
     getline(cin, buf);
     while(buf=="Y"){

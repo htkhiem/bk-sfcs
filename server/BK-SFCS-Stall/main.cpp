@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include "controller/stallmgmtcontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,6 +9,10 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    StallMgmtController backend(&engine);
+    engine.rootContext()->setContextProperty("backend", &backend);
+
     const QUrl url(QStringLiteral("qrc:/Login.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {

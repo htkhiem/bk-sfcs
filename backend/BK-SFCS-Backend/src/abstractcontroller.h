@@ -29,7 +29,7 @@ public slots:
     void repopulateStallViewModel();
     QString getCurrentStallName();
     QString getCurrentStallImagePath();
-    bool setCurrentStall(const QString& name);
+    bool setCurrentStall(int idx);
     bool setCurrentStall(Stall* const sptr);
 signals:
 };
