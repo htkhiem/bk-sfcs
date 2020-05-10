@@ -1,0 +1,21 @@
+{
+  "image_path": "",
+  "menu": [
+    {
+      "description": "Deep-fried chicken",
+      "image path": "",
+      "name": "Ga ran",
+      "price": 20000,
+      "type": "appetizer"
+    },
+    {
+      "description": "Fried rice with chicken stock and a side of chicken wings/thighs",
+      "image path": "",
+      "name": "Com ga xoi mo",
+      "price": 35000,
+      "type": "main dish"
+    }
+  ],
+  "stall_name": "Com ga P77",
+  "stall_password": "P77"
+}

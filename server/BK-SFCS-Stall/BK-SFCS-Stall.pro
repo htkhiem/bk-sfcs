@@ -15,7 +15,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         controller/stallmgmtcontroller.cpp \
-        main.cpp
+        main.cpp \
+        ../../backend/BK-SFCS-Backend/src/abstractcontroller.cpp \
+        ../../backend/BK-SFCS-Backend/src/food.cpp \
+        ../../backend/BK-SFCS-Backend/src/menu.cpp \
+        ../../backend/BK-SFCS-Backend/src/jsonable.cpp \
+        ../../backend/BK-SFCS-Backend/src/category.cpp \
+
+
 
 RESOURCES += qml.qrc
 
@@ -35,5 +42,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     controller/stallmgmtcontroller.h \
+    ../../backend/BK-SFCS-Backend/src/abstractcontroller.h \
+        ../../backend/BK-SFCS-Backend/src/food.h \
+        ../../backend/BK-SFCS-Backend/src/menu.h \
+        ../../backend/BK-SFCS-Backend/src/jsonable.h \
+        ../../backend/BK-SFCS-Backend/src/category.h \
+
+
+
 DISTFILES += \
     ../../backend/stall.json

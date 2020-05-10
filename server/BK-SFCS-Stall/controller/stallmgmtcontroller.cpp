@@ -6,13 +6,16 @@ StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *pa
   loadData(); // Loads stall data and initialise the stall view model.
 }
 
-bool StallMgmtController::login(int idx, const QString& psw) {
-
+bool StallMgmtController::login(int idx) {
+    if(idx >= stall_view_model.size()) return false;
+    return this->setCurrentStall(idx);
 }
 bool StallMgmtController::logout() {
-
+    this->current_stall =NULL;
+    return true;
 }
 void StallMgmtController::updateWaitlistViewModel() {
+    return this->repopulateStallViewModel();
 
 }
 void StallMgmtController::populateMgmtGraphs() {

@@ -1,0 +1,21 @@
+{
+  "image_path": "",
+  "menu": [
+    {
+      "description": "Pure black coffee with optional sugar",
+      "image path": "",
+      "name": "Coffee",
+      "price": 10000,
+      "type": "Drinks"
+    },
+    {
+      "description": "Black coffee with ice",
+      "image path": "",
+      "name": "Iced-coffee",
+      "price": 10000,
+      "type": "drinks"
+    }
+  ],
+  "stall_name": "Mountain pearl Coffee",
+  "stall_password": "coffee"
+}

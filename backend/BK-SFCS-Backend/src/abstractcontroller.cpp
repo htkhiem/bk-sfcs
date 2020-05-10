@@ -47,7 +47,11 @@ QString AbstractController::getCurrentStallName() {
 QString AbstractController::getCurrentStallImagePath() {
     return current_stall.getImagePath();
 }
-bool AbstractController::setCurrentStall(const QString& name) {
+bool AbstractController::setCurrentStall(int idx) {
+    const Stall& stall = *((Stall *)stall_view_model.at(idx));
+    current_stall = stall;
+    return true;
+    /*
     for (auto sptr : stall_view_model) {
         const Stall& stall = *((Stall *) sptr);
         if (stall.getStallName() == name) {
@@ -56,6 +60,7 @@ bool AbstractController::setCurrentStall(const QString& name) {
         }
     }
     return false;
+    */
 }
 bool AbstractController::setCurrentStall(Stall* const sptr) {
     if (!sptr)
