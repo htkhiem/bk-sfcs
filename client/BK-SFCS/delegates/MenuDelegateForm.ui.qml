@@ -55,8 +55,8 @@ Item {
             y: 7
             color: "#ffffff"
             text: qsTr("Text")
-            anchors.horizontalCenter: itemBg.horizontalCenter
-            anchors.verticalCenter: itemBg.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
             font.bold: true
             horizontalAlignment: Text.AlignRight
             font.pixelSize: 16
