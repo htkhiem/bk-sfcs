@@ -66,8 +66,8 @@ ApplicationWindow {
         id: homeForm
         anchors.fill: parent
     }
-    StallMenuForm {
-        id: stallMenuForm
+    StallMenu {
+        id: stallMenu
         anchors.fill: parent
     }
     StackView {
@@ -78,9 +78,24 @@ ApplicationWindow {
     SearchPopup {
         id: searchPopup
     }
+    FastBlur {
+        id: bgBlur
+        anchors.fill: parent
+        source: parent
+        radius: 32
+        visible: false
+        cached: true // higher perf
+    }
 
     function openMenu(stallName) {
-        stallMenuForm.title = stallName;
-        stackView.push(stallMenuForm)
+        stallMenu.title = stallName;
+        stackView.push(stallMenu)
+    }
+
+    function blurUnfocused() {
+        bgBlur.visible = true;
+    }
+    function refocus() {
+        bgBlur.visible = false;
     }
 }

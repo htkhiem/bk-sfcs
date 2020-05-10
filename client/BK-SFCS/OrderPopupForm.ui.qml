@@ -25,7 +25,6 @@ Popup {
         radius: 10
         anchors.fill: parent
     }
-
     Rectangle {
         id: popupBg
         color: "#00000000"
@@ -138,9 +137,5 @@ Popup {
     }
 }
 
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:0.5}
-}
-##^##*/
+
 
