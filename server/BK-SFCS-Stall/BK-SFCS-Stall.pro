@@ -15,7 +15,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         controller/stallmgmtcontroller.cpp \
-        login/loginmanager.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -36,6 +35,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     controller/stallmgmtcontroller.h \
-    login/loginmanager.h \
 DISTFILES += \
     ../../backend/stall.json

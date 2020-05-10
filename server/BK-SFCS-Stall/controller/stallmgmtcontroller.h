@@ -7,11 +7,11 @@
 class StallMgmtController : public AbstractController
 {
   Q_OBJECT
-public:
+public slots:
       QList<QObject *> logs_db;
       QList<QObject*> waitlist_view_model;
       explicit StallMgmtController(QQmlApplicationEngine* eng, QObject *parent = nullptr);
-      bool login(const QString& name, const QString& psw);
+      bool login(int idx, const QString& psw);
       bool logout();
       void updateWaitlistViewModel();
       void populateMgmtGraphs();

@@ -3,10 +3,10 @@
 StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *parent)
   : AbstractController(eng, parent)
 {
-  loadData();
+  loadData(); // Loads stall data and initialise the stall view model.
 }
 
-bool StallMgmtController::login(const QString& name, const QString& psw) {
+bool StallMgmtController::login(int idx, const QString& psw) {
 
 }
 bool StallMgmtController::logout() {
