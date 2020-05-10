@@ -64,8 +64,7 @@ bool AbstractController::setCurrentStall(Stall* const sptr) {
     return true;
 }
 void AbstractController::loadData() {
-    QDir data_cursor = QDir::current();
-    data_cursor.cd("../../");
+    QDir data_cursor = QDir::home();
     if (!data_cursor.cd("sfcs_data")) {
         throw runtime_error("Data folder not found. A blank folder will be created after this run.");
     }
@@ -89,8 +88,7 @@ void AbstractController::loadData() {
     data_cursor.cdUp();
 }
 void AbstractController::saveData() {
-    QDir data_cursor = QDir::current();
-    data_cursor.cd("../../");
+    QDir data_cursor = QDir::home();
     data_cursor.mkdir("sfcs_data");
     data_cursor.cd("sfcs_data");
 
