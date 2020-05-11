@@ -7,14 +7,12 @@
 class StallMgmtController : public AbstractController
 {
   Q_OBJECT
-  bool is_logged_in;
 public:
     QList<QObject *> logs_db;
     QList<QObject*> waitlist_view_model;
     explicit StallMgmtController(QQmlApplicationEngine* eng, QObject *parent = nullptr);
+    ~StallMgmtController();
 public slots:
-
-
       bool login(int idx, const QString& psw);
       bool logout();
       void updateWaitlistViewModel();
@@ -23,6 +21,11 @@ public slots:
       void addFood(QFood * food);
       void editFood(QFood * food);
       bool removeFood(const QString& name);
+
+      bool setStallName(const QString& name);
+      bool setStallPassword(const QString& password);
+      bool setStallMgmtPassword(const QString& mgmtpsw);
+      bool setStallImagePath(const QString& imgpath);
 signals:
 
 };

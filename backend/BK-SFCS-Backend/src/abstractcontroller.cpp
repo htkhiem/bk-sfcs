@@ -2,10 +2,11 @@
 #include "category.h"
 #include "food.h"
 AbstractController::AbstractController(QQmlApplicationEngine *eng, QObject *parent)
-    : QObject(parent), p_engine(eng)
+    : QObject(parent), p_engine(eng), current_stall_idx(-1)
 {
     // TODO: Load data right here
 }
+
 bool AbstractController::categoryIsVisible(const QString& cat_name) const {
     for (auto pcat : category_view_model) {
         Category& cat = *((Category *) pcat);
@@ -25,9 +26,18 @@ void AbstractController::populateCategoryViewModel() {
 
     p_engine->rootContext()->setContextProperty("categoryViewModel", QVariant::fromValue(category_view_model));
 }
+Stall* AbstractController::getCurrentStall() {
+  return (Stall *) (stall_view_model[current_stall_idx]);
+}
+QString AbstractController::getCurrentStallName() {
+    return getCurrentStall()->getStallName();
+}
+QString AbstractController::getCurrentStallImagePath() {
+    return getCurrentStall()->getImagePath();
+}
 void AbstractController::populateMenuViewModel() {
     menu_view_model.clear(); // do not deallocate pointers - they're not dynamically allocated
-    const QVector<QFood>& temp = *(current_stall.getMenu());
+    const QVector<QFood>& temp = *(getCurrentStall()->getMenu());
     for (auto qfood : temp) {
         if (categoryIsVisible(qfood.getType()))
             menu_view_model.append(&qfood);
@@ -41,31 +51,8 @@ void AbstractController::repopulateStallViewModel() {
     stall_view_model.clear();
     loadData();
 }
-QString AbstractController::getCurrentStallName() {
-    return current_stall.getStallName();
-}
-QString AbstractController::getCurrentStallImagePath() {
-    return current_stall.getImagePath();
-}
 bool AbstractController::setCurrentStall(int idx) {
-    const Stall& stall = *((Stall *)stall_view_model.at(idx));
-    current_stall = stall;
-    return true;
-    /*
-    for (auto sptr : stall_view_model) {
-        const Stall& stall = *((Stall *) sptr);
-        if (stall.getStallName() == name) {
-            current_stall = stall;
-            return true;
-        }
-    }
-    return false;
-    */
-}
-bool AbstractController::setCurrentStall(Stall* const sptr) {
-    if (!sptr)
-        return false;
-    current_stall = *(sptr);
+    current_stall_idx = idx;
     return true;
 }
 void AbstractController::loadData() {

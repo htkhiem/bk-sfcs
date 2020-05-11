@@ -7,7 +7,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>Login.qml</file>
         <file>LoginForm.ui.qml</file>
-        <file>delegates/StallDelegateModel.qml</file>
         <file>placeholders/200.png</file>
         <file>delegates/StallDelegate.qml</file>
         <file>delegates/StallDelegateForm.ui.qml</file>

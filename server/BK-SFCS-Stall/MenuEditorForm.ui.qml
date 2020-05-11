@@ -88,6 +88,7 @@ Page {
     TextField {
         visible: true
         id: mgrPswField
+        echoMode: "Password"
         anchors.left: parent.left
         anchors.leftMargin: 10
         anchors.right: authorizeButton.left
@@ -146,8 +147,8 @@ Page {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.5}D{i:10;anchors_x:589}D{i:11;anchors_x:30}D{i:12;anchors_x:30}
-D{i:9;anchors_x:589}D{i:3;anchors_x:589}D{i:4;anchors_x:589}D{i:5;anchors_x:30}D{i:6;anchors_x:30}
+    D{i:0;formeditorZoom:1.5}D{i:3;anchors_x:589}D{i:4;anchors_x:589}D{i:5;anchors_x:30}
+D{i:6;anchors_x:30}D{i:10;anchors_x:589}D{i:11;anchors_x:30}D{i:12;anchors_x:30}D{i:9;anchors_x:589}
 }
 ##^##*/
 

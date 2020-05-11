@@ -5,8 +5,8 @@ Page {
     id: page
     width: 1280
     height: 720
-    property alias stallMgrPswConfField: stallMgrPswConfField
-    property alias stallMgrPswField: stallMgrPswField
+    property alias stallMgmtPswConfField: stallMgmtPswConfField
+    property alias stallMgmtPswField: stallMgmtPswField
     property alias confirmButton: confirmButton
     property alias authPswField: authPswField
     property alias authorizeButton: authorizeButton
@@ -24,7 +24,6 @@ Page {
         anchors.leftMargin: 20
         anchors.top: parent.top
         anchors.topMargin: 20
-        source: "placeholders/200.png"
         fillMode: Image.PreserveAspectFit
     }
 
@@ -90,6 +89,7 @@ Page {
     TextField {
         visible: true
         id: authPswField
+        echoMode: "Password"
         anchors.left: parent.left
         anchors.leftMargin: 10
         anchors.right: authorizeButton.left
@@ -114,7 +114,7 @@ Page {
     }
 
     TextField {
-        id: stallMgrPswField
+        id: stallMgmtPswField
         anchors.right: parent.right
         enabled: false
         anchors.top: stallPswConfField.bottom
@@ -127,12 +127,12 @@ Page {
     }
 
     TextField {
-        id: stallMgrPswConfField
+        id: stallMgmtPswConfField
         x: 1046
         y: 249
         anchors.right: parent.right
         enabled: false
-        anchors.top: stallMgrPswField.bottom
+        anchors.top: stallMgmtPswField.bottom
         echoMode: "Password"
         placeholderText: qsTr("Confirm new manager password")
         anchors.topMargin: 10
@@ -160,11 +160,11 @@ Page {
                 enabled: true
             }
             PropertyChanges {
-                target: stallMgrPswField
+                target: stallMgmtPswField
                 enabled: true
             }
             PropertyChanges {
-                target: stallMgrPswConfField
+                target: stallMgmtPswConfField
                 enabled: true
             }
             PropertyChanges {

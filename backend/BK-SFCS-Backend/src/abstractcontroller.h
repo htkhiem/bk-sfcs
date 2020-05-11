@@ -12,13 +12,12 @@ class AbstractController : public QObject
     Q_PROPERTY(QString currentSTallImagePath READ getCurrentStallImagePath)
     QQmlApplicationEngine* p_engine; // for connecting backend to the thing
 protected:
-    Stall current_stall;
+    int current_stall_idx;
     void loadData();
     void saveData();
     bool categoryIsVisible(const QString& cat_name) const;
 public:
-    explicit AbstractController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
-
+    explicit AbstractController(QQmlApplicationEngine *eng, QObject *parent = nullptr);;
     QList<QObject *> category_view_model;
     QList<QObject *> menu_view_model;
     QList<QObject *> stall_view_model;
@@ -27,10 +26,10 @@ public slots:
     void populateCategoryViewModel();
     void populateMenuViewModel();
     void repopulateStallViewModel();
+    bool setCurrentStall(int idx);
+    Stall* getCurrentStall();
     QString getCurrentStallName();
     QString getCurrentStallImagePath();
-    bool setCurrentStall(int idx);
-    bool setCurrentStall(Stall* const sptr);
 signals:
 };
 
