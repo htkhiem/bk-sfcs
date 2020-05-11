@@ -24,5 +24,6 @@
     }
   ],
   "stall_name": "Mon Viet",
-  "stall_password": "monviet"
+  "stall_password": "monviet",
+  "stall_mgmt_password": "viet"
 }

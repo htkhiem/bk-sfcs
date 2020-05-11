@@ -10,5 +10,6 @@
     }
   ],
   "stall_name": "Bun moc Hung map",
-  "stall_password": "hungmap"
+  "stall_password": "hungmap",
+  "stall_mgmt_password": "map"
 }
