@@ -91,6 +91,8 @@ void AbstractController::loadData() {
          data_cursor.cdUp();
     }
     data_cursor.cdUp();
+
+    p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
 }
 void AbstractController::saveData() {
     QDir data_cursor = QDir::home();

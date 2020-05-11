@@ -8,7 +8,7 @@
 class Stall : public Jsonable {
   Q_OBJECT
   Q_PROPERTY(QString stallName READ getStallName WRITE setStallName)
-
+  Q_PROPERTY(QString imagePath READ getImagePath WRITE setImagePath)
 public:
   /**
    * Basic constructor.

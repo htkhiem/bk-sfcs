@@ -7,6 +7,7 @@
 class StallMgmtController : public AbstractController
 {
   Q_OBJECT
+  bool is_logged_in;
 public:
     QList<QObject *> logs_db;
     QList<QObject*> waitlist_view_model;
@@ -14,7 +15,7 @@ public:
 public slots:
 
 
-      bool login(int idx);
+      bool login(int idx, const QString& psw);
       bool logout();
       void updateWaitlistViewModel();
       void populateMgmtGraphs();

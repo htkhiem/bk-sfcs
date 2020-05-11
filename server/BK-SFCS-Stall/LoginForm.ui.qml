@@ -91,10 +91,10 @@ Page {
             cacheBuffer: 5
             orientation: ListView.Horizontal
             delegate: StallDelegate {
-                stallName.text: name
-                stallImage.source: image
+                stallName.text: model.modelData.stallName
+                stallImage.source: model.modelData.imagePath
             }
-            model: StallDelegateModel {}
+            model: stallViewModel
             focus: true
         }
     }

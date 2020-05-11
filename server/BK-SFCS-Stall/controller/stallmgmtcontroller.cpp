@@ -1,25 +1,30 @@
 #include "stallmgmtcontroller.h"
 
 StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *parent)
-  : AbstractController(eng, parent)
+  : AbstractController(eng, parent), is_logged_in(false)
 {
   loadData(); // Loads stall data and initialise the stall view model.
 }
 
-bool StallMgmtController::login(int idx) {
-    if(idx >= stall_view_model.size()) return false;
-    return this->setCurrentStall(idx);
+bool StallMgmtController::login(int idx, const QString& psw) {
+    if(is_logged_in || idx < 0 || idx >= stall_view_model.size()) return false;
+    if (((Stall*)stall_view_model[idx])->getPassword() != psw) return false;
+    // Login successful
+    setCurrentStall(idx);
+    is_logged_in = true;
+    return true;
 }
 bool StallMgmtController::logout() {
-    this->current_stall =NULL;
+    if (!is_logged_in) return false;
+    current_stall = Stall();
     return true;
 }
 void StallMgmtController::updateWaitlistViewModel() {
-    return this->repopulateStallViewModel();
+  // TODO
 
 }
 void StallMgmtController::populateMgmtGraphs() {
-
+  // TODO
 }
 bool StallMgmtController::loginAsManager(const QString& psw) {
   if (current_stall.getMgmtPassword() != psw) return false;
