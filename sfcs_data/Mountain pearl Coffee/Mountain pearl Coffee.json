@@ -17,5 +17,6 @@
     }
   ],
   "stall_name": "Mountain pearl Coffee",
-  "stall_password": "coffee"
+  "stall_password": "coffee",
+  "stall_mgmt_password": "pearl"
 }

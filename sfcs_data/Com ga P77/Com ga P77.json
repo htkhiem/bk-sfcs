@@ -17,5 +17,6 @@
     }
   ],
   "stall_name": "Com ga P77",
-  "stall_password": "P77"
+  "stall_password": "P77",
+  "stall_mgmt_password": "77"
 }

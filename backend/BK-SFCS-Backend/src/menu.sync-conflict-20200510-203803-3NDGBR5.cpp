@@ -13,20 +13,17 @@ Jsonable(parent)
     stallName = _stall.stallName;
 }
 
-Stall& Stall::operator=(const Stall &) {
+Stall& Stall::operator=(const Stall &){
     return *this;
 }
-const QVector<QFood>* Stall::getMenu() const {   //Important for Display food
-    return &menu;
-}
-QVector<QFood>* Stall::getEditableMenu() {   //Important for Display food
+const QVector<QFood>* Stall::getMenu() const{   //Important for Display food
     return &menu;
 }
 bool Stall::addFood(QFood item){   //Menu editing
 menu.push_back(item);
 return 1;
 }
-bool Stall::removeFood(QFood item) { //Menu editing
+bool Stall::removeFood(QFood item){ //Menu editing
 QString name = item.getName();
 for (int i = 0; i < menu.size();i++){
     if (menu[i].getName() == name){
@@ -58,8 +55,7 @@ void Stall::setImagePath(const QString imagePath){
 void Stall::read(const QJsonObject &json){
     if (json.contains("stall_name") && json["stall_name"].isString())
         stallName = json["stall_name"].toString();
-    if (json.contains("stall_password") && json["stall_password"].isString())
-        password = json["stall_password"].toString();
+
     if (json.contains("image_path") && json["image_path"].isString())
         imagePath = json["image_path"].toString();
 
@@ -78,7 +74,6 @@ void Stall::read(const QJsonObject &json){
 
 void Stall::write(QJsonObject &json) const {
     json["stall_name"] = stallName;
-    json["stall_password"] = password;
     json["image_path"] = imagePath;
     QJsonArray menuArr;
     for (const QFood &items : menu) {
