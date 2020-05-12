@@ -1,22 +1,22 @@
 {
-  "image_path": "",
-  "menu": [
-    {
-      "description": "Pho with Chicken stock soup base",
-      "image path": "",
-      "name": "Pho ga ta",
-      "price": 40000,
-      "type": "side dish"
-    },
-    {
-      "description": "Ha Noi traditional white-rice noodle with roasted pork slices and ground pork pieces",
-      "image path": "",
-      "name": "Bun cha Ha noi",
-      "price": 30000,
-      "type": "main dish"
-    }
-  ],
-  "stall_name": "Bun cha Obama",
-  "stall_password": "Obama",
-  "stall_mgmt_password": "Obama"
+    "image_path": "hah.jpg",
+    "menu": [
+        {
+            "description": "",
+            "image path": "",
+            "name": "",
+            "price": 0,
+            "type": ""
+        },
+        {
+            "description": "",
+            "image path": "",
+            "name": "",
+            "price": 0,
+            "type": ""
+        }
+    ],
+    "stall_mgmt_password": "Obama",
+    "stall_name": "Bun cha Obama",
+    "stall_password": "Obama"
 }

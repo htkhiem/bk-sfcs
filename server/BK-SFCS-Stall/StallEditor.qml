@@ -27,7 +27,10 @@ StallEditorForm {
         }
         if (!backend.setStallName(stallNameField.text))
             console.log("Empty name entered!") // TODO: actually notifying user of this error
-        if (!backend.setStallImagePath(bigImage.source))
+
+        // Copy stall image to folder, then set source
+
+        if (!backend.setStallImage(bigImage.source))
             console.log("Invalid path")
 
     }

@@ -47,11 +47,18 @@ void Stall::setStallName(const QString& name) {
 }
 
 
-QString Stall::getImagePath() const {
-  return this->imagePath;
+QUrl Stall::getImagePath() const {
+    QDir stall_dir = QDir::home();
+    stall_dir.cd("sfcs_data");
+    stall_dir.cd(getStallName());
+    return QUrl::fromLocalFile(stall_dir.filePath(image_name));
 }
-void Stall::setImagePath(const QString imagePath){
-  this->imagePath = imagePath;
+void Stall::setImagePath(const QUrl& imgpath) {
+    QDir stall_dir = QDir::home();
+    stall_dir.cd("sfcs_data");
+    stall_dir.cd(getStallName());
+    QFile::copy(imgpath.path(), stall_dir.filePath(imgpath.fileName()));
+    image_name = imgpath.fileName();
 }
 
 
@@ -63,7 +70,7 @@ void Stall::read(const QJsonObject &json){
   if (json.contains("stall_mgmt_password") && json["stall_mgmt_password"].isString())
     mgmt_password = json["stall_mgmt_password"].toString();
   if (json.contains("image_path") && json["image_path"].isString())
-    imagePath = json["image_path"].toString();
+    image_name = json["image_path"].toString();
 
 
   if (json.contains("menu") && json["menu"].isArray()) {
@@ -82,7 +89,7 @@ void Stall::write(QJsonObject &json) const {
   json["stall_name"] = stallName;
   json["stall_password"] = password;
   json["stall_mgmt_password"] = mgmt_password;
-  json["image_path"] = imagePath;
+  json["image_path"] = image_name;
   QJsonArray menuArr;
   for (const QFood &items : menu) {
       QJsonObject temp;

@@ -10,7 +10,7 @@
 class AbstractController : public QObject {
   Q_OBJECT
   Q_PROPERTY(QString currentStallName READ getCurrentStallName)
-  Q_PROPERTY(QString currentSTallImagePath READ getCurrentStallImagePath)
+  Q_PROPERTY(QUrl currentStallImagePath READ getCurrentStallImagePath)
   QQmlApplicationEngine *p_engine; // for connecting backend to the thing
 protected:
   int current_stall_idx;
@@ -86,10 +86,10 @@ public slots:
   QString getCurrentStallName();
   
   /**
-   * Same as above, for image path.
-   * @return Stall image path as string (converted to QUrl in QML).
+   * Same as above, for image path. Note that it returns the absolute path to the copy in the stall folder.
+   * @return Stall image path as QUrl (file://...).
    */
-  QString getCurrentStallImagePath();
+  QUrl getCurrentStallImagePath();
 signals:
 };
 

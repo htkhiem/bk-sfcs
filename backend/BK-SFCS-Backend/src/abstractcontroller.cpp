@@ -32,7 +32,7 @@ Stall* AbstractController::getCurrentStall() {
 QString AbstractController::getCurrentStallName() {
   return getCurrentStall()->getStallName();
 }
-QString AbstractController::getCurrentStallImagePath() {
+QUrl AbstractController::getCurrentStallImagePath() {
   return getCurrentStall()->getImagePath();
 }
 void AbstractController::populateMenuViewModel() {

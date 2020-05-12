@@ -82,7 +82,10 @@ public slots:
   bool setStallName(const QString &name);
   bool setStallPassword(const QString &password);
   bool setStallMgmtPassword(const QString &mgmtpsw);
-  bool setStallImagePath(const QString &imgpath);
+  /** QML-facing slot for setting image. It copies the given image to the stall folder and
+   * links from there.
+   */
+  bool setStallImage(const QUrl& imgpath);
 signals:
 };
 

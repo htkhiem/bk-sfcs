@@ -76,7 +76,7 @@ bool StallMgmtController::setStallMgmtPassword(const QString& mgmtpsw) {
   getCurrentStall()->setMgmtPassword(mgmtpsw);
   return true;
 }
-bool StallMgmtController::setStallImagePath(const QString& imgpath) {
+bool StallMgmtController::setStallImage(const QUrl& imgpath) {
   getCurrentStall()->setImagePath(imgpath);
   return true;
 }
