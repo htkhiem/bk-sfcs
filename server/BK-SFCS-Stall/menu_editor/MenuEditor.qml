@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import backend.qfood 1.0
 
 MenuEditorForm {
     authorizeButton.onClicked: {
@@ -19,5 +20,14 @@ MenuEditorForm {
             mgrPswField.text = "";
             mgrPswField.placeholderText = "Wrong password"
         }
+    }
+    addButton.onClicked: {
+        var newFood = newFoodComponent.createObject();
+        backend.addFood(newFood);
+    }
+
+    Component {
+        id: newFoodComponent
+        QFood {}
     }
 }

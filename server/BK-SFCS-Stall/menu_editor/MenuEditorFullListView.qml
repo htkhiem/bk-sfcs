@@ -6,7 +6,7 @@ ListView {
     width: parent.width
     height: parent.height
     bottomMargin: 0
-//    model: menuViewModel
+    model: menuViewModel
     delegate: MenuDelegate {
         width: listView.width
         itemImage.source: model.modelData.imagePath

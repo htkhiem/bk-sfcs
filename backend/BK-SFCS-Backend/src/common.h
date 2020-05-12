@@ -18,6 +18,7 @@
 #define DATEFORMAT "%F %X"
 
 // Qt C++
+#include <QQmlEngine>
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
 #include <QColor>

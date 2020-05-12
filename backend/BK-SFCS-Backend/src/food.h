@@ -61,4 +61,5 @@ public slots:
   bool isOOS();
   void setOOS(bool oos);
 };
+
 #endif // FOOD_H
