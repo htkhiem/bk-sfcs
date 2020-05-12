@@ -34,7 +34,7 @@ public:
   QString name, type, description, image_name;
   double price;
   bool is_OOS;
-  size_t estimated_time;
+  int estimated_time;
   
   /**
    * Read from a Food-type JSON object.
@@ -63,6 +63,6 @@ public slots:
   bool isOOS();
   void setOOS(bool oos);
   void setTime(size_t _time);
-  size_t getTime();
+  int getTime();
 };
 #endif // FOOD_H

@@ -14,6 +14,6 @@ ListView {
         descField.text: model.modelData.description
         priceField.text: model.modelData.price + qsTr("VND")
         oosCheckbox.checked: model.modelData.isOOS
-        estTimeField.text: model.modelData.estimated_time
+        estTimeField.text: model.modelData.estimatedTime
     }
 }

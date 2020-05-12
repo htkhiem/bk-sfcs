@@ -93,6 +93,6 @@ void QFood::setTime(size_t _time){
      estimated_time = _time;
 
 }
-size_t QFood::getTime(){
+int QFood::getTime(){
      return estimated_time;
 }
