@@ -6,6 +6,12 @@ MenuEditorForm {
     authorizeButton.onClicked: {
         authorize_editing(mgrPswField.text);
     }
+    function get_category_idx(name) {
+        for (var i = 0; i < categoryViewModel.length; ++i) {
+            if(categoryViewModel[i].name === name) return i;
+        }
+        return -1;
+    }
 
     function enable_buttons() {
         confirmButton.enabled = true;

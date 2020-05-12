@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import "../delegates"
-
 ListView {
     id: listView
     width: parent.width
@@ -15,5 +14,6 @@ ListView {
         priceField.text: model.modelData.price + qsTr("VND")
         oosCheckbox.checked: model.modelData.isOOS
         estTimeField.text: model.modelData.estimatedTime
+        categoryBox.currentIndex: get_category_idx(model.modelData.type)
     }
 }

@@ -115,7 +115,8 @@ Rectangle {
 
     ComboBox {
         id: categoryBox
-        textRole: ""
+        textRole: "name"
+        model: categoryViewModel
         anchors.top: estTimeField.bottom
         anchors.topMargin: 10
         anchors.left: oosCheckbox.left
