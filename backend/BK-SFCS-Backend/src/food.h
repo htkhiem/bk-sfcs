@@ -62,7 +62,7 @@ public slots:
   void setPrice(double price);
   bool isOOS();
   void setOOS(bool oos);
-  void setTime(size_t _time);
+  void setTime(int _time);
   int getTime();
 };
 #endif // FOOD_H
