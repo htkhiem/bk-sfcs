@@ -18,7 +18,6 @@ MenuDelegateForm {
     priceField.onEditingFinished: {
         enable_buttons()
     }
-
     oosCheckbox.onCheckedChanged: {
         oosCheckboxChangeTimes++;
         if(oosCheckboxChangeTimes > 1)

@@ -2,6 +2,7 @@ import QtQuick 2.0
 import backend.qfood 1.0
 
 MenuEditorForm {
+    id: menuEditorForm
     authorizeButton.onClicked: {
         authorize_editing(mgrPswField.text);
     }
@@ -22,9 +23,14 @@ MenuEditorForm {
         }
     }
     addButton.onClicked: {
-        var newFood = newFoodComponent.createObject();
-        backend.addFood(newFood);
+        var newFood = newFoodComponent.createObject(menuEditorForm);
+        backend.proposeAddFood(newFood);
+        listViewLoader.source = "";
+        listViewLoader.source = "MenuEditorFullListView.qml"
+        enable_buttons();
     }
+
+    confirmButton.onActivated: backend.applyProposal();
 
     Component {
         id: newFoodComponent

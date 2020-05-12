@@ -37,13 +37,14 @@ bool StallMgmtController::loginAsManager(const QString& psw) {
   if (mgmtPsw != psw) return false;
   return true;
 }
-void StallMgmtController::addFood(QFood * food) {
-  if (!food) throw invalid_argument("Null pointer passed to addFood.");
-  QFood new_food = *food;
-  getCurrentStall()->addFood(new_food);
+void StallMgmtController::proposeAddFood(QFood * food) {
+  if (!food) throw invalid_argument("Null pointer passed to proposeAddFood.");
+  QFood* new_food = food;
+  menu_view_model.append(new_food);
+  p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
 }
-bool StallMgmtController::editFood(QFood * food) {
-  if (!food) throw invalid_argument("Null pointer passed to addFood.");
+bool StallMgmtController::proposeEditFood(QFood * food) {
+  if (!food) throw invalid_argument("Null pointer passed to proposeEditFood.");
   QVector<QFood>& current_menu = *getCurrentStall()->getEditableMenu();
   for (auto old_food : current_menu) {
       if (old_food.getName() == food->getName()) {
@@ -53,16 +54,22 @@ bool StallMgmtController::editFood(QFood * food) {
     }
   return false;
 }
-bool StallMgmtController::removeFood(const QString& name) {
-  if (name.isEmpty()) throw invalid_argument("Empty food item name passed to removeFood.");
+bool StallMgmtController::proposeRemoveFood(const QString& name) {
+  if (name.isEmpty()) throw invalid_argument("Empty food item name passed to proposeRemoveFood.");
   QVector<QFood>& current_menu = *getCurrentStall()->getEditableMenu();
   for (int i = 0; i < current_menu.size(); i++) {
       if (current_menu[i].getName() == name) {
           current_menu.remove(i);
+          p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
           return true;
         }
     }
   return false;
+}
+void StallMgmtController::applyProposal() {
+  QVector<QFood>* current_menu = getCurrentStall()->getEditableMenu();
+  current_menu->clear();
+  for (auto ptr : menu_view_model) current_menu->append(*(QFood *) ptr);
 }
 bool StallMgmtController::setStallName(const QString& name) {
   if (name.isEmpty()) return false;

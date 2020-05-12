@@ -36,11 +36,14 @@ QUrl AbstractController::getCurrentStallImagePath() {
   return getCurrentStall()->getImagePath();
 }
 void AbstractController::populateMenuViewModel() {
-  menu_view_model.clear(); // do not deallocate pointers - they're not dynamically allocated
+  for (auto ptr : menu_view_model) delete ptr;
+  menu_view_model.clear();
   QVector<QFood>& temp = *(getCurrentStall()->getEditableMenu());
   for (QFood& qfood : temp) {
-      if (categoryIsVisible(qfood.getType()))
-        menu_view_model.append(&qfood);
+      if (categoryIsVisible(qfood.getType())) {
+          QObject * qfoodptr = new QFood(qfood);
+          menu_view_model.append(qfoodptr);
+        }
     }
 
   p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));

@@ -60,24 +60,26 @@ public slots:
   bool loginAsManager(const QString &psw);
 
   /**
-   * QML-facing slot for adding a food item to the current stall.
+   * QML-facing slot for proposing to a food item to the current stall.
    * @param food Packaged food item object from QML.
    */
-  void addFood(QFood *food);
+  void proposeAddFood(QFood *food);
 
   /**
-   * QML-facing slot for replacing an existing food item in the current stall.
+   * QML-facing slot for proposing to replace an existing food item in the current stall.
    * @param food Packaged food item object from QML.
    * @return True if replacement succeeds, false if there is no matching food item to replace.
    */
-  bool editFood(QFood *food);
+  bool proposeEditFood(QFood *food);
 
   /**
-   * QML-facing slot for removing a food item from the current stall.
+   * QML-facing slot for proposing to remove a food item from the current stall.
    * @param name Name of food item to remove.
    * @return True if food item is found and removed, false otherwise.
    */
-  bool removeFood(const QString &name);
+  bool proposeRemoveFood(const QString &name);
+  /** Apply all editing proposals to current_stall's menu. */
+  void applyProposal();
   /** QML-facing slots for GUI to edit stall data, exclusive to stall app. */
   bool setStallName(const QString &name);
   bool setStallPassword(const QString &password);

@@ -5,6 +5,7 @@ Page {
     id: menuEditor
     width: 1280
     height: 720
+    property alias listViewLoader: listViewLoader
     property alias addButton: addButton
     property alias mgrPswField: mgrPswField
     property alias authorizeButton: authorizeButton

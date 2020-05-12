@@ -11,8 +11,8 @@ class AbstractController : public QObject {
   Q_OBJECT
   Q_PROPERTY(QString currentStallName READ getCurrentStallName)
   Q_PROPERTY(QUrl currentStallImagePath READ getCurrentStallImagePath)
-  QQmlApplicationEngine *p_engine; // for connecting backend to the thing
 protected:
+  QQmlApplicationEngine *p_engine; // for connecting backend to the thing
   int current_stall_idx;
 
   /** Loads stall data (and their menus) from ~/sfcs_data. Also populates the
@@ -55,7 +55,8 @@ public slots:
    * implement loadable category lists. */
   void populateCategoryViewModel();
 
-  /** Fills menu view model with menu of current stall.
+  /** Fills menu view model with menu of current stall. It keeps its own data
+   * so that the stall-side app can have safely modify the menu.
       In case of stall app, the logged in stall is the current stall. The menu
      view is mutable (for MenuEditor) but only written back to the actual menu
      data on tapping the Confirm button. In case of kiosk app, the selected

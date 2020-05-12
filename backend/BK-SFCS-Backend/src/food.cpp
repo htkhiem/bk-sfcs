@@ -89,7 +89,7 @@ void QFood::setOOS(bool oos) {
   is_OOS = oos;
 }
 
-void QFood::setTime(size_t _time){
+void QFood::setTime(int _time){
      estimated_time = _time;
 
 }
