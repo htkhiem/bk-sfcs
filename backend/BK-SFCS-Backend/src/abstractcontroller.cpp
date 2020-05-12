@@ -4,7 +4,7 @@
 AbstractController::AbstractController(QQmlApplicationEngine *eng, QObject *parent)
   : QObject(parent), p_engine(eng), current_stall_idx(-1)
 {
-  // TODO: Load data right here
+  populateCategoryViewModel();
 }
 
 bool AbstractController::categoryIsVisible(const QString& cat_name) const {
@@ -37,8 +37,8 @@ QUrl AbstractController::getCurrentStallImagePath() {
 }
 void AbstractController::populateMenuViewModel() {
   menu_view_model.clear(); // do not deallocate pointers - they're not dynamically allocated
-  const QVector<QFood>& temp = *(getCurrentStall()->getMenu());
-  for (auto qfood : temp) {
+  QVector<QFood>& temp = *(getCurrentStall()->getEditableMenu());
+  for (QFood& qfood : temp) {
       if (categoryIsVisible(qfood.getType()))
         menu_view_model.append(&qfood);
     }

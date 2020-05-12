@@ -17,6 +17,7 @@ bool StallMgmtController::login(int idx, const QString& psw) {
     return false;
   // Login successful
   setCurrentStall(idx);
+  populateMenuViewModel();
   return true;
 }
 bool StallMgmtController::logout() {

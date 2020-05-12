@@ -79,8 +79,8 @@ void Stall::read(const QJsonObject &json){
       menu.reserve(menuArr.size());
       for(int i = 0; i < menuArr.size(); ++i){
           QFood temp;
-          temp.read(json);
-          menu.push_back(temp);
+          temp.read(menuArr[i].toObject());
+          menu.append(temp);
         }
     }
 }
@@ -91,9 +91,9 @@ void Stall::write(QJsonObject &json) const {
   json["stall_mgmt_password"] = mgmt_password;
   json["image_path"] = image_name;
   QJsonArray menuArr;
-  for (const QFood &items : menu) {
+  for (const QFood &item : menu) {
       QJsonObject temp;
-      items.write(temp);
+      item.write(temp);
       menuArr.append(temp);
     }
   json["menu"] = menuArr;

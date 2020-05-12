@@ -29,8 +29,8 @@ public slots:
 
   /**
    * Attempts to log into a stall's account. If login succceeds, it sets
-   * current_stall_idx to the given index. Any index not -1 is seen as logged
-   * in.
+   * current_stall_idx to the given index and populates the menu view model.
+   * Any index not -1 is seen as logged in.
    * @param idx Index of stall in stall_view_model.
    * @param psw Given password.
    * @return True if login succeeds (correct password), false otherwise.

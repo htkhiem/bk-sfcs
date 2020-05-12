@@ -9,6 +9,7 @@ class QFood : public Jsonable {
   Q_PROPERTY(QString type READ getType WRITE setType)
   Q_PROPERTY(QString description READ getDescription WRITE setDescription)
   Q_PROPERTY(double price READ getPrice WRITE setPrice)
+  Q_PROPERTY(bool isOOS READ isOOS WRITE setOOS)
 public:
   
   /**
@@ -29,8 +30,9 @@ public:
   QFood &operator=(const QFood &);
   
   /** Basic fields  */
-  QString name, type, description,image_path;
-  double price = 0;
+  QString name, type, description, image_name;
+  double price;
+  bool is_OOS;
   
   /**
    * Read from a Food-type JSON object.
@@ -45,8 +47,9 @@ public:
   void write(QJsonObject &json) const;
 public slots:
   /** Basic getters/setters */
-  QString getImagePath()const;
-  void setImagePath(QString image_path);
+  /** getImagePath and setImagePath needs stall name for absolute path */
+  QUrl getImagePath(const QString& stall_name) const;
+  void setImagePath(const QString& stall_name, const QUrl& image_path);
   QString getName() const;
   void setName(QString name);
   QString getType() const;
@@ -55,5 +58,7 @@ public slots:
   void setDescription(QString des);
   double getPrice() const;
   void setPrice(double price);
+  bool isOOS();
+  void setOOS(bool oos);
 };
 #endif // FOOD_H

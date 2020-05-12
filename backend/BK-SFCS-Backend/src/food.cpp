@@ -1,6 +1,6 @@
 #include "food.h"
 QFood::QFood(QObject *parent) :
-  Jsonable(parent) {}
+  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false) {}
 QFood::QFood(const QFood &_food, QObject *parent) :
   Jsonable(parent)
 {
@@ -8,15 +8,24 @@ QFood::QFood(const QFood &_food, QObject *parent) :
   price = _food.price;
   description = _food.description;
   type = _food.type;
+  image_name = _food.image_name;
+  is_OOS = _food.is_OOS;
 }
 QFood& QFood::operator=(const QFood &){
   return *this;
 };
-QString QFood::getImagePath()const{
-  return this->image_path;
+QUrl QFood::getImagePath(const QString &stall_name) const {
+  QDir stall_dir = QDir::home();
+  stall_dir.cd("sfcs_data");
+  stall_dir.cd(stall_name);
+  return QUrl::fromLocalFile(stall_dir.filePath(image_name));
 };
-void QFood::setImagePath(QString image_path){
-  this->image_path = image_path;
+void QFood::setImagePath(const QString &stall_name, const QUrl &imgpath){
+  QDir stall_dir = QDir::home();
+  stall_dir.cd("sfcs_data");
+  stall_dir.cd(stall_name);
+  QFile::copy(imgpath.path(), stall_dir.filePath(imgpath.fileName()));
+  image_name = imgpath.fileName();
 };
 QString QFood::getName()const{
   return this->name;
@@ -47,24 +56,32 @@ void QFood::setPrice(double price){
   this->price = price;
 };
 
-void QFood::read(const QJsonObject &json){
+ void QFood::read(const QJsonObject &json){
 
-  if (json.contains("image path") && json["image path"].isString())
-    image_path = json["image path"].toString();
+  if (json.contains("image_path") && json["image_path"].isString())
+    image_name = json["image_path"].toString();
   if (json.contains("name") && json["name"].isString())
     name = json["name"].toString();
   if (json.contains("description") && json["description"].isString())
     description = json["description"].toString();
   if (json.contains("type") && json["type"].isString())
-    type = json["category"].toString();
+    type = json["type"].toString();
   if (json.contains("price") && json["price"].isDouble())
     price = json["price"].toDouble();
 };
 
-void QFood::write(QJsonObject &json) const{
-  json["image path"] = image_path;
+void QFood::write(QJsonObject &json) const {
+  json["image_path"] = image_name;
   json["name"] = name;
   json["description"] = description;
   json["type"] = type;
   json["price"] = price;
 };
+
+bool QFood::isOOS() {
+  return is_OOS;
+}
+
+void QFood::setOOS(bool oos) {
+  is_OOS = oos;
+}
