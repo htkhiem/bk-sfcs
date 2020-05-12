@@ -9,6 +9,7 @@ class QFood : public Jsonable {
   Q_PROPERTY(QString type READ getType WRITE setType)
   Q_PROPERTY(QString description READ getDescription WRITE setDescription)
   Q_PROPERTY(double price READ getPrice WRITE setPrice)
+  Q_PROPERTY(int estimatedTime READ getTime WRITE setTime)
   Q_PROPERTY(bool isOOS READ isOOS WRITE setOOS)
 public:
   
@@ -33,6 +34,7 @@ public:
   QString name, type, description, image_name;
   double price;
   bool is_OOS;
+  int estimated_time;
   
   /**
    * Read from a Food-type JSON object.
@@ -60,6 +62,8 @@ public slots:
   void setPrice(double price);
   bool isOOS();
   void setOOS(bool oos);
+  void setTime(int _time);
+  int getTime();
 };
 
 #endif // FOOD_H

@@ -11,6 +11,7 @@ Rectangle {
     property alias removeButton: removeButton
     property alias priceField: priceField
     property alias oosCheckbox: oosCheckbox
+    property alias estTimeField: estTimeField
     border.color: "#8a8a8a"
     border.width: 1
     property alias descField: descField

@@ -5,6 +5,7 @@ Rectangle {
     id: bg
     width: 1280
     height: 220
+    property alias estTimeField: estTimeField
     property alias categoryBox: categoryBox
     property alias itemImage: itemImage
     property alias bg: bg
