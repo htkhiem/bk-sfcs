@@ -11,16 +11,18 @@ StallMgmtController::~StallMgmtController() {
 }
 
 bool StallMgmtController::login(int idx, const QString& psw) {
-    if(current_stall_idx > -1 || idx < 0 || idx >= stall_view_model.size()) return false;
-    if (((Stall*)stall_view_model[idx])->getPassword() != psw) return false;
-    // Login successful
-    setCurrentStall(idx);
-    return true;
+  if(idx < 0 || idx >= stall_view_model.size())
+    throw range_error("Stall index out of range in login function.");
+  if (current_stall_idx != -1 || ((Stall*)stall_view_model[idx])->getPassword() != psw)
+    return false;
+  // Login successful
+  setCurrentStall(idx);
+  return true;
 }
 bool StallMgmtController::logout() {
-    if (current_stall_idx == -1) return false;
-    current_stall_idx = -1;
-    return true;
+  if (current_stall_idx == -1) return false;
+  current_stall_idx = -1;
+  return true;
 }
 void StallMgmtController::updateWaitlistViewModel() {
   // TODO
@@ -39,15 +41,16 @@ void StallMgmtController::addFood(QFood * food) {
   QFood new_food = *food;
   getCurrentStall()->addFood(new_food);
 }
-void StallMgmtController::editFood(QFood * food) {
+bool StallMgmtController::editFood(QFood * food) {
   if (!food) throw invalid_argument("Null pointer passed to addFood.");
   QVector<QFood>& current_menu = *getCurrentStall()->getEditableMenu();
   for (auto old_food : current_menu) {
       if (old_food.getName() == food->getName()) {
           old_food = *food;
-          break;
+          return true;
         }
     }
+  return false;
 }
 bool StallMgmtController::removeFood(const QString& name) {
   if (name.isEmpty()) throw invalid_argument("Empty food item name passed to removeFood.");

@@ -89,6 +89,7 @@ Page {
     TextField {
         visible: true
         id: authPswField
+        text: qsTr("")
         echoMode: "Password"
         anchors.left: parent.left
         anchors.leftMargin: 10
