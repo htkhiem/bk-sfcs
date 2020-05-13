@@ -13,8 +13,6 @@ int main(int argc, char *argv[])
     StallMgmtController backend(&engine);
     engine.rootContext()->setContextProperty("backend", &backend);
 
-    qmlRegisterType<QFood>("backend.qfood", 1, 0, "QFood");
-
     const QUrl url(QStringLiteral("qrc:/Login.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {

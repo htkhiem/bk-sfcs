@@ -1,6 +1,6 @@
 #include "food.h"
 QFood::QFood(QObject *parent) :
-  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false) {}
+  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false), is_valid(true) {}
 QFood::QFood(const QFood &_food, QObject *parent) :
   Jsonable(parent)
 {
@@ -92,4 +92,10 @@ void QFood::setTime(int _time){
 }
 int QFood::getTime(){
      return estimated_time;
+}
+bool QFood::isValid() {
+  return is_valid;
+}
+void QFood::setValid(bool valid) {
+  is_valid = valid;
 }

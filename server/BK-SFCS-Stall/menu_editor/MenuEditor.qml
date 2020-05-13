@@ -1,6 +1,5 @@
 import QtQuick 2.0
-import backend.qfood 1.0
-
+import "../delegates"
 MenuEditorForm {
     id: menuEditorForm
     authorizeButton.onClicked: {
@@ -12,9 +11,10 @@ MenuEditorForm {
         }
         return -1;
     }
-
     function enable_buttons() {
-        confirmButton.enabled = true;
+        if (listViewLoader.item.check_model_data())
+            confirmButton.enabled = true;
+        else confirmButton.enabled = false;
         revertButton.enabled = true;
     }
     function authorize_editing(psw) {
@@ -28,17 +28,62 @@ MenuEditorForm {
             mgrPswField.placeholderText = "Wrong password"
         }
     }
+
     addButton.onClicked: {
-        var newFood = newFoodComponent.createObject(menuEditorForm);
-        backend.proposeAddFood(newFood);
+        backend.proposeAddFood();
         enable_buttons();
     }
 
     confirmButton.onActivated: backend.applyProposal();
-
     Component {
-        id: newFoodComponent
-        QFood {}
+        id: fullListView
+        ListView {
+            property bool validData: false
+            id: listView
+            width: parent.width
+            height: parent.height
+            bottomMargin: 0
+            model: menuViewModel
+            delegate: MenuDelegate {
+                width: listView.width
+                itemImage.source: model.modelData.imagePath
+                nameField.text: model.modelData.name
+                descField.text: model.modelData.description
+                priceField.text: model.modelData.price
+                oosCheckbox.checked: model.modelData.isOOS
+                estTimeField.text: model.modelData.estimatedTime
+                categoryBox.currentIndex: get_category_idx(model.modelData.type)
+            }
+            function check_model_data() {
+                console.log("Checking...")
+                for (var i = 0; i < count; ++i) {
+                    if (!menuViewModel[i].isValid) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+    }
+    Component {
+        id: restrictedListView
+        ListView {
+            id: listView
+            width: parent.width
+            height: parent.height
+            bottomMargin: 0
+            model: menuViewModel
+            delegate: SimpleMenuDelegate {
+                width: listView.width
+                itemImage.source: model.modelData.imagePath
+                nameField.text: model.modelData.name
+                descField.text: model.modelData.description
+                priceField.text: model.modelData.price
+                oosCheckbox.checked: model.modelData.isOOS
+                estTimeField.text: model.modelData.estimatedTime
+                categoryBox.currentIndex: get_category_idx(model.modelData.type)
+            }
+        }
     }
 }
 

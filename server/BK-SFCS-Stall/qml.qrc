@@ -23,7 +23,5 @@
         <file>StallEditorForm.ui.qml</file>
         <file>menu_editor/MenuEditor.qml</file>
         <file>menu_editor/MenuEditorForm.ui.qml</file>
-        <file>menu_editor/MenuEditorFullListView.qml</file>
-        <file>menu_editor/MenuEditorSimpleListView.qml</file>
     </qresource>
 </RCC>

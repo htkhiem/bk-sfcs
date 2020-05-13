@@ -37,24 +37,12 @@ bool StallMgmtController::loginAsManager(const QString& psw) {
   if (mgmtPsw != psw) return false;
   return true;
 }
-void StallMgmtController::proposeAddFood(QFood * food) {
-  if (!food) throw invalid_argument("Null pointer passed to proposeAddFood.");
-  QFood* new_food = food;
+void StallMgmtController::proposeAddFood() {
+  QFood* new_food = new QFood();
   menu_view_model.append(new_food);
   p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
 }
-bool StallMgmtController::proposeEditFood(QFood * food, int idx) {
-  try {
-    if (!food) throw invalid_argument("Null pointer passed to proposeEditFood.");
-    delete (QFood *) menu_view_model[idx];
-    QFood * new_food = new QFood(*food);
-    menu_view_model[idx] = new_food;
-    p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
-    return true;
-  } catch (...) {
-    return false;
-  }
-}
+
 bool StallMgmtController::proposeRemoveFood(int idx) {
   try {
     delete (QFood *) menu_view_model[idx];

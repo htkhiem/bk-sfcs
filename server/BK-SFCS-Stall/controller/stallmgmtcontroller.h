@@ -61,17 +61,8 @@ public slots:
 
   /**
    * QML-facing slot for proposing to a food item to the current stall.
-   * @param food Packaged food item object from QML.
    */
-  void proposeAddFood(QFood *food);
-
-  /**
-   * QML-facing slot for proposing to replace an existing food item in the current stall.
-   * @param food Packaged food item object from QML.
-   * @param idx Index of food item to be edited.
-   * @return True if target item is within range and updated, false otherwise.
-   */
-  bool proposeEditFood(QFood *food, int idx);
+  void proposeAddFood();
 
   /**
    * QML-facing slot for proposing to remove a food item from the current stall.

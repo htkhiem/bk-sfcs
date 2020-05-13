@@ -11,8 +11,16 @@ class QFood : public Jsonable {
   Q_PROPERTY(double price READ getPrice WRITE setPrice)
   Q_PROPERTY(int estimatedTime READ getTime WRITE setTime)
   Q_PROPERTY(bool isOOS READ isOOS WRITE setOOS)
+  Q_PROPERTY(bool isValid READ isValid WRITE setValid)
+  /** Basic fields  */
+  QString name, type, description, image_name;
+  double price;
+  bool is_OOS;
+  int estimated_time;
+
+  /** Runtime field for MenuEditor only */
+  bool is_valid;
 public:
-  
   /**
    * Basic constructor, links to QObject through Jsonable.
    * @param parent Pointer to parent QObject (if there is any).
@@ -29,12 +37,6 @@ public:
    * Explicit overload for operator=.
    */
   QFood &operator=(const QFood &);
-  
-  /** Basic fields  */
-  QString name, type, description, image_name;
-  double price;
-  bool is_OOS;
-  int estimated_time;
   
   /**
    * Read from a Food-type JSON object.
@@ -64,6 +66,9 @@ public slots:
   void setOOS(bool oos);
   void setTime(int _time);
   int getTime();
+
+  bool isValid();
+  void setValid(bool valid);
 };
 
 #endif // FOOD_H

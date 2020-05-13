@@ -30,7 +30,7 @@ Page {
         Loader {
             id: listViewLoader
             anchors.fill: parent
-            source: "MenuEditorSimpleListView.qml"
+            sourceComponent: restrictedListView
         }
     }
 
@@ -51,7 +51,7 @@ Page {
         text: qsTr("Confirm changes")
         visible: false
         enabled: false
-        delay: 5000
+        delay: 1000
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.right: parent.right
@@ -135,7 +135,7 @@ Page {
 
             PropertyChanges {
                 target: listViewLoader
-                source: "MenuEditorFullListView.qml"
+                sourceComponent: fullListView
             }
             PropertyChanges {
                 target: addButton
@@ -145,11 +145,9 @@ Page {
     ]
 }
 
-
-
-
 /*##^##
 Designer {
     D{i:0;formeditorZoom:0.5}
 }
 ##^##*/
+
