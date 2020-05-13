@@ -1,5 +1,6 @@
-import QtQuick 2.0
-
+import QtQuick 2.12
+import QtQuick.Controls 2.5
+import QtQuick.Dialogs 1.3
 MenuDelegateForm {
     id: delegateForm
 
@@ -43,6 +44,7 @@ MenuDelegateForm {
         enable_buttons();
         return dataValid;
     }
+
 
     itemImage.onSourceChanged: {
         if (itemImageLoaded) {
@@ -90,5 +92,26 @@ MenuDelegateForm {
     removeButton.onActivated: {
         backend.proposeRemoveFood(index);
         enable_buttons();
+    }
+    FileDialog {
+        id: imageBrowser
+        title: "Please choose an image for your stall"
+        folder: shortcuts.home
+        nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
+        selectExisting: true
+        selectFolder: false
+        selectMultiple: false
+        onAccepted: {
+            console.log("You chose: " + imageBrowser.fileUrl)
+            itemImage.source = imageBrowser.fileUrl;
+            close()
+        }
+        onRejected: {
+            console.log("Canceled")
+            close()
+        }
+    }
+    changeImageButton.onClicked: {
+        imageBrowser.open();
     }
 }
