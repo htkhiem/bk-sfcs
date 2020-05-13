@@ -12,7 +12,7 @@ ListView {
         itemImage.source: model.modelData.imagePath
         nameField.text: model.modelData.name
         descField.text: model.modelData.description
-        priceField.text: model.modelData.price + qsTr("VND")
+        priceField.text: model.modelData.price
         oosCheckbox.checked: model.modelData.isOOS
         estTimeField.text: model.modelData.estimatedTime
         categoryBox.currentIndex: get_category_idx(model.modelData.type)

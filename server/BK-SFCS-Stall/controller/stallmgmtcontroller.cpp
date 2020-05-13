@@ -43,28 +43,27 @@ void StallMgmtController::proposeAddFood(QFood * food) {
   menu_view_model.append(new_food);
   p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
 }
-bool StallMgmtController::proposeEditFood(QFood * food) {
-  if (!food) throw invalid_argument("Null pointer passed to proposeEditFood.");
-  QVector<QFood>& current_menu = *getCurrentStall()->getEditableMenu();
-  for (auto old_food : current_menu) {
-      if (old_food.getName() == food->getName()) {
-          old_food = *food;
-          return true;
-        }
-    }
-  return false;
+bool StallMgmtController::proposeEditFood(QFood * food, int idx) {
+  try {
+    if (!food) throw invalid_argument("Null pointer passed to proposeEditFood.");
+    delete (QFood *) menu_view_model[idx];
+    QFood * new_food = new QFood(*food);
+    menu_view_model[idx] = new_food;
+    p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
+    return true;
+  } catch (...) {
+    return false;
+  }
 }
-bool StallMgmtController::proposeRemoveFood(const QString& name) {
-  if (name.isEmpty()) throw invalid_argument("Empty food item name passed to proposeRemoveFood.");
-  QVector<QFood>& current_menu = *getCurrentStall()->getEditableMenu();
-  for (int i = 0; i < current_menu.size(); i++) {
-      if (current_menu[i].getName() == name) {
-          current_menu.remove(i);
-          p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
-          return true;
-        }
-    }
-  return false;
+bool StallMgmtController::proposeRemoveFood(int idx) {
+  try {
+    delete (QFood *) menu_view_model[idx];
+    menu_view_model.removeAt(idx);
+    p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
+    return true;
+  }  catch (...) {
+    return false;
+  }
 }
 void StallMgmtController::applyProposal() {
   QVector<QFood>* current_menu = getCurrentStall()->getEditableMenu();

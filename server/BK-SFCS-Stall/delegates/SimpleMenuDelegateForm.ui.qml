@@ -80,7 +80,7 @@ Rectangle {
         anchors.rightMargin: 10
         anchors.top: parent.top
         anchors.topMargin: 10
-        placeholderText: qsTr("Price")
+        placeholderText: qsTr("Price in VND")
     }
 
     CheckBox {

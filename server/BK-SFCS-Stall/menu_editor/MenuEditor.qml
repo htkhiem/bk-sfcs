@@ -19,7 +19,7 @@ MenuEditorForm {
     }
     function authorize_editing(psw) {
         // placeholder for actual authorization code
-        if (psw === "root") {
+        if (backend.loginAsManager(psw)) {
             state = "authorized"
             console.log("State changed")
         }
@@ -31,8 +31,6 @@ MenuEditorForm {
     addButton.onClicked: {
         var newFood = newFoodComponent.createObject(menuEditorForm);
         backend.proposeAddFood(newFood);
-        listViewLoader.source = "";
-        listViewLoader.source = "MenuEditorFullListView.qml"
         enable_buttons();
     }
 
@@ -43,3 +41,9 @@ MenuEditorForm {
         QFood {}
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/

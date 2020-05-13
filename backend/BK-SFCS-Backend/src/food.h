@@ -53,11 +53,11 @@ public slots:
   QUrl getImagePath(const QString& stall_name) const;
   void setImagePath(const QString& stall_name, const QUrl& image_path);
   QString getName() const;
-  void setName(QString name);
+  void setName(const QString& name);
   QString getType() const;
-  void setType(QString type);
+  void setType(const QString& type);
   QString getDescription() const;
-  void setDescription(QString des);
+  void setDescription(const QString& desc);
   double getPrice() const;
   void setPrice(double price);
   bool isOOS();

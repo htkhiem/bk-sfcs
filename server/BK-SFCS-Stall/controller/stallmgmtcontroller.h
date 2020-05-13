@@ -68,16 +68,17 @@ public slots:
   /**
    * QML-facing slot for proposing to replace an existing food item in the current stall.
    * @param food Packaged food item object from QML.
-   * @return True if replacement succeeds, false if there is no matching food item to replace.
+   * @param idx Index of food item to be edited.
+   * @return True if target item is within range and updated, false otherwise.
    */
-  bool proposeEditFood(QFood *food);
+  bool proposeEditFood(QFood *food, int idx);
 
   /**
    * QML-facing slot for proposing to remove a food item from the current stall.
-   * @param name Name of food item to remove.
-   * @return True if food item is found and removed, false otherwise.
+   * @param idx Index of food item to remove.
+   * @return True if food item is within range and removed, false otherwise.
    */
-  bool proposeRemoveFood(const QString &name);
+  bool proposeRemoveFood(int idx);
   /** Apply all editing proposals to current_stall's menu. */
   void applyProposal();
   /** QML-facing slots for GUI to edit stall data, exclusive to stall app. */

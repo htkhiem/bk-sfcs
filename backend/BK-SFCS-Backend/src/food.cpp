@@ -9,6 +9,7 @@ QFood::QFood(const QFood &_food, QObject *parent) :
   description = _food.description;
   type = _food.type;
   image_name = _food.image_name;
+  estimated_time = _food.estimated_time;
   is_OOS = _food.is_OOS;
 }
 QFood& QFood::operator=(const QFood &){
@@ -30,29 +31,25 @@ void QFood::setImagePath(const QString &stall_name, const QUrl &imgpath){
 QString QFood::getName()const{
   return this->name;
 };
-void QFood::setName(QString name){
-  if (name == NULL) throw std::invalid_argument( "Name must not be blank" );
-  else this->name = name;
+void QFood::setName(const QString& name) {
+  this->name = name;
 };
-QString QFood::getType()const{
+QString QFood::getType() const {
   return this->type;
 };
-void QFood::setType(QString type){
-  if (type == NULL) throw std::invalid_argument( "Type must be within known ones" );
-  else  this->type = type;
+void QFood::setType(const QString& type) {
+  this->type = type;
 };
-QString QFood::getDescription()const{
+QString QFood::getDescription() const {
   return this->description;
 };
-void QFood::setDescription(QString des){
-  if (des == NULL) throw std::invalid_argument( "No description recieved" );
-  else this->description = des;
+void QFood::setDescription(const QString& desc) {
+  this->description = desc;
 };
 double QFood::getPrice()const{
   return this->price;
 };
-void QFood::setPrice(double price){
-  if (price <= 0) throw std::invalid_argument( "Price must not be negative or zero" );
+void QFood::setPrice(double price) {
   this->price = price;
 };
 
