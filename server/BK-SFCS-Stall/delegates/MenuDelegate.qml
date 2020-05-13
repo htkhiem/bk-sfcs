@@ -1,8 +1,9 @@
-import QtQuick 2.0
-
+import QtQuick 2.12
+import QtQuick.Controls 2.5
+import QtQuick.Dialogs 1.3
 MenuDelegateForm {
     id: delegateForm
-
+    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallName());
     property bool itemImageLoaded: false;
     property bool oosCheckboxLoaded: false;
 
@@ -44,10 +45,11 @@ MenuDelegateForm {
         return dataValid;
     }
 
+
     itemImage.onSourceChanged: {
         if (itemImageLoaded) {
             if (check_data())
-            write_to_model();
+            model.modelData.setImagePath(backend.getCurrentStallName(), imageBrowser.fileUrl);
         }
         else itemImageLoaded = true;
     }
@@ -90,5 +92,29 @@ MenuDelegateForm {
     removeButton.onActivated: {
         backend.proposeRemoveFood(index);
         enable_buttons();
+    }
+    FileDialog {
+        id: imageBrowser
+        title: "Please choose an image for " + model.modelData.name
+        folder: shortcuts.home
+        nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
+        selectExisting: true
+        selectFolder: false
+        selectMultiple: false
+        onAccepted: {
+            console.log("You chose: " + imageBrowser.fileUrl)
+            itemImage.source = imageBrowser.fileUrl;
+            close()
+        }
+        onRejected: {
+            console.log("Canceled")
+            close()
+        }
+    }
+    changeImageButton.onClicked: {
+        imageBrowser.open();
+        if (check_data()) {
+        model.modelData.setImagePath(backend.getCurrentStallName(),imageBrowser.fileUrl);
+        }
     }
 }

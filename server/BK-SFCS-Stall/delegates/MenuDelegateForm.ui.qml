@@ -27,7 +27,6 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 10
         fillMode: Image.PreserveAspectFit
-        source: "qrc:/qtquickplugin/images/template_image.png"
     }
 
     Button {
