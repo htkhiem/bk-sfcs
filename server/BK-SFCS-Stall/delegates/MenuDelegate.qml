@@ -102,7 +102,7 @@ MenuDelegateForm {
     categoryBox.onActivated: {
         if (check_data()) {
             enable_buttons();
-            backend.proposeEditFood(package_qfood(), index);
+            backend.proposeEditFood(package_qfood(), delegateForm.index);
         }
 
     }
