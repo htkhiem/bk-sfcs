@@ -3,7 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
 MenuDelegateForm {
     id: delegateForm
-
+    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallName());
     property bool itemImageLoaded: false;
     property bool oosCheckboxLoaded: false;
 
@@ -50,6 +50,7 @@ MenuDelegateForm {
         if (itemImageLoaded) {
             if (check_data())
             write_to_model();
+
         }
         else itemImageLoaded = true;
     }
@@ -104,6 +105,7 @@ MenuDelegateForm {
         onAccepted: {
             console.log("You chose: " + imageBrowser.fileUrl)
             itemImage.source = imageBrowser.fileUrl;
+            backend.s
             close()
         }
         onRejected: {
@@ -113,5 +115,8 @@ MenuDelegateForm {
     }
     changeImageButton.onClicked: {
         imageBrowser.open();
+        if (check_data()) {
+        model.modelData.setImagePath(backend.getCurrentStallName(),imageBrowser.fileUrl);
+        }
     }
 }
