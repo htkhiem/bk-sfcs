@@ -49,8 +49,7 @@ MenuDelegateForm {
     itemImage.onSourceChanged: {
         if (itemImageLoaded) {
             if (check_data())
-            write_to_model();
-
+            model.modelData.setImagePath(backend.getCurrentStallName(), imageBrowser.fileUrl);
         }
         else itemImageLoaded = true;
     }
@@ -96,7 +95,7 @@ MenuDelegateForm {
     }
     FileDialog {
         id: imageBrowser
-        title: "Please choose an image for your stall"
+        title: "Please choose an image for " + model.modelData.name
         folder: shortcuts.home
         nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
         selectExisting: true
@@ -105,7 +104,6 @@ MenuDelegateForm {
         onAccepted: {
             console.log("You chose: " + imageBrowser.fileUrl)
             itemImage.source = imageBrowser.fileUrl;
-            backend.s
             close()
         }
         onRejected: {

@@ -46,7 +46,6 @@ MenuEditorForm {
             model: menuViewModel
             delegate: MenuDelegate {
                 width: listView.width
-                itemImage.source: model.modelData.imagePath
                 nameField.text: model.modelData.name
                 descField.text: model.modelData.description
                 priceField.text: model.modelData.price
@@ -75,7 +74,6 @@ MenuEditorForm {
             model: menuViewModel
             delegate: SimpleMenuDelegate {
                 width: listView.width
-                itemImage.source: model.modelData.imagePath
                 nameField.text: model.modelData.name
                 descField.text: model.modelData.description
                 priceField.text: model.modelData.price
