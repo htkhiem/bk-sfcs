@@ -61,31 +61,31 @@ MenuDelegateForm {
 
     descField.onEditingFinished: {
         if (check_data()) {
-            model.modelData.name.description = descField.text;
+            model.modelData.description = descField.text;
         }
     }
 
     priceField.onEditingFinished: {
         if (check_data()) {
-            model.modelData.name.price = parseFloat(priceField.text);
+            model.modelData.price = parseFloat(priceField.text);
         }
     }
     estTimeField.onEditingFinished: {
         if (check_data()) {
-            model.modelData.name.estimatedTime = parseFloat(estTimeField.text);
+            model.modelData.estimatedTime = parseFloat(estTimeField.text);
         }
     }
     oosCheckbox.onCheckedChanged: { // this version waits for confirmation
         if (oosCheckboxLoaded) {
             if (check_data()) {
-                model.modelData.name.isOOS = oosCheckbox.checked;
+                model.modelData.isOOS = oosCheckbox.checked;
             }
         }
         else oosCheckboxLoaded = true;
     }
     categoryBox.onActivated: {
         if (check_data()) {
-            model.modelData.name.type = categoryBox.currentText;
+            model.modelData.type = categoryBox.currentText;
         }
 
     }
