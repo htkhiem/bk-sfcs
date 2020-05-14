@@ -18,5 +18,6 @@
         <file>delegates/CategoryDelegateModel.qml</file>
         <file>SearchPopup.qml</file>
         <file>SearchPopupForm.ui.qml</file>
+        <file>StallMenu.qml</file>
     </qresource>
 </RCC>
