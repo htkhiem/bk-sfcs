@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtGraphicalEffects 1.0
 
 Page {
     id: menuEditor
@@ -71,7 +72,7 @@ Page {
         anchors.bottom: parent.bottom
         anchors.leftMargin: 10
         enabled: false
-        delay: 5000
+        delay: 2000
     }
 
     Button {

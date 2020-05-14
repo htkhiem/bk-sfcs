@@ -34,6 +34,10 @@ MenuEditorForm {
         enable_buttons();
     }
 
+    revertButton.onActivated: {
+        backend.populateMenuViewModel();
+    }
+
     confirmButton.onActivated: backend.applyProposal();
     Component {
         id: fullListView

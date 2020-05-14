@@ -45,14 +45,6 @@ MenuDelegateForm {
         return dataValid;
     }
 
-
-    itemImage.onSourceChanged: {
-        if (itemImageLoaded) {
-            if (check_data())
-            model.modelData.setImagePath(backend.getCurrentStallName(), imageBrowser.fileUrl);
-        }
-        else itemImageLoaded = true;
-    }
     nameField.onEditingFinished: {
         if (check_data()) {
             model.modelData.name = nameField.text;
@@ -76,12 +68,9 @@ MenuDelegateForm {
         }
     }
     oosCheckbox.onCheckedChanged: { // this version waits for confirmation
-        if (oosCheckboxLoaded) {
-            if (check_data()) {
-                model.modelData.isOOS = oosCheckbox.checked;
-            }
+        if (check_data()) {
+            model.modelData.isOOS = oosCheckbox.checked;
         }
-        else oosCheckboxLoaded = true;
     }
     categoryBox.onActivated: {
         if (check_data()) {
@@ -104,6 +93,8 @@ MenuDelegateForm {
         onAccepted: {
             console.log("You chose: " + imageBrowser.fileUrl)
             itemImage.source = imageBrowser.fileUrl;
+            model.modelData.setImagePath(backend.getCurrentStallName(),imageBrowser.fileUrl);
+            enable_buttons();
             close()
         }
         onRejected: {
@@ -111,10 +102,5 @@ MenuDelegateForm {
             close()
         }
     }
-    changeImageButton.onClicked: {
-        imageBrowser.open();
-        if (check_data()) {
-        model.modelData.setImagePath(backend.getCurrentStallName(),imageBrowser.fileUrl);
-        }
-    }
+    changeImageButton.onClicked: imageBrowser.open();
 }
