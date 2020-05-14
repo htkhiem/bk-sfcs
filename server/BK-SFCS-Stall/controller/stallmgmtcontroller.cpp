@@ -39,6 +39,7 @@ bool StallMgmtController::loginAsManager(const QString& psw) {
 }
 void StallMgmtController::proposeAddFood() {
   QFood* new_food = new QFood();
+  new_food->setValid(false);
   menu_view_model.append(new_food);
   p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
 }

@@ -1,6 +1,6 @@
 #include "food.h"
 QFood::QFood(QObject *parent) :
-  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false), is_valid(true) {}
+  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false), estimated_time(0), is_valid(false) {}
 QFood::QFood(const QFood &_food, QObject *parent) :
   Jsonable(parent)
 {
