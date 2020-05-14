@@ -2,18 +2,20 @@
     "image_path": "20200511_112913.jpg",
     "menu": [
         {
-            "description": "",
-            "image path": "",
-            "name": "",
-            "price": 0,
-            "type": ""
+            "description": "fried-chicken stock rice with a side of chicken thighs or wings",
+            "estimated_time": 15,
+            "image_path": "rice_chicken.jpg",
+            "name": "com ga xoi mo",
+            "price": 35000,
+            "type": "Main dishes"
         },
         {
-            "description": "",
-            "image path": "",
-            "name": "",
-            "price": 0,
-            "type": ""
+            "description": "Deep fried chicken",
+            "estimated_time": 5,
+            "image_path": "fried_chicken.jpg",
+            "name": "Fried-chicken",
+            "price": 10000,
+            "type": "Side dishes"
         }
     ],
     "stall_mgmt_password": "77",

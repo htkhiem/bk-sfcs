@@ -2,25 +2,36 @@
     "image_path": "20200511_112843.jpg",
     "menu": [
         {
-            "description": "",
-            "image path": "",
-            "name": "",
-            "price": 0,
-            "type": ""
+            "description": "Bún bò là một trong những đặc sản của xứ Huế, mặc dù món bún này phổ biến trên cả ba miền ở Việt Nam và cả người Việt tại hải ngoại. Tại Huế, món này được gọi đơn giản là bún bò hoặc gọi cụ thể hơn là bún bò giò heo. Các địa phương khác gọi là bún bò Huế, bún bò gốc Huế để chỉ xuất xứ của món ăn này. Món ăn có nguyên liệu chính là bún, thịt bắp bò, giò heo, cùng nước dùng có màu đỏ đặc trưng và vị sả và ruốc. Đôi khi tô bún còn được thêm vào thịt bò tái, chả cua, và các loại nguyên liệu khác tùy theo sở thích của người nấu",
+            "estimated_time": 20,
+            "image_path": "Bunbo.jpg",
+            "name": "Bun bo hue",
+            "price": 40000,
+            "type": "Main dishes"
         },
         {
-            "description": "",
-            "image path": "",
-            "name": "",
-            "price": 0,
-            "type": ""
+            "description": "Cơm hến (baby basket clams rice) is a Vietnamese rice dish originating in Huế.[1] It is made with baby mussels or basket clams and leftover rice and is normally served at room temperature. A variant is Cơm hến sông Hương.",
+            "estimated_time": 10,
+            "image_path": "bun-hen.jpg",
+            "name": "Com hen",
+            "price": 20000,
+            "type": "Side dishes"
         },
         {
-            "description": "",
-            "image path": "",
+            "description": "Caramelized pork and eggs (Vietnamese: Thịt kho tàu) is a Vietnamese dish consisting of marinated pork and boiled eggs braised in coconut juice.",
+            "estimated_time": 30,
+            "image_path": "thit-kho-tau.jpg",
             "name": "",
-            "price": 0,
-            "type": ""
+            "price": 35000,
+            "type": "Main dishes"
+        },
+        {
+            "description": "A custard dessert with clear caramel sauce",
+            "estimated_time": 5,
+            "image_path": "Cremecaramel.jpg",
+            "name": "flan",
+            "price": 10000,
+            "type": "Desserts"
         }
     ],
     "stall_mgmt_password": "viet",
