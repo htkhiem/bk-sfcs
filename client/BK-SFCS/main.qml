@@ -87,8 +87,10 @@ ApplicationWindow {
         cached: true // higher perf
     }
 
-    function openMenu(stallName) {
-        stallMenu.title = stallName;
+    function openMenu(stallIdx) {
+        backend.setCurrentStall(stallIdx);
+        backend.populateMenuViewModel();
+        stallMenu.title = stallViewModel[stallIdx].stallName;
         stackView.push(stallMenu)
     }
 

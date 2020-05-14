@@ -9,7 +9,6 @@ class KioskController : public AbstractController
     Q_OBJECT
 public:
     explicit KioskController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
-
 signals:
 
 };

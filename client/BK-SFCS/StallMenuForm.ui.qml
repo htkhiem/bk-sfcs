@@ -2,26 +2,26 @@ import QtQuick 2.14
 import QtQuick.Controls 2.5
 import "./delegates"
 import QtQuick.Controls.Material 2.12
+import QtGraphicalEffects 1.0
 
 Page {
-    Rectangle {
-        id: page
+    property alias gridView: gridView
+    property alias listView: listView
+    property alias pageBg: pageBg
+    Image {
+        id: pageBg
         width: 1280
         height: 720
-        color: "#43e97b"
-        gradient: Gradient {
-            GradientStop {
-                position: 0
-                color: "#43e97b"
-            }
-
-            GradientStop {
-                position: 1
-                color: "#38f9d7"
-            }
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectCrop
+        FastBlur {
+            id: bgBlur
+            anchors.fill: parent
+            source: parent
+            radius: 64
+            cached: true // higher perf
         }
-        property alias listView: listView
-        property alias gridView: gridView
+
         ScrollView {
             id: scrollView
             spacing: 10
@@ -50,11 +50,11 @@ Page {
                     bottomMargin: 0
                     topMargin: 0
                     orientation: ListView.Horizontal
-                    model: CategoryDelegateModel {}
+                    model: categoryViewModel
                     delegate: CategoryDelegate {
-                        text: symbol + ' ' + name
-                        gradStart.color: colorStart
-                        gradEnd.color: colorEnd
+                        text: model.modelData.symbol + ' ' + model.modelData.name
+                        gradStart.color: model.modelData.colorStart
+                        gradEnd.color: model.modelData.colorEnd
                     }
                 }
 
@@ -69,13 +69,12 @@ Page {
                     contentHeight: gridView.height
 
                     cacheBuffer: 10
-                    model: MenuDelegateModel {}
+                    model: menuViewModel
                     cellHeight: 338
                     cellWidth: 210
                     delegate: MenuDelegate {
-                        itemPrice.text: price
-                        itemImage.source: image
-                        itemName.text: name
+                        itemPrice.text: model.modelData.price
+                        itemName.text: model.modelData.name
                     }
                 }
             }

@@ -59,7 +59,7 @@ Item {
         anchors.topMargin: 5
         anchors.horizontalCenter: parent.horizontalCenter
         source: "qrc:/qtquickplugin/images/template_image.png"
-        fillMode: Image.PreserveAspectFit
+        fillMode: Image.PreserveAspectCrop
         layer.enabled: true
         layer.effect: OpacityMask {
             maskSource: Item {

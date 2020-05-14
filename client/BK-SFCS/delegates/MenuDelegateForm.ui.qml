@@ -12,7 +12,7 @@ Item {
         id: itemBg
         width: parent.width
         height: parent.height
-        color: "#ccffffff"
+        color: "#ffffff"
         radius: 10
     }
     DropShadow {
@@ -78,7 +78,7 @@ Item {
         anchors.top: itemBg.top
         anchors.topMargin: 5
         source: "qrc:/qtquickplugin/images/template_image.png"
-        fillMode: Image.PreserveAspectFit
+        fillMode: Image.PreserveAspectCrop
         layer.enabled: true
         layer.effect: OpacityMask {
             maskSource: Item {

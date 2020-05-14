@@ -8,8 +8,8 @@ class Category : public QObject {
   Q_OBJECT
   Q_PROPERTY(QString name READ getName WRITE setName)
   Q_PROPERTY(QChar symbol READ getSymbol WRITE setSymbol)
-  Q_PROPERTY(QColor color_start READ getStartColor WRITE setStartColor)
-  Q_PROPERTY(QColor color_end READ getEndColor WRITE setEndColor)
+  Q_PROPERTY(QColor colorStart READ getStartColor WRITE setStartColor)
+  Q_PROPERTY(QColor colorEnd READ getEndColor WRITE setEndColor)
   Q_PROPERTY(bool visible READ isVisible WRITE toggleVisibility)
   QString name;
   QChar symbol; // has to be QChar, we don't want to deal with wchar_t for

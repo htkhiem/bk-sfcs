@@ -3,5 +3,5 @@
 KioskController::KioskController(QQmlApplicationEngine *eng, QObject *parent)
     : AbstractController(eng, parent)
 {
-
+    loadData();
 }

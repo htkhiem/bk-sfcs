@@ -31,7 +31,7 @@ void OrderInfo::setQuantity(int quantity){
 }
 
 double OrderInfo::getTotal(){
-    return (this->food.price * this->quantity);
+    return (this->food.getPrice() * this->quantity);
 }
 
 QDateTime OrderInfo::getReceived(){

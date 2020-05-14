@@ -30,12 +30,12 @@ Page {
         cellHeight: 274
         cellWidth: 210
         anchors.fill: parent
-        model: StallDelegateModel {}
+        model: stallViewModel
         delegate: StallDelegate {
-            stallImage.source: image
-            stallName.text: name
-            gradStart.color: colorStart
-            gradEnd.color: colorEnd
+            stallImage.source: model.modelData.imagePath
+            stallName.text: model.modelData.stallName
+            gradStart.color: "#ffffff"
+            gradEnd.color: "#ffffff"
         }
     }
 }

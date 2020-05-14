@@ -2,7 +2,7 @@
 #include "category.h"
 #include "food.h"
 AbstractController::AbstractController(QQmlApplicationEngine *eng, QObject *parent)
-  : QObject(parent), p_engine(eng), current_stall_idx(-1)
+  : QObject(parent), p_engine(eng), current_stall_idx(0)
 {
   populateCategoryViewModel();
 }

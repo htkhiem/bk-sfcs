@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.12
 StallMenuForm {
+    pageBg.source: backend.getCurrentStallImagePath();
     OrderPopup {
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
