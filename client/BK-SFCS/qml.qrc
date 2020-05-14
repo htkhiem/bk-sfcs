@@ -15,7 +15,6 @@
         <file>OrderPopupForm.ui.qml</file>
         <file>delegates/CategoryDelegate.qml</file>
         <file>delegates/CategoryDelegateForm.ui.qml</file>
-        <file>delegates/CategoryDelegateModel.qml</file>
         <file>SearchPopup.qml</file>
         <file>SearchPopupForm.ui.qml</file>
         <file>StallMenu.qml</file>
