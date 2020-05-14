@@ -11,6 +11,7 @@ Rectangle {
     property alias removeButton: removeButton
     property alias priceField: priceField
     property alias oosCheckbox: oosCheckbox
+    property alias estTimeField: estTimeField
     border.color: "#8a8a8a"
     border.width: 1
     property alias descField: descField
@@ -26,7 +27,6 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 10
         fillMode: Image.PreserveAspectFit
-        source: "qrc:/qtquickplugin/images/template_image.png"
     }
 
     Button {
@@ -79,7 +79,7 @@ Rectangle {
         anchors.rightMargin: 10
         anchors.top: parent.top
         anchors.topMargin: 10
-        placeholderText: qsTr("Price")
+        placeholderText: qsTr("Price in VND")
     }
 
     CheckBox {
@@ -121,7 +121,8 @@ Rectangle {
     ComboBox {
         enabled: false
         id: categoryBox
-        textRole: ""
+        textRole: "name"
+        model: categoryViewModel
         anchors.top: estTimeField.bottom
         anchors.topMargin: 10
         anchors.left: oosCheckbox.left

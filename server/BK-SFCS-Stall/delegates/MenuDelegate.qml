@@ -1,27 +1,106 @@
-import QtQuick 2.0
+import QtQuick 2.12
+import QtQuick.Controls 2.5
+import QtQuick.Dialogs 1.3
 MenuDelegateForm {
-    property int itemImageChangeTimes: 0;
-    property int oosCheckboxChangeTimes: 0;
-    itemImage.onSourceChanged: {
-        itemImageChangeTimes++;
-        if (itemImageChangeTimes > 1)
-            enable_buttons()
+    id: delegateForm
+    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallName());
+    property bool itemImageLoaded: false;
+    property bool oosCheckboxLoaded: false;
+
+    function check_data() {
+        var dataValid = true;
+        if (nameField.text == "") {
+            nameField.placeholderText = "Name cannot be blank!";
+            dataValid = false;
+        }
+        console.log(index);
+        for (var i = 0; i < menuViewModel.length; ++i) {
+            // index is a delegate role, available automatically
+            console.log(i);
+            if(i !== index && menuViewModel[i].name === nameField.text) {
+                nameField.text = "";
+                nameField.placeholderText = "Another item with this name already exists!";
+                dataValid = false;
+                break;
+            }
+        }
+        if (descField.text == "") {
+            descField.placeholderText = "Description cannot be blank!";
+            dataValid = false;
+        }
+        var priceFieldNum = parseFloat(priceField.text);
+        if (isNaN(priceFieldNum) || priceFieldNum < 1) {
+            priceField.text = "";
+            priceField.placeholderText = "Must be >= 1!"
+            dataValid = false;
+        }
+        var estTimeFieldNum = parseFloat(estTimeField.text);
+        if (isNaN(estTimeFieldNum) || estTimeFieldNum < 1) {
+            estTimeField.text = "";
+            estTimeField.placeholderText = "Must be >= 1!"
+            dataValid = false;
+        }
+        model.modelData.isValid = dataValid;
+        enable_buttons();
+        return dataValid;
     }
+
     nameField.onEditingFinished: {
-        enable_buttons()
+        if (check_data()) {
+            model.modelData.name = nameField.text;
+        }
     }
 
     descField.onEditingFinished: {
-        enable_buttons()
+        if (check_data()) {
+            model.modelData.description = descField.text;
+        }
     }
 
     priceField.onEditingFinished: {
-        enable_buttons()
+        if (check_data()) {
+            model.modelData.price = parseFloat(priceField.text);
+        }
     }
+    estTimeField.onEditingFinished: {
+        if (check_data()) {
+            model.modelData.estimatedTime = parseFloat(estTimeField.text);
+        }
+    }
+    oosCheckbox.onCheckedChanged: { // this version waits for confirmation
+        if (check_data()) {
+            model.modelData.isOOS = oosCheckbox.checked;
+        }
+    }
+    categoryBox.onActivated: {
+        if (check_data()) {
+            model.modelData.type = categoryBox.currentText;
+        }
 
-    oosCheckbox.onCheckedChanged: {
-        oosCheckboxChangeTimes++;
-        if(oosCheckboxChangeTimes > 1)
-            enable_buttons()
     }
+    removeButton.onActivated: {
+        backend.proposeRemoveFood(index);
+        enable_buttons();
+    }
+    FileDialog {
+        id: imageBrowser
+        title: "Please choose an image for " + model.modelData.name
+        folder: shortcuts.home
+        nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
+        selectExisting: true
+        selectFolder: false
+        selectMultiple: false
+        onAccepted: {
+            console.log("You chose: " + imageBrowser.fileUrl)
+            itemImage.source = imageBrowser.fileUrl;
+            model.modelData.setImagePath(backend.getCurrentStallName(),imageBrowser.fileUrl);
+            enable_buttons();
+            close()
+        }
+        onRejected: {
+            console.log("Canceled")
+            close()
+        }
+    }
+    changeImageButton.onClicked: imageBrowser.open();
 }

@@ -9,8 +9,18 @@ class QFood : public Jsonable {
   Q_PROPERTY(QString type READ getType WRITE setType)
   Q_PROPERTY(QString description READ getDescription WRITE setDescription)
   Q_PROPERTY(double price READ getPrice WRITE setPrice)
+  Q_PROPERTY(int estimatedTime READ getTime WRITE setTime)
+  Q_PROPERTY(bool isOOS READ isOOS WRITE setOOS)
+  Q_PROPERTY(bool isValid READ isValid WRITE setValid)
+  /** Basic fields  */
+  QString name, type, description, image_name;
+  double price;
+  bool is_OOS;
+  int estimated_time;
+
+  /** Runtime field for MenuEditor only */
+  bool is_valid;
 public:
-  
   /**
    * Basic constructor, links to QObject through Jsonable.
    * @param parent Pointer to parent QObject (if there is any).
@@ -28,10 +38,6 @@ public:
    */
   QFood &operator=(const QFood &);
   
-  /** Basic fields  */
-  QString name, type, description,image_path;
-  double price = 0;
-  
   /**
    * Read from a Food-type JSON object.
    * @param json Object read from file.
@@ -45,15 +51,24 @@ public:
   void write(QJsonObject &json) const;
 public slots:
   /** Basic getters/setters */
-  QString getImagePath()const;
-  void setImagePath(QString image_path);
+  /** getImagePath and setImagePath needs stall name for absolute path */
+  QUrl getImagePath(const QString& stall_name) const;
+  void setImagePath(const QString& stall_name, const QUrl& image_path);
   QString getName() const;
-  void setName(QString name);
+  void setName(const QString& name);
   QString getType() const;
-  void setType(QString type);
+  void setType(const QString& type);
   QString getDescription() const;
-  void setDescription(QString des);
+  void setDescription(const QString& desc);
   double getPrice() const;
   void setPrice(double price);
+  bool isOOS();
+  void setOOS(bool oos);
+  void setTime(int _time);
+  int getTime();
+
+  bool isValid();
+  void setValid(bool valid);
 };
+
 #endif // FOOD_H

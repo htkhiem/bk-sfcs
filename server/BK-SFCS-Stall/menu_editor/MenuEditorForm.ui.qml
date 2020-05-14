@@ -1,11 +1,12 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import "./delegates"
+import QtGraphicalEffects 1.0
 
 Page {
     id: menuEditor
     width: 1280
     height: 720
+    property alias listViewLoader: listViewLoader
     property alias addButton: addButton
     property alias mgrPswField: mgrPswField
     property alias authorizeButton: authorizeButton
@@ -30,7 +31,7 @@ Page {
         Loader {
             id: listViewLoader
             anchors.fill: parent
-            source: "MenuEditorSimpleListView.qml"
+            sourceComponent: restrictedListView
         }
     }
 
@@ -51,7 +52,7 @@ Page {
         text: qsTr("Confirm changes")
         visible: false
         enabled: false
-        delay: 5000
+        delay: 1000
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.right: parent.right
@@ -71,7 +72,7 @@ Page {
         anchors.bottom: parent.bottom
         anchors.leftMargin: 10
         enabled: false
-        delay: 5000
+        delay: 2000
     }
 
     Button {
@@ -88,6 +89,7 @@ Page {
     TextField {
         visible: true
         id: mgrPswField
+        echoMode: "Password"
         anchors.left: parent.left
         anchors.leftMargin: 10
         anchors.right: authorizeButton.left
@@ -134,7 +136,7 @@ Page {
 
             PropertyChanges {
                 target: listViewLoader
-                source: "MenuEditorFullListView.qml"
+                sourceComponent: fullListView
             }
             PropertyChanges {
                 target: addButton
@@ -146,8 +148,7 @@ Page {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.5}D{i:10;anchors_x:589}D{i:11;anchors_x:30}D{i:12;anchors_x:30}
-D{i:9;anchors_x:589}D{i:3;anchors_x:589}D{i:4;anchors_x:589}D{i:5;anchors_x:30}D{i:6;anchors_x:30}
+    D{i:0;formeditorZoom:0.5}
 }
 ##^##*/
 

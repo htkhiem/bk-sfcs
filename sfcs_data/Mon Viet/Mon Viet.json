@@ -1,28 +1,29 @@
 {
-  "image_path": "",
-  "menu": [
-    {
-      "description": "Hue traditional steamed rice cake with grounded pork and shrimp fillings",
-      "image path": "",
-      "name": "Banh Nam",
-      "price": 15000,
-      "type": "appetizer"
-    },
-    {
-      "description": "Pork based soup with white rice noodle and a side of pork piece",
-      "image path": "",
-      "name": "Bun bo Hue",
-      "price": 40000,
-      "type": "Special"
-    },
-    {
-      "description": "egg and milk steamed dessert with reduced cofee caramel sauce",
-      "image path": "",
-      "name": "flan",
-      "price": 10000,
-      "type": "dessert"
-    }
-  ],
-  "stall_name": "Mon Viet",
-  "stall_password": "monviet"
+    "image_path": "20200511_112843.jpg",
+    "menu": [
+        {
+            "description": "",
+            "image path": "",
+            "name": "",
+            "price": 0,
+            "type": ""
+        },
+        {
+            "description": "",
+            "image path": "",
+            "name": "",
+            "price": 0,
+            "type": ""
+        },
+        {
+            "description": "",
+            "image path": "",
+            "name": "",
+            "price": 0,
+            "type": ""
+        }
+    ],
+    "stall_mgmt_password": "viet",
+    "stall_name": "Mon Viet",
+    "stall_password": "monviet"
 }

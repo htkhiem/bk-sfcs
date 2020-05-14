@@ -1,14 +1,15 @@
 {
-  "image_path": "",
-  "menu": [
-    {
-      "description": "Traditional sea-based stock white noodles",
-      "image path": "",
-      "name": "Bun moc",
-      "price": 40000,
-      "type": "side dish"
-    }
-  ],
-  "stall_name": "Bun moc Hung map",
-  "stall_password": "hungmap"
+    "image_path": "20200511_112903.jpg",
+    "menu": [
+        {
+            "description": "",
+            "image path": "",
+            "name": "",
+            "price": 0,
+            "type": ""
+        }
+    ],
+    "stall_mgmt_password": "map",
+    "stall_name": "Bun moc Hung map",
+    "stall_password": "hungmap"
 }

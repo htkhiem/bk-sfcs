@@ -5,6 +5,7 @@ Rectangle {
     id: bg
     width: 1280
     height: 220
+    property alias estTimeField: estTimeField
     property alias categoryBox: categoryBox
     property alias itemImage: itemImage
     property alias bg: bg
@@ -26,7 +27,6 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 10
         fillMode: Image.PreserveAspectFit
-        source: "qrc:/qtquickplugin/images/template_image.png"
     }
 
     Button {
@@ -68,6 +68,7 @@ Rectangle {
 
     TextField {
         id: priceField
+        placeholderText: "Price in VND"
         anchors.left: oosCheckbox.left
         anchors.leftMargin: 0
         font.bold: true
@@ -75,7 +76,6 @@ Rectangle {
         anchors.rightMargin: 10
         anchors.top: parent.top
         anchors.topMargin: 10
-        placeholderText: qsTr("Price")
     }
 
     CheckBox {
@@ -114,7 +114,8 @@ Rectangle {
 
     ComboBox {
         id: categoryBox
-        textRole: ""
+        textRole: "name"
+        model: categoryViewModel
         anchors.top: estTimeField.bottom
         anchors.topMargin: 10
         anchors.left: oosCheckbox.left
@@ -128,7 +129,8 @@ Rectangle {
 Designer {
     D{i:0;formeditorZoom:0.6600000262260437}D{i:2;anchors_x:15;anchors_y:177}D{i:3;anchors_x:304;anchors_y:60}
 D{i:4;anchors_x:304;anchors_y:112}D{i:5;anchors_width:350;anchors_x:968;anchors_y:25}
-D{i:6;anchors_y:56}D{i:8;anchors_width:350;anchors_x:1072;anchors_y:25}D{i:9;anchors_x:1130;anchors_y:106}
+D{i:6;anchors_y:56}D{i:7;anchors_y:56}D{i:8;anchors_width:350;anchors_x:1072;anchors_y:25}
+D{i:9;anchors_width:350;anchors_x:1130;anchors_y:106}
 }
 ##^##*/
 

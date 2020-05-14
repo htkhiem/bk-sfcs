@@ -13,11 +13,17 @@ Window {
     }
     function login(stall_idx) {
         console.log(stall_idx);
-        backend.login(stall_idx, loginForm.passwordInput.text);
-        login_window.close();
-        var main_window = Qt.createComponent("Window.qml");
-        var window = main_window.createObject(this);
-        window.show();
+        var login_result = backend.login(stall_idx, loginForm.passwordInput.text);
+        if (login_result) {
+            login_window.close();
+            var main_window = Qt.createComponent("Window.qml");
+            var window = main_window.createObject(this);
+            window.show();
+        }
+        else {
+            loginForm.passwordInput.text = "";
+            loginForm.passwordInput.placeholderText = "Invalid password!";
+        }
     }
 
     LoginForm {

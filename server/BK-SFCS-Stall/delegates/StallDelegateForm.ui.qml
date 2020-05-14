@@ -27,8 +27,7 @@ Rectangle {
         y: 0
         width: 200
         height: 200
-        source: "qrc:/qtquickplugin/images/template_image.png"
-        fillMode: Image.PreserveAspectFit
+        fillMode: Image.PreserveAspectCrop
     }
     MouseArea {
         id: stallMouseArea

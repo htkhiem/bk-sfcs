@@ -2,19 +2,16 @@
     <qresource prefix="/">
         <file>Window.qml</file>
         <file>HomeForm.ui.qml</file>
-        <file>MenuEditorForm.ui.qml</file>
         <file>WaitlistForm.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Login.qml</file>
         <file>LoginForm.ui.qml</file>
-        <file>delegates/StallDelegateModel.qml</file>
         <file>placeholders/200.png</file>
         <file>delegates/StallDelegate.qml</file>
         <file>delegates/StallDelegateForm.ui.qml</file>
         <file>delegates/MenuDelegateForm.ui.qml</file>
         <file>delegates/OrderDelegate.qml</file>
         <file>delegates/OrderDelegateForm.ui.qml</file>
-        <file>MenuEditor.qml</file>
         <file>delegates/MenuDelegate.qml</file>
         <file>WaitList.qml</file>
         <file>Main.qml</file>
@@ -22,9 +19,9 @@
         <file>Home.qml</file>
         <file>delegates/SimpleMenuDelegate.qml</file>
         <file>delegates/SimpleMenuDelegateForm.ui.qml</file>
-        <file>MenuEditorSimpleListView.qml</file>
-        <file>MenuEditorFullListView.qml</file>
         <file>StallEditor.qml</file>
         <file>StallEditorForm.ui.qml</file>
+        <file>menu_editor/MenuEditor.qml</file>
+        <file>menu_editor/MenuEditorForm.ui.qml</file>
     </qresource>
 </RCC>

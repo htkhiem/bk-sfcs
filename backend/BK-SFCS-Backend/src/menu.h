@@ -8,7 +8,7 @@
 class Stall : public Jsonable {
   Q_OBJECT
   Q_PROPERTY(QString stallName READ getStallName WRITE setStallName)
-
+  Q_PROPERTY(QUrl imagePath READ getImagePath WRITE setImagePath)
 public:
   /**
    * Basic constructor.
@@ -26,7 +26,7 @@ public:
   /** Basic fields */
   QString stallName;
   QVector<QFood> menu;
-  QString imagePath;
+  QString image_name;
   QString password;
   QString mgmt_password;
   
@@ -54,9 +54,10 @@ public slots:
   QVector<QFood>* getEditableMenu();
   bool addFood(QFood item);
   bool removeFood(QFood item);
-
-  QString getImagePath() const;
-  void setImagePath(const QString imagePath);
+  /** Returns absolute path to copy stored in stall folder */
+  QUrl getImagePath() const;
+  /** Copies image to stall folder then set name to imagePath field */
+  void setImagePath(const QUrl& imgpath);
   QString getStallName() const;
   void setStallName(const QString& name);
   QString getPassword() const;
