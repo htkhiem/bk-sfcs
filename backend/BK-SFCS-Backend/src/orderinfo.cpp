@@ -94,12 +94,11 @@ void OrderInfo::read(const QJsonObject &json){
 
 
 }
-void OrderInfo::write(QJsonObject &json) const{
-
+void OrderInfo::write(QJsonObject &json) const {
   QJsonObject temp;
   food.write(temp);
   temp["quantity"] = quantity;
-  json["order:"] = temp;
+  json["order"] = temp;
   json["status"] = status;
   json["time received"] = time_received.toMSecsSinceEpoch();
   switch (status)

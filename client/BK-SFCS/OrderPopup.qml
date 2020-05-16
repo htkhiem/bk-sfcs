@@ -6,8 +6,11 @@ OrderPopupForm {
     property int price;
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     quantitySelector.onCurrentIndexChanged: {
-        orderButton.text = orderPopup.price * (quantitySelector.currentIndex + 1) + qsTr("VND\nORDER")
+        orderButton.text = price * (quantitySelector.currentIndex + 1) + qsTr(" VND\nORDER")
+        backend.setOrderQuantity(quantitySelector.currentIndex + 1);
     }
+    orderButton.onActivated: backend.sendOrder();
+
     enter: Transition {
         NumberAnimation {
             property: "opacity"
@@ -23,5 +26,5 @@ OrderPopupForm {
             to: 0
             duration: 100
         }
-    }
+    }    
 }

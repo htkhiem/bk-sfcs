@@ -11,7 +11,6 @@ class OrderInfo : public Jsonable {
   Q_PROPERTY(int quantity READ getQuantity)
   Q_PROPERTY(QString itemName READ getItemName)
   Q_PROPERTY(double total READ getTotal)
-  Q_PROPERTY(QUrl imagePath READ getItemImagePath)
 
   OrderStatus status;
   QFood food;

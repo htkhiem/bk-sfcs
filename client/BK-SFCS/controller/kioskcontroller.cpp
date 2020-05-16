@@ -15,7 +15,7 @@ void KioskController::setCurrentStallIdx(int idx) {
 }
 void KioskController::setOrderFoodItem(int idx) {
   if (idx < menu_view_model.size() && idx >= 0)
-    current_order.setFoodItem(*((QFood *) menu_view_model[idx]));
+    current_order.setFoodItem(getCurrentStall()->getMenu()->at(idx));
   else throw range_error("Selected food item index out of range.");
 }
 void KioskController::setOrderQuantity(int qty) {
@@ -26,5 +26,20 @@ void KioskController::setOrderMethod(int method) {
   // TODO
 }
 void KioskController::sendOrder() {
+  current_order.setStatus(waiting);
+  QDir stall_dir = QDir::home();
+  stall_dir.cd("sfcs_data");
+  stall_dir.cd(getCurrentStallName());
+  stall_dir.mkdir("waitlist");
+  stall_dir.cd("waitlist");
 
+  QFile order_file(stall_dir.filePath(QDateTime::currentDateTime().toString() + QString(".json")));
+  if (!order_file.open(QIODevice::WriteOnly)) {
+      throw runtime_error("Cannot write current order!");
+    }
+  QJsonObject order_json_obj;
+  current_order.write(order_json_obj);
+  QJsonDocument order_json_doc(order_json_obj);
+  order_file.write(order_json_doc.toJson());
+  order_file.close();
 }

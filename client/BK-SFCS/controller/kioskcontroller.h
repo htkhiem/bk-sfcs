@@ -8,7 +8,7 @@
 class KioskController : public AbstractController
 {
     Q_OBJECT
-    Q_PROPERTY(currentStallIdx READ getCurrentStallIdx WRITE setCurrentStallIdx)
+    Q_PROPERTY(int currentStallIdx READ getCurrentStallIdx WRITE setCurrentStallIdx)
     OrderInfo current_order;
     int current_stall_idx;
 public:

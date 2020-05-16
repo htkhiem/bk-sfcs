@@ -8,9 +8,13 @@ StallMenuForm {
         id: orderPopup
         onClosed: refocus(); // stop blurring background
     }
-    function populateOrderPopup(name, desc, price, imgPath) {
+    function populateOrderPopup(name, desc, time, price, imgPath) {
         orderPopup.name.text = name;
-        orderPopup.price = price;
+        orderPopup.desc.text = desc;
+        orderPopup.estTime.text = qsTr("Estimated waiting time: ") + time + qsTr(" minutes");
+        orderPopup.price = parseFloat(price);
+        orderPopup.quantitySelector.currentIndex = 0;
+        orderPopup.orderButton.text = price + " VND\nORDER";
         orderPopup.image.source = imgPath;
         blurUnfocused();
         orderPopup.open();

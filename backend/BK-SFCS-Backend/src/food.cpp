@@ -12,7 +12,14 @@ QFood::QFood(const QFood &_food, QObject *parent) :
   estimated_time = _food.estimated_time;
   is_OOS = _food.is_OOS;
 }
-QFood& QFood::operator=(const QFood &){
+QFood& QFood::operator=(const QFood & _food){
+  name = _food.name;
+  price = _food.price;
+  description = _food.description;
+  type = _food.type;
+  image_name = _food.image_name;
+  estimated_time = _food.estimated_time;
+  is_OOS = _food.is_OOS;
   return *this;
 };
 QUrl QFood::getImagePath(const QString &stall_name) const {
