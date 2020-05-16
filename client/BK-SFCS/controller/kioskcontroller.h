@@ -16,6 +16,7 @@ public:
 public slots:
     int getCurrentStallIdx();
     void setCurrentStallIdx(int idx);
+    void searchFilter(const QString& _input);
     void setOrderFoodItem(int idx);
     void setOrderQuantity(int qty);
     void setOrderMethod(int method); // TODO

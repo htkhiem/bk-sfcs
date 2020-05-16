@@ -57,6 +57,7 @@ ApplicationWindow {
                 text: "Search 🔎"
                 visible: stackView.depth > 1 ? true : false
                 onClicked: {
+                    blurUnfocused();
                     searchPopup.open()
                 }
             }
