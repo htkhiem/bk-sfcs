@@ -62,7 +62,7 @@ Page {
                     font.pointSize: 16
                     verticalAlignment: Qt.AlignVCenter
                 }
-                visible: stackView.depth > 1 ? true : false
+
             }
         }
     }

@@ -17,6 +17,7 @@ MainForm {
             stallMenuLoader.source = ""
         }
     }
+    backButton.visible: (stackView.depth > 1 && isReady()) ? true : false
     searchButton.onClicked: {
         blurUnfocused()
         searchPopup.open()
@@ -34,26 +35,9 @@ MainForm {
         id: searchPopup
         onOpened: isSearching = true;
     }
-    FastBlur {
-        id: bgBlur
-        anchors.fill: parent
-        source: parent
-        radius: 32
-        visible: false
-        opacity: 0
-        Behavior on opacity {
-            NumberAnimation {
-                id: opacityFade
-                duration: 200
-            }
-        }
-    }
+
     // Signal spies to wait for signals before doing stuff
-    SignalSpy {
-        id: fadeOutWait
-        target: opacityFade
-        signalName: "finished"
-    }
+
     SignalSpy {
         id: menuLoadWait
         target: stallMenuLoader
@@ -76,13 +60,5 @@ MainForm {
         console.log(stackView.depth)
     }
 
-    function blurUnfocused() {
-        bgBlur.visible = true;
-        bgBlur.opacity = 1;
-    }
-    function refocus() {
-        bgBlur.opacity = 0;
-        fadeOutWait.wait(1000);
-        bgBlur.visible = false;
-    }
+
 }

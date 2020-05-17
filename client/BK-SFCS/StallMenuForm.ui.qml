@@ -16,7 +16,7 @@ Page {
         FastBlur {
             id: bgBlur
             anchors.fill: parent
-            source: parent
+            source: pageBg
             radius: 64
             cached: true // higher perf
         }

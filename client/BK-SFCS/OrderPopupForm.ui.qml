@@ -76,7 +76,6 @@ Popup {
             anchors.top: parent.top
             anchors.topMargin: 5
             fillMode: Image.PreserveAspectCrop
-            source: "qrc:/qtquickplugin/images/template_image.png"
             layer.enabled: true
             layer.effect: OpacityMask {
                 maskSource: Item {
