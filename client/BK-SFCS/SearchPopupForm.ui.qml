@@ -1,52 +1,77 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.5
+import QtGraphicalEffects 1.14
 
 Popup {
+    id: popup
     width: 600
     height: 70
-    leftMargin: -1
-    rightPadding: 12
     property alias searchButton: searchButton
     property alias searchField: searchField
+    background: Rectangle {
+        anchors.fill: parent
+        radius: 10
+    }
+    rightPadding: 0
+    leftPadding: 0
+    bottomPadding: 0
+    topPadding: 0
+    padding: 0
+    margins: 0
+    rightMargin: 0
+    leftMargin: 0
+    bottomMargin: 0
+    topMargin: 0
 
-    Rectangle {
-        id: bg
-        color: "#ffffff"
-        radius: 0
-        anchors.rightMargin: 0
+    Row {
+        id: row
+        anchors.leftMargin: 5
+        spacing: 5
         anchors.fill: parent
 
         TextField {
             id: searchField
-            y: 8
-            height: 55
+            x: 5
+            y: 5
+            width: 470
+            height: 60
             font.pointSize: 16
-            anchors.right: searchButton.left
-            anchors.rightMargin: 0
-            anchors.left: parent.left
-            anchors.leftMargin: 10
-            anchors.verticalCenter: parent.verticalCenter
             placeholderText: qsTr("Item name")
+            background: Rectangle {
+                radius: 5
+                border.color: "#737373"
+                border.width: 2
+                anchors.fill: parent
+            }
         }
 
         Button {
             id: searchButton
-            x: 615
-            y: 19
-            width: 80
-            height: 55
+            y: 5
+            width: 115
+            height: 60
+            contentItem: Text {
+                text: searchButton.text
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.bold: true
+                color: "#ffffff"
+                font.pointSize: 14
+            }
             text: qsTr("Search")
             font.pointSize: 11
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            anchors.verticalCenter: parent.verticalCenter
+            background: Rectangle {
+                color: "#2f29d1"
+                radius: 5
+                anchors.fill: parent
+            }
         }
     }
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.8999999761581421}
+    D{i:0;formeditorZoom:3}
 }
 ##^##*/
 

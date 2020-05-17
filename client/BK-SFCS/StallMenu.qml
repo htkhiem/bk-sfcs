@@ -6,7 +6,6 @@ StallMenuForm {
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
         id: orderPopup
-        onClosed: refocus(); // stop blurring background
     }
     function populateOrderPopup(name, desc, time, price, imgPath) {
         orderPopup.name.text = name;

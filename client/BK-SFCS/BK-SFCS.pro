@@ -22,7 +22,7 @@ SOURCES += \
     ../../backend/BK-SFCS-Backend/src/menu.cpp \
     ../../backend/BK-SFCS-Backend/src/orderinfo.cpp \
     controller/kioskcontroller.cpp \
-        main.cpp \
+    main.cpp
 
 RESOURCES += qml.qrc
 
@@ -50,3 +50,5 @@ HEADERS += \ \
     ../../backend/BK-SFCS-Backend/src/menu.h \
     ../../backend/BK-SFCS-Backend/src/orderinfo.h \
     controller/kioskcontroller.h
+
+DISTFILES +=

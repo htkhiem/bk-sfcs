@@ -7,10 +7,10 @@ Page {
     property alias gridView: gridView
     property alias listView: listView
     property alias pageBg: pageBg
+    width: 1280
+    height: 720
     Image {
         id: pageBg
-        width: 1280
-        height: 720
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
         FastBlur {
@@ -83,7 +83,7 @@ Page {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.8999999761581421;height:480;width:640}
+    D{i:0;formeditorZoom:0.8999999761581421}
 }
 ##^##*/
 

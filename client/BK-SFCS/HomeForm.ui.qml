@@ -6,17 +6,14 @@ Page {
     width: 1280
     height: 720
     property alias stallGrid: stallGrid
-
-    title: qsTr("Select a stall")
-    Rectangle {
+    background: Rectangle {
         anchors.fill: parent
         color: "#ffffd3"
     }
+    title: qsTr("Select a stall")
 
     GridView {
         id: stallGrid
-        x: 10
-        y: 10
         flickableDirection: Flickable.AutoFlickDirection
         anchors.rightMargin: 10
         anchors.leftMargin: 10
@@ -39,3 +36,9 @@ Page {
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.6600000262260437}
+}
+##^##*/
