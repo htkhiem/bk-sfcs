@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.11
 import QtGraphicalEffects 1.14
 
 ApplicationWindow {
+    property bool isSearching: false
     id: window
     visible: true
     width: 1280
@@ -32,11 +33,16 @@ ApplicationWindow {
             anchors.fill: parent
             ToolButton {
                 id: backButton
-                text: "‹ Back"  // icon
+                text: (isSearching) ? "‹ End searching" : "‹ Back"  // icon
                 visible: stackView.depth > 1 ? true : false
                 font.pixelSize: Qt.application.font.pixelSize * 1.6
                 onClicked: {
-                    stackView.pop()
+                    if (isSearching) {
+                        backend.populateMenuViewModel();
+                        isSearching = false;
+                    }
+                    else
+                        stackView.pop()
                 }
             }
 
@@ -78,6 +84,7 @@ ApplicationWindow {
     }
     SearchPopup {
         id: searchPopup
+        onOpened: isSearching = true;
     }
     FastBlur {
         id: bgBlur
@@ -86,7 +93,7 @@ ApplicationWindow {
         radius: 32
         visible: false
         cached: true // higher perf
-    }
+}
 
     function openMenu(stallIdx) {
         backend.setCurrentStall(stallIdx);
