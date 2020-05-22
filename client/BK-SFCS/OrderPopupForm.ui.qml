@@ -7,6 +7,8 @@ Popup {
     property alias name: name
     width: 670
     height: 670
+    property alias desc: desc
+    property alias estTime: estTime
     property alias paymentMethodBox: paymentMethodBox
     rightPadding: 0
     leftPadding: 0
@@ -74,7 +76,6 @@ Popup {
             anchors.top: parent.top
             anchors.topMargin: 5
             fillMode: Image.PreserveAspectCrop
-            source: "qrc:/qtquickplugin/images/template_image.png"
             layer.enabled: true
             layer.effect: OpacityMask {
                 maskSource: Item {
@@ -102,18 +103,62 @@ Popup {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 5
 
-            Text {
-                id: name
-                x: 311
-                y: -476
-                color: "#ffffff"
-                text: qsTr("Text")
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top: parent.top
-                anchors.topMargin: 24
-                font.pixelSize: 24
+            ScrollView {
+                id: scrollView
+                topPadding: 0
+                padding: 0
+                spacing: 0
+                anchors.rightMargin: 10
+                anchors.leftMargin: 10
+                anchors.bottomMargin: 10
+                anchors.topMargin: 10
+                anchors.fill: parent
+
+                Text {
+                    id: desc
+                    color: "#ffffff"
+                    text: qsTr("Text")
+                    anchors.left: parent.left
+                    anchors.leftMargin: 0
+                    anchors.right: parent.right
+                    anchors.rightMargin: 0
+                    anchors.top: estTime.bottom
+                    anchors.topMargin: 3
+                    wrapMode: Text.WordWrap
+                    styleColor: "#ffffff"
+                    font.pixelSize: 14
+                }
+
+                Text {
+                    id: estTime
+                    color: "#ffffff"
+                    text: qsTr("Text")
+                    anchors.left: parent.left
+                    anchors.leftMargin: 0
+                    anchors.top: name.bottom
+                    anchors.topMargin: -1
+                    font.italic: true
+                    font.pixelSize: 16
+                }
+
+                Text {
+                    id: name
+                    x: 0
+                    y: 0
+                    color: "#ffffff"
+                    text: qsTr("Text")
+                    anchors.right: parent.right
+                    anchors.rightMargin: 0
+                    anchors.top: parent.top
+                    anchors.topMargin: 0
+                    anchors.left: parent.left
+                    anchors.leftMargin: 0
+                    wrapMode: Text.WordWrap
+                    font.bold: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignLeft
+                    font.pixelSize: 24
+                }
             }
         }
 
@@ -133,9 +178,28 @@ Popup {
                 radius: 5
                 anchors.fill: parent
             }
+            model: ListModel {
+                ListElement {
+                    key: "Cash over counter"
+                    value: 123
+                }
+                ListElement {
+                    key: "Momo Wallet"
+                    value: 456
+                }
+                ListElement {
+                    key: "Lamb sauce"
+                    value: 789
+                }
+            }
+            textRole: "key"
         }
     }
 }
 
-
+/*##^##
+Designer {
+    D{i:11;anchors_x:0;anchors_y:0}D{i:12;anchors_x:0;anchors_y:0}D{i:10;anchors_height:200;anchors_width:200}
+}
+##^##*/
 

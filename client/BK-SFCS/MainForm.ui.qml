@@ -1,15 +1,14 @@
-import QtQuick 2.12
+import QtQuick 2.4
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.11
 import QtGraphicalEffects 1.14
 
-ApplicationWindow {
-    id: window
-    visible: true
+Page {
     width: 1280
     height: 720
-    title: qsTr("Smart Food Court System")
-
+    property alias stackView: stackView
+    property alias backButton: backButton
+    property alias searchButton: searchButton
     header: ToolBar {
         background: Rectangle {
             id: toolBarBg
@@ -32,17 +31,20 @@ ApplicationWindow {
             anchors.fill: parent
             ToolButton {
                 id: backButton
-                text: "‹ Back"  // icon
+                text: (isSearching) ? "‹ End searching" : "‹ Back"
+                contentItem: Text {
+                    text: parent.text
+                    color: "#ffffff"
+                    font.pointSize: 16
+                    verticalAlignment: Qt.AlignVCenter
+                }
                 visible: stackView.depth > 1 ? true : false
                 font.pixelSize: Qt.application.font.pixelSize * 1.6
-                onClicked: {
-                    stackView.pop()
-                }
             }
 
             Label {
-                text: stackView.currentItem.title
-                anchors.centerIn: parent
+                text: stackView.currentItem.item.title
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 Layout.fillWidth: true
                 elide: Label.ElideRight
                 horizontalAlignment: Qt.AlignHCenter
@@ -54,48 +56,26 @@ ApplicationWindow {
 
             ToolButton {
                 id: searchButton
-                text: "Search 🔎"
-                visible: stackView.depth > 1 ? true : false
-                onClicked: {
-                    searchPopup.open()
+                contentItem: Text {
+                    text: "Search 🔎"
+                    color: "#ffffff"
+                    font.pointSize: 16
+                    verticalAlignment: Qt.AlignVCenter
                 }
+
             }
         }
     }
-    HomeForm {
-        id: homeForm
-        anchors.fill: parent
-    }
-    StallMenu {
-        id: stallMenu
-        anchors.fill: parent
-    }
     StackView {
         id: stackView
-        initialItem: homeForm
+        initialItem: homeFormLoader
         anchors.fill: parent
-    }
-    SearchPopup {
-        id: searchPopup
-    }
-    FastBlur {
-        id: bgBlur
-        anchors.fill: parent
-        source: parent
-        radius: 32
-        visible: false
-        cached: true // higher perf
-    }
-
-    function openMenu(stallName) {
-        stallMenu.title = stallName;
-        stackView.push(stallMenu)
-    }
-
-    function blurUnfocused() {
-        bgBlur.visible = true;
-    }
-    function refocus() {
-        bgBlur.visible = false;
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.75}
+}
+##^##*/
+

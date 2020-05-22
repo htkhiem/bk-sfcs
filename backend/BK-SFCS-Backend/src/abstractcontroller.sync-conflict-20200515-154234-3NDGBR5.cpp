@@ -2,7 +2,7 @@
 #include "category.h"
 #include "food.h"
 AbstractController::AbstractController(QQmlApplicationEngine *eng, QObject *parent)
-  : QObject(parent), p_engine(eng), current_stall_idx(0)
+  : QObject(parent), p_engine(eng), current_stall_idx(-1)
 {
   populateCategoryViewModel();
 }
@@ -42,7 +42,6 @@ void AbstractController::populateMenuViewModel() {
   for (QFood& qfood : temp) {
       if (categoryIsVisible(qfood.getType())) {
           QObject * qfoodptr = new QFood(qfood);
-          ((QFood *) qfoodptr)->setValid(true);
           menu_view_model.append(qfoodptr);
         }
     }

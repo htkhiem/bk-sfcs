@@ -4,15 +4,14 @@
 #include "common.h"
 #include "food.h"
 #include "jsonable.h"
-#include <time.h>
 enum OrderStatus { waiting, processing, finished, rejected };
-
-
 
 class OrderInfo : public Jsonable {
   Q_OBJECT
-  Q_PROPERTY(int quantity READ getQuantity WRITE setQuantity)
-    
+  Q_PROPERTY(int quantity READ getQuantity)
+  Q_PROPERTY(QString itemName READ getItemName)
+  Q_PROPERTY(double total READ getTotal)
+
   OrderStatus status;
   QFood food;
   int quantity;
@@ -30,8 +29,8 @@ public:
   /** Basic getters/setters */
   OrderStatus getStatus();
   void setStatus(OrderStatus _status);
-  double getTotal();
-  int getQuantity();
+  QFood * getFoodItem();
+  void setFoodItem(const QFood& _food);
   void setQuantity(int quantity);
   QDateTime getReceived();
   void setReceived();
@@ -52,6 +51,11 @@ public:
    * @param json JSON object to write to.
    */
   void write(QJsonObject &json) const;
+public slots:
+  int getQuantity();
+  QString getItemName();
+  double getTotal();
+  QUrl getImagePath(const QString& stall_name);
 };
 
 #endif // ORDERINFO_H

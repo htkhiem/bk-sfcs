@@ -1,62 +1,62 @@
 #include "orderinfo.h"
 #include <chrono>
 OrderInfo::OrderInfo(QObject *parent) :
-   Jsonable(parent)
+  Jsonable(parent)
 {
 
 
 }
 OrderStatus OrderInfo::getStatus(){
-    return this->status;
+  return this->status;
 }
 void OrderInfo::setStatus(OrderStatus _status){
-    this->status = _status;
-    if(_status == OrderStatus::processing){
-        this->time_answered = QDateTime::currentDateTime();
+  this->status = _status;
+  if(_status == OrderStatus::processing){
+      this->time_answered = QDateTime::currentDateTime();
     }
-    if(_status == OrderStatus::finished){
-        this->time_finished = QDateTime::currentDateTime();
+  if(_status == OrderStatus::finished){
+      this->time_finished = QDateTime::currentDateTime();
     }
-    if(_status == OrderStatus::rejected){
-        this->time_answered = QDateTime::currentDateTime();
-        this->time_finished = QDateTime::currentDateTime();
+  if(_status == OrderStatus::rejected){
+      this->time_answered = QDateTime::currentDateTime();
+      this->time_finished = QDateTime::currentDateTime();
     }
 }
 int OrderInfo::getQuantity(){
-    return this->quantity;
+  return this->quantity;
 }
 void OrderInfo::setQuantity(int quantity){
   if (quantity <= 0) throw std::invalid_argument( "Quantity must not be negative or zero" );
-    this->quantity = quantity;
+  this->quantity = quantity;
 }
 
 double OrderInfo::getTotal(){
-    return (this->food.price * this->quantity);
+  return (this->food.getPrice() * this->quantity);
 }
 
 QDateTime OrderInfo::getReceived(){
-    return this->time_received;
+  return this->time_received;
 }
 void OrderInfo::setReceived(){
-    this->time_received = QDateTime::currentDateTime();
+  this->time_received = QDateTime::currentDateTime();
 }
 QDateTime OrderInfo::getAnswered(){
-    return this->time_answered;
+  return this->time_answered;
 }
 void OrderInfo::setAnswered(){
-    this->time_answered = QDateTime::currentDateTime();
+  this->time_answered = QDateTime::currentDateTime();
 }
 QDateTime OrderInfo::getFinished(){
-    return this->time_finished;
+  return this->time_finished;
 }
 void OrderInfo::setFinished(){
-    this->time_finished = QDateTime::currentDateTime();
+  this->time_finished = QDateTime::currentDateTime();
 }
 int OrderInfo::getResponseTime(){
-    return this->time_received.time().secsTo(this->time_answered.time());
+  return this->time_received.time().secsTo(this->time_answered.time());
 }
 int OrderInfo::getProcessingTime(){
-    return this->time_answered.time().secsTo(this->time_finished.time());
+  return this->time_answered.time().secsTo(this->time_finished.time());
 }
 void OrderInfo::read(const QJsonObject &json){
   food.read(json);
@@ -65,8 +65,8 @@ void OrderInfo::read(const QJsonObject &json){
 
   if (json.contains("status") && json["status"].isDouble())
     {
-    int ienum = json["status"].toInt();
-    status = static_cast<OrderStatus>(ienum);
+      int ienum = json["status"].toInt();
+      status = static_cast<OrderStatus>(ienum);
     }
 
   if (json.contains("time received") && json["time received"].isDouble())
@@ -94,40 +94,51 @@ void OrderInfo::read(const QJsonObject &json){
 
 
 }
-void OrderInfo::write(QJsonObject &json) const{
-
+void OrderInfo::write(QJsonObject &json) const {
   QJsonObject temp;
   food.write(temp);
   temp["quantity"] = quantity;
-  json["order:"] = temp;
+  json["order"] = temp;
   json["status"] = status;
   json["time received"] = time_received.toMSecsSinceEpoch();
   switch (status)
     {
-  case OrderStatus::processing :
+    case OrderStatus::processing :
       {
-      double t_ans = time_answered.toMSecsSinceEpoch();
-      json["time answered"] = t_ans;
-      break;
+        double t_ans = time_answered.toMSecsSinceEpoch();
+        json["time answered"] = t_ans;
+        break;
       }
-  case OrderStatus::finished :
+    case OrderStatus::finished :
       {
-      double t_fin = time_finished.toMSecsSinceEpoch();
-      json["time finished"] = t_fin;
-      break;
+        double t_fin = time_finished.toMSecsSinceEpoch();
+        json["time finished"] = t_fin;
+        break;
       }
-  case OrderStatus::rejected :
+    case OrderStatus::rejected :
       {
-      double t_ans = time_answered.toMSecsSinceEpoch();
-      json["time answered"] = t_ans;
-      double t_fin = time_finished.toMSecsSinceEpoch();
-      json["time finished"] = t_fin;
-      break;
+        double t_ans = time_answered.toMSecsSinceEpoch();
+        json["time answered"] = t_ans;
+        double t_fin = time_finished.toMSecsSinceEpoch();
+        json["time finished"] = t_fin;
+        break;
       }
-  case OrderStatus::waiting :
+    case OrderStatus::waiting :
       {
         json["time answered"] = 0;
         json["time finished"] = 0;
       }
     }
+}
+QFood * OrderInfo::getFoodItem() {
+  return &food;
+}
+void OrderInfo::setFoodItem(const QFood& _food) {
+  food = _food;
+}
+QString OrderInfo::getItemName() {
+  return food.getName();
+}
+QUrl OrderInfo::getImagePath(const QString& stall_name) {
+  return food.getImagePath(stall_name);
 }

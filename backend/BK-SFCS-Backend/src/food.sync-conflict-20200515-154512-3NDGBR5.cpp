@@ -1,6 +1,6 @@
 #include "food.h"
 QFood::QFood(QObject *parent) :
-  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false), estimated_time(0), is_valid(false) {}
+  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false), is_valid(true) {}
 QFood::QFood(const QFood &_food, QObject *parent) :
   Jsonable(parent)
 {
@@ -12,14 +12,7 @@ QFood::QFood(const QFood &_food, QObject *parent) :
   estimated_time = _food.estimated_time;
   is_OOS = _food.is_OOS;
 }
-QFood& QFood::operator=(const QFood & _food){
-  name = _food.name;
-  price = _food.price;
-  description = _food.description;
-  type = _food.type;
-  image_name = _food.image_name;
-  estimated_time = _food.estimated_time;
-  is_OOS = _food.is_OOS;
+QFood& QFood::operator=(const QFood &){
   return *this;
 };
 QUrl QFood::getImagePath(const QString &stall_name) const {
