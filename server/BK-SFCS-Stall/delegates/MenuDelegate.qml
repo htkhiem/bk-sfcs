@@ -8,10 +8,10 @@ MenuDelegateForm {
     property bool oosCheckboxLoaded: false;
 
     function check_data() {
-        var dataValid = true;
+        model.modelData.isValid = true;
         if (nameField.text == "") {
             nameField.placeholderText = "Name cannot be blank!";
-            dataValid = false;
+            model.modelData.isValid = false;
         }
         console.log(index);
         for (var i = 0; i < menuViewModel.length; ++i) {
@@ -20,67 +20,61 @@ MenuDelegateForm {
             if(i !== index && menuViewModel[i].name === nameField.text) {
                 nameField.text = "";
                 nameField.placeholderText = "Another item with this name already exists!";
-                dataValid = false;
+                model.modelData.isValid = false;
                 break;
             }
         }
         if (descField.text == "") {
             descField.placeholderText = "Description cannot be blank!";
-            dataValid = false;
+            model.modelData.isValid = false;
         }
         var priceFieldNum = parseFloat(priceField.text);
         if (isNaN(priceFieldNum) || priceFieldNum < 1) {
             priceField.text = "";
             priceField.placeholderText = "Must be >= 1!"
-            dataValid = false;
+            model.modelData.isValid = false;
         }
         var estTimeFieldNum = parseFloat(estTimeField.text);
         if (isNaN(estTimeFieldNum) || estTimeFieldNum < 1) {
             estTimeField.text = "";
             estTimeField.placeholderText = "Must be >= 1!"
-            dataValid = false;
+            model.modelData.isValid = false;
         }
-        model.modelData.isValid = dataValid;
         enable_buttons();
-        return dataValid;
+        return model.modelData.isValid;
     }
 
     nameField.onEditingFinished: {
-        if (check_data()) {
-            model.modelData.name = nameField.text;
-        }
+        model.modelData.name = nameField.text;
+        check_data();
     }
 
     descField.onEditingFinished: {
-        if (check_data()) {
-            model.modelData.description = descField.text;
-        }
+        model.modelData.description = descField.text;
+        check_data();
     }
 
     priceField.onEditingFinished: {
-        if (check_data()) {
-            model.modelData.price = parseFloat(priceField.text);
-        }
+        model.modelData.price = parseFloat(priceField.text);
+        check_data();
+
     }
     estTimeField.onEditingFinished: {
-        if (check_data()) {
-            model.modelData.estimatedTime = parseFloat(estTimeField.text);
-        }
+        model.modelData.estimatedTime = parseFloat(estTimeField.text);
+        check_data();
     }
     oosCheckbox.onCheckedChanged: { // this version waits for confirmation
-        if (check_data()) {
-            model.modelData.isOOS = oosCheckbox.checked;
-        }
+        model.modelData.isOOS = oosCheckbox.checked;
+        check_data();
     }
     categoryBox.onActivated: {
-        if (check_data()) {
-            model.modelData.type = categoryBox.currentText;
-        }
+        model.modelData.type = categoryBox.currentText;
+        check_data();
 
     }
     removeButton.onActivated: {
-        backend.proposeRemoveFood(index);
         enable_buttons();
+        backend.proposeRemoveFood(index);
     }
     FileDialog {
         id: imageBrowser

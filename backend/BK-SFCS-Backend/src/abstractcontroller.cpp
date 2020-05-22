@@ -42,6 +42,7 @@ void AbstractController::populateMenuViewModel() {
   for (QFood& qfood : temp) {
       if (categoryIsVisible(qfood.getType())) {
           QObject * qfoodptr = new QFood(qfood);
+          ((QFood *) qfoodptr)->setValid(true);
           menu_view_model.append(qfoodptr);
         }
     }
