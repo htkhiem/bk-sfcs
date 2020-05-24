@@ -4,6 +4,7 @@ StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *pa
   : AbstractController(eng, parent)
 {
   loadData(); // Loads stall data and initialise the stall view model.
+  current_stall_idx = -1;
 }
 
 StallMgmtController::~StallMgmtController() {
@@ -13,7 +14,8 @@ StallMgmtController::~StallMgmtController() {
 bool StallMgmtController::login(int idx, const QString& psw) {
   if(idx < 0 || idx >= stall_view_model.size())
     throw range_error("Stall index out of range in login function.");
-  if (current_stall_idx != -1 || ((Stall*)stall_view_model[idx])->getPassword() != psw)
+  QString correct_psw = ((Stall*)stall_view_model[idx])->getPassword();
+  if (current_stall_idx != -1 || correct_psw != psw)
     return false;
   // Login successful
   setCurrentStall(idx);

@@ -64,6 +64,7 @@ Rectangle {
         anchors.top: nameField.bottom
         anchors.topMargin: 10
         placeholderText: qsTr("Item description")
+        wrapMode: Text.WordWrap
     }
 
     TextField {
