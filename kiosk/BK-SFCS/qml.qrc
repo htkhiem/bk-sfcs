@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Window.qml</file>
+        <file>HomeForm.ui.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>delegates/StallDelegate.qml</file>
+        <file>delegates/StallDelegateForm.ui.qml</file>
+        <file>placeholders/200.png</file>
+        <file>StallMenuForm.ui.qml</file>
+        <file>delegates/MenuDelegate.qml</file>
+        <file>delegates/MenuDelegateForm.ui.qml</file>
+        <file>OrderPopup.qml</file>
+        <file>OrderPopupForm.ui.qml</file>
+        <file>delegates/CategoryDelegate.qml</file>
+        <file>delegates/CategoryDelegateForm.ui.qml</file>
+        <file>SearchPopup.qml</file>
+        <file>SearchPopupForm.ui.qml</file>
+        <file>StallMenu.qml</file>
+        <file>Main.qml</file>
+        <file>MainForm.ui.qml</file>
+    </qresource>
+</RCC>
