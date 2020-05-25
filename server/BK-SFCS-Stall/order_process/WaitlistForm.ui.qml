@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import "./delegates"
+import "../delegates"
 
 Page {
     id: page
@@ -49,8 +49,5 @@ Page {
     }
 }
 
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:0.75}
-}
-##^##*/
+
+
