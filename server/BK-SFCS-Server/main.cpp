@@ -1,6 +1,5 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "controller/kioskcontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,11 +8,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-
-    KioskController backend(&engine);
-    engine.rootContext()->setContextProperty("backend", &backend);
-
-    const QUrl url(QStringLiteral("qrc:/Window.qml"));
+    const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)

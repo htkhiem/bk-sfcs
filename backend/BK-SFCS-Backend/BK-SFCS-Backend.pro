@@ -1,5 +1,5 @@
 # QT -= gui
-QT += qml
+QT += qml websockets
 
 CONFIG += c++11 console
 CONFIG -= app_bundle

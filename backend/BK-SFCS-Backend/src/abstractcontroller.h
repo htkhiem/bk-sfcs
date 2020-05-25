@@ -4,6 +4,7 @@
 #include "category.h"
 #include "menu.h"
 #include <QObject>
+#include <QWebSocket>
 
 /** Abstract class for per-app controllers. Contains features used by all apps.
  */
@@ -11,6 +12,28 @@ class AbstractController : public QObject {
   Q_OBJECT
   Q_PROPERTY(QString currentStallName READ getCurrentStallName)
   Q_PROPERTY(QUrl currentStallImagePath READ getCurrentStallImagePath)
+
+  /**
+   * @brief WebSocket for communicating with server
+   * Outgoing Protocol:
+   * GL = get list of stalls
+   * GS <idx> = get all info of stall at given index
+   * IS <idx> = get image of stall at given index
+   * LG <idx> <psw> = log into stall at given index with this password
+   * GM <idx> = get menu for stall at given index
+   * IM <stall idx> <menu idx> = get image of menu item at given index of stall at given index.
+   * SS <serialised stall JSON object> = set stall data (for stall app)
+   * OD <serialised OrderInfo object> = send order info
+   *
+   * Incoming Protocol:
+   * OK <out> <data>: Context-dependent action successful (replies to "out"
+   * with data, for example replying to GL with a JSON list of stalls.
+   * NO <out>: Context-dependent failure (order rejected, login failure,...)
+   */
+  QWebSocket web_socket;
+  QUrl server_url;
+  QString app_name;
+
 protected:
   QQmlApplicationEngine *p_engine; // for connecting backend to the thing
   int current_stall_idx;
@@ -29,6 +52,17 @@ protected:
    */
   bool categoryIsVisible(const QString& cat_name) const;
 
+  /**
+   * @brief Gets the absolute path to the data folder of the current app.
+   * @return a QDir containing the absolute path.
+   */
+  QDir getAppFolder();
+
+  void getStallList();
+  void getStallImage(int idx);
+
+  void getStallMenu(int idx);
+  void getMenuItemImage(int stall_idx, int item_idx);
 public:
   /**
    * Main constructor.
@@ -36,7 +70,7 @@ public:
    * and exposing view models to QML.
    * @param parent Pointer to parent QObject if any. For now, leave it blank.
    */
-  explicit AbstractController(QQmlApplicationEngine *eng,
+  explicit AbstractController(QQmlApplicationEngine *eng, const QString& name,
                               QObject *parent = nullptr);
 
   /** View models for exposing to QML Quick Views. Note that category_view_model
@@ -48,7 +82,6 @@ public:
   QList<QObject *> category_view_model;
   QList<QObject *> menu_view_model;
   QList<QObject *> stall_view_model;
-
 public slots:
 
   /** Fills category info with hardcoded categories. (Low priority) TODO:
@@ -64,34 +97,47 @@ public slots:
  */
   void populateMenuViewModel();
   
-  /** Reloads stall data. Not usually used except for debugging purposes, since stall data is only loaded once on startup and already handled by loadData(). */
-  void repopulateStallViewModel();
+  /** Populate stall list with name and image. */
+  void populateStallViewModel(const QJsonObject& list_obj);
+  void saveStallImage(const QString& stall_name, const QByteArray& image);
   
   /**
    * Set current stall to the one at the given index within stall_view_model.
    * @param idx Index of target stall.
-   * @return False if out-of-range, true otherwise. 
+   * @return False if out-of-range, true otherwise.
    */
   bool setCurrentStall(int idx);
-  
+
   /**
-   * Returns a pointer to the current stall. Used internally but I'll leave it in public slots for now.
+   * Returns a pointer to the current stall. Used internally but I'll leave it in public
+   * slots for now.
    * @return Pointer to current stall.
    */
   Stall *getCurrentStall();
   
   /**
-   * QML-facing slot for exposing current stall name. Included in AbstractController since both kiosk and stall app needs it.
+   * QML-facing slot for exposing current stall name. Included in AbstractController
+   * since both kiosk and stall app needs it.
    * @return Stall name as QString.
    */
   QString getCurrentStallName();
   
   /**
-   * Same as above, for image path. Note that it returns the absolute path to the copy in the stall folder.
+   * Same as above, for image path. Note that it returns the absolute path to the copy
+   * in the stall folder.
    * @return Stall image path as QUrl (file://...).
    */
   QUrl getCurrentStallImagePath();
+
+  void onConnected();
+  void onTextMessageReceived(const QString& message);
+
+  void onStallListReceived(const QString& serialised_json);
+  void onStallDataReceived(const QString& serialised_json);
+  void onMenuReceived(const QString& serialised_json);
 signals:
+  void closed();
+
 };
 
 #endif // ABSTRACTCONTROLLER_H
