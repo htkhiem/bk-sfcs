@@ -3,15 +3,14 @@
 
 #include "category.h"
 #include "menu.h"
-#include <QObject>
-#include <QWebSocket>
+#include "common.h"
 
 /** Abstract class for per-app controllers. Contains features used by all apps.
  */
 class AbstractController : public QObject {
   Q_OBJECT
-  Q_PROPERTY(QString currentStallName READ getCurrentStallName)
-  Q_PROPERTY(QUrl currentStallImagePath READ getCurrentStallImagePath)
+  Q_PROPERTY(QString currentStallName READ getCurrentStallName NOTIFY currentStallNameChanged)
+  Q_PROPERTY(QUrl currentStallImagePath READ getCurrentStallImagePath NOTIFY currentStallImagePathChanged)
 
   /**
    * @brief WebSocket for communicating with server
@@ -27,8 +26,14 @@ class AbstractController : public QObject {
    *
    * Incoming Protocol:
    * OK <out> <data>: Context-dependent action successful (replies to "out"
-   * with data, for example replying to GL with a JSON list of stalls.
+   *  with data, for example replying to GL with a JSON list of stalls.
    * NO <out>: Context-dependent failure (order rejected, login failure,...)
+   *
+   * Binary Incoming Protocol:
+   * <sz1> OK <sz2> <out> <data>: Context-dependent action successful (replies to "out" with "data").
+   *  sz1 is length of "OK" in UTF-8. sz2 is length of "out", also in UTF-8.
+   * <sz1> NO <sz2> <out>: Context-dependent failure (replies to "out").
+   *  sz1 is length of "OK" in UTF-8. sz2 is length of "out", also in UTF-8.
    */
   QWebSocket web_socket;
   QUrl server_url;
@@ -131,13 +136,16 @@ public slots:
 
   void onConnected();
   void onTextMessageReceived(const QString& message);
+  void onBinaryMessageReceived(const QByteArray &message);
 
-  void onStallListReceived(const QString& serialised_json);
+  void onStallImageReceived(int idx, const QByteArray& image);
   void onStallDataReceived(const QString& serialised_json);
   void onMenuReceived(const QString& serialised_json);
+  void onMenuItemImageReceived(int idx, const QByteArray& image);
 signals:
   void closed();
-
+  void currentStallNameChanged();
+  void currentStallImagePathChanged();
 };
 
 #endif // ABSTRACTCONTROLLER_H

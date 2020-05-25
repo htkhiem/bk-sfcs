@@ -42,6 +42,10 @@
 #include <QFile>
 #include <QDir>
 
+// Qt networking
+#include <QtEndian>
+#include <QWebSocket>
+
 using namespace std;
 
 #endif // COMMON_H

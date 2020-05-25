@@ -48,14 +48,6 @@ void AbstractController::onTextMessageReceived(const QString& message) {
           throw runtime_error("Server-side error: stall data could not be sent.");
         }
     }
-  else if (target == "IS") { // GetMenu
-      if (result == "OK") { // succeeded
-
-        }
-      else { // failed
-
-        }
-    }
   else if (target == "GM") { // GetMenu, might be received without asking in case menu is updated
       if (result == "OK") { // succeeded
 
@@ -64,7 +56,21 @@ void AbstractController::onTextMessageReceived(const QString& message) {
 
         }
     }
-  else if (target == "IM") { // GetMenu
+}
+void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
+  int sz1 = qFromLittleEndian<int>(message.left(4).data());
+  QString result(message.mid(4, sz1));
+  int sz2 = qFromLittleEndian<int>(message.mid(4 + sz1 - 1, 4).data());
+  QString request(message.mid(8 + sz1 - 1, sz2));
+  if (request.left(2) == "IS") { // Stall image
+      if (result == "OK") { // succeeded
+
+        }
+      else { // failed
+
+        }
+    }
+  else if (request.left(2) == "IM") { // Menu item image
       if (result == "OK") { // succeeded
 
         }
@@ -152,6 +158,7 @@ void AbstractController::populateStallViewModel(const QJsonObject& list_obj) {
             temp->setStallName(obj["name"].toString());
           stall_view_model.append(temp);
         }
+      p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
     }
   else throw invalid_argument("Invalid QJsonObject passed to populateStallViewModel()");
 }
