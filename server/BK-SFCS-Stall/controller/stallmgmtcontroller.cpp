@@ -78,3 +78,41 @@ bool StallMgmtController::setStallImage(const QUrl& imgpath) {
   getCurrentStall()->setImagePath(imgpath);
   return true;
 }
+
+
+void StallMgmtController::loadOrder() {
+  QDir data_cursor = QDir::home();
+  if (!data_cursor.cd("sfcs_data")) {
+      throw runtime_error("Data folder not found. A blank folder will be created after this run.");
+    }
+
+  // Load stall menu and data
+  data_cursor.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+  QStringList stall_dirs = data_cursor.entryList();
+  for (auto qstr : stall_dirs) {
+      data_cursor.cd(qstr);
+      //move into order folder
+      data_cursor.cd("orders");
+      QStringList stall_orders = data_cursor.entryList(QStringList() << "*.json",QDir::Files);
+      for(auto qorder : stall_orders ){
+          QFile stall_order_file(qorder);
+          if (!stall_order_file.open(QIODevice::ReadOnly)) {
+              throw runtime_error("Cannot read data file: " + qstr.toStdString());
+            }
+          QJsonDocument stall_order_json_doc(QJsonDocument::fromJson(stall_order_file.readAll()));
+          OrderInfo* order = new OrderInfo();
+          order->read(stall_order_json_doc.object());
+          waitlist_view_model.append(order);
+          stall_order_file.close();
+      }
+      data_cursor.cdUp();
+      data_cursor.cdUp();
+    }
+  data_cursor.cdUp();
+
+  p_engine->rootContext()->setContextProperty("stallWaitlistModel", QVariant::fromValue(stall_view_model));
+}
+
+
+
+

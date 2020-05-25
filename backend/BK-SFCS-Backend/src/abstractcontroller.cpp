@@ -1,6 +1,7 @@
 #include "abstractcontroller.h"
 #include "category.h"
 #include "food.h"
+
 AbstractController::AbstractController(QQmlApplicationEngine *eng, QObject *parent)
   : QObject(parent), p_engine(eng), current_stall_idx(0)
 {
@@ -85,6 +86,8 @@ void AbstractController::loadData() {
 
   p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
 }
+
+
 void AbstractController::saveData() {
   QDir data_cursor = QDir::home();
   data_cursor.mkdir("sfcs_data");

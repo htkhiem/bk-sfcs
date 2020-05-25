@@ -3,6 +3,7 @@
 
 #include "category.h"
 #include "menu.h"
+#include "orderinfo.h"
 #include <QObject>
 
 /** Abstract class for per-app controllers. Contains features used by all apps.
@@ -18,6 +19,7 @@ protected:
   /** Loads stall data (and their menus) from ~/sfcs_data. Also populates the
    * stall view model. */
   void loadData();
+
 
   /** Saves stall data to disk after running. This includes their menus. */
   void saveData();
