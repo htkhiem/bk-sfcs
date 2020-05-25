@@ -30,10 +30,10 @@ class AbstractController : public QObject {
    * NO <out>: Context-dependent failure (order rejected, login failure,...)
    *
    * Binary Incoming Protocol:
-   * <sz1> OK <sz2> <out> <data>: Context-dependent action successful (replies to "out" with "data").
-   *  sz1 is length of "OK" in UTF-8. sz2 is length of "out", also in UTF-8.
-   * <sz1> NO <sz2> <out>: Context-dependent failure (replies to "out").
-   *  sz1 is length of "OK" in UTF-8. sz2 is length of "out", also in UTF-8.
+   * 1 <sz1> <sz2> <out> <text> <bin>: Context-dependent action successful (replies to <out> with UTF-8 text and binary data).
+   *  sz1 is length of <out>, sz2 is length of <text>, all in UTF-8.
+   * 0 <sz1> <out>: Context-dependent failure (replies to "out").
+   *  sz1 is length of <out> in UTF-8.
    */
   QWebSocket web_socket;
   QUrl server_url;

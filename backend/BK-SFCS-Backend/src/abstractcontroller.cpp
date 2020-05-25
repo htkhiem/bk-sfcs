@@ -40,9 +40,9 @@ void AbstractController::onTextMessageReceived(const QString& message) {
   QStringRef target(&message, 3, 2);
   if (target == "GL") { // GetList of stalls
       if (result == "OK") { // succeeded
-        QStringRef data(&message, 6, message.length() - 7);
-        QJsonObject stall_list_json = QJsonDocument(QJsonDocument::fromJson(data.toUtf8())).object();
-        populateStallViewModel(stall_list_json);
+          QStringRef data(&message, 6, message.length() - 7);
+          QJsonObject stall_list_json = QJsonDocument(QJsonDocument::fromJson(data.toUtf8())).object();
+          populateStallViewModel(stall_list_json);
         }
       else { //failed
           throw runtime_error("Server-side error: stall data could not be sent.");
@@ -58,20 +58,30 @@ void AbstractController::onTextMessageReceived(const QString& message) {
     }
 }
 void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
-  int sz1 = qFromLittleEndian<int>(message.left(4).data());
-  QString result(message.mid(4, sz1));
-  int sz2 = qFromLittleEndian<int>(message.mid(4 + sz1 - 1, 4).data());
-  QString request(message.mid(8 + sz1 - 1, sz2));
+  bool result = (message.at(0) == '0') ? false : true;
+  int sz1 = qFromLittleEndian<qint32_le>(message.mid(1, 4).data());
+  QString request(message.mid(9, sz1));
+  int sz2 = qFromLittleEndian<qint32_le>(message.mid(5, 4).data());
+  QString text(message.mid(9 + sz1, sz2));
   if (request.left(2) == "IS") { // Stall image
-      if (result == "OK") { // succeeded
-
+      if (result) { // succeeded
+          int idx = request.right(request.length() - 3).toInt();
+          QDir data_cursor = this->getAppFolder();
+          data_cursor.mkdir(((Stall *) stall_view_model[idx])->getStallName());
+          data_cursor.cd(((Stall *) stall_view_model[idx])->getStallName());
+          QFile stall_image(data_cursor.filePath(text));
+          if (!stall_image.open(QIODevice::WriteOnly)) {
+              throw runtime_error("Unable to write downloaded stall image to disk");
+            }
+          stall_image.write(message.right(message.size() - 9 - sz1 - sz2));
+          ((Stall *) stall_view_model[idx])->setImagePath(text);
         }
       else { // failed
 
         }
     }
   else if (request.left(2) == "IM") { // Menu item image
-      if (result == "OK") { // succeeded
+      if (result) { // succeeded
 
         }
       else { // failed
