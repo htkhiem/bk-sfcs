@@ -24,6 +24,10 @@ class AbstractController : public QObject {
    * SS <serialised stall JSON object> = set stall data (for stall app)
    * OD <serialised OrderInfo object> = send order info
    *
+   * Binary Outgoing Protocol:
+   * 1 <idx> <data>: Send new stall image for stall at index.
+   * 2 <idx1> <idx2> <data>: Send new image for menu item idx2 of stall idx1.
+   *
    * Incoming Protocol:
    * OK <out> <data>: Context-dependent action successful (replies to "out"
    *  with data, for example replying to GL with a JSON list of stalls.

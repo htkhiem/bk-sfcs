@@ -23,5 +23,6 @@ void Client::setSocket(QWebSocket *value)
 Client::Client(QWebSocket *sk, QObject *parent) :
   QObject(parent), type(kiosk), stall_idx(-1), socket(sk)
 {
-
+  connect(sk, &QWebSocket::textMessageReceived, this, &Client::textMessageReceived);
+  connect(sk, &QWebSocket::disconnected, this, &Client::disconnected);
 }

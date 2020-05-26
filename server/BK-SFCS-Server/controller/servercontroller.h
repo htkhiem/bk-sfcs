@@ -20,6 +20,7 @@ public:
 public slots:
   void onNewConnection();
   void processTextMessage(const QString& message);
+  void processBinaryMessage(const QByteArray& message);
   void socketDisconnected();
 signals:
   void closed();

@@ -45,7 +45,17 @@ ServerController::~ServerController() {
 void ServerController::onNewConnection() {
   Client *client = new Client(web_socket_server->nextPendingConnection());
   connect(client, &Client::textMessageReceived, this, &ServerController::processTextMessage);
+  connect(client, &Client::binaryMessageReceived, this, &ServerController::processBinaryMessage);
   connect(client, &Client::disconnected, this, &ServerController::socketDisconnected);
+  clients.append(client);
+}
+
+void ServerController::processTextMessage(const QString& message) {
+
+}
+
+void ServerController::processBinaryMessage(const QByteArray& message) {
+
 }
 
 QDir ServerController::getAppFolder() {

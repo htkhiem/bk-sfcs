@@ -18,9 +18,9 @@ public:
 
   QWebSocket *getSocket() const;
   void setSocket(QWebSocket *value);
-
 signals:
   void textMessageReceived(const QString& message);
+  void binaryMessageReceived(const QByteArray& message);
   void disconnected();
 };
 
