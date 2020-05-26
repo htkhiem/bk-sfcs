@@ -18,6 +18,11 @@ public:
 
   QWebSocket *getSocket() const;
   void setSocket(QWebSocket *value);
+  void sendTextMessage(const QString& message);
+  void sendBinaryMessage(const QByteArray& message);
+  int getStallIdx() const;
+  void setStallIdx(int value);
+
 signals:
   void textMessageReceived(const QString& message);
   void binaryMessageReceived(const QByteArray& message);

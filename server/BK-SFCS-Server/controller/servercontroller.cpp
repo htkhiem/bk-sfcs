@@ -52,36 +52,116 @@ void ServerController::onNewConnection() {
 }
 // See abstractcontroller.h for full protocol
 void ServerController::processTextMessage(const QString& message) {
-  QStringRef request(&message, 0, 2);
-  if (request == "GL") { // Get List of stalls
-
+  Client *client = qobject_cast<Client *>(sender());
+  QStringList request = message.split(' ', QString::SkipEmptyParts);
+  if (request[0] == "GL") { // Get List of stalls
+      QString response = "OK " + message + " "
+          + QJsonDocument(getCompactStallList()).toJson();
+      client->sendTextMessage(response);
     }
-  else if (request == "GS") { // Get Stall data
-
+  else if (request[0] == "GS") { // Get Stall data
+      QString response;
+      try {
+        response = "OK " + message + " "
+            + QJsonDocument(getStallData(request[1].toInt())).toJson();
+      }  catch (...) {
+        response = "NO " + message;
+      }
+      client->sendTextMessage(response);
     }
-  else if (request == "IS") { // get Image of Stall
+  else if (request[0] == "IS") { // get Image of Stall
+      QByteArray response;
+      try {
+        response.append('1');
+        int idx = request[1].toInt();
+        QByteArray name = ((Stall *) stall_view_model[idx])->getImagePath()
+            .fileName().toUtf8();
+        QByteArray image = getStallImage(idx);
 
+        response += message.toUtf8().size();
+        response += name.size();
+        response += message.toUtf8() + name + image;
+        client->sendBinaryMessage(response);
+      }  catch (...) {
+        response.append('0');
+        response += message.toUtf8().size();
+        response += message.toUtf8();
+      }
     }
-  else if (request == "LG") { // LoGin into stall (stall app)
-
+  else if (request[0] == "LG") { // LoGin into stall (stall app)
+      QString response;
+      if (loginStall(request[1].toInt(), request[2])) {
+          client->setType(stall);
+          client->setStallIdx(request[1].toInt());
+          response = "OK " + message;
+        }
+      else {
+          response = "NO " + message;
+        }
+      client->sendTextMessage(response);
     }
-  else if (request == "LM") { // LoGin into stall (stall app)
-
+  else if (request[0] == "LM") { // LoGin with management rights (stall app)
+      QString response;
+      if (client->getType() == stall &&
+          loginStallasManager(client->getStallIdx(), request[2])) {
+          response = "OK " + message;
+        }
+      else {
+          response = "NO " + message;
+        }
+      client->sendTextMessage(response);
     }
-  else if (request == "GM") { // Get Menu of stall
-
+  else if (request[0] == "GM") { // Get Menu of stall
+      QString response;
+      try {
+        response = "OK " + message + " "
+            + QJsonDocument(getStallMenu(request[1].toInt())).toJson();
+      }  catch (...) {
+        response = "NO " + message;
+      }
+      client->sendTextMessage(response);
     }
-  else if (request == "IM") { // get Image of Menu item
+  else if (request[0] == "IM") { // get Image of Menu item
+      QByteArray response;
+      try {
+        response.append('1');
+        int sidx = request[1].toInt();
+        int midx = request[2].toInt();
+        QDir stall_path = getAppFolder();
+        stall_path.cd(((Stall *) stall_view_model[sidx])->getStallName());
+        QByteArray name =
+            ((Stall *) stall_view_model[sidx])->getMenu()->at(midx)
+            .getImagePath(stall_path).fileName().toUtf8();
+        QByteArray image = getMenuItemImage(sidx, midx);
 
+        response += message.toUtf8().size();
+        response += name.size();
+        response += message.toUtf8() + name + image;
+        client->sendBinaryMessage(response);
+      }  catch (...) {
+        response.append('0');
+        response += message.toUtf8().size();
+        response += message.toUtf8();
+      }
     }
-  else if (request == "SS") { // Set Stall data (stall app)
-
+  else if (request[0] == "SS") { // Set Stall data (stall app)
+      QString response;
+      try {
+        int idx = request[1].toInt();
+        QJsonObject data = QJsonDocument(QJsonDocument::fromJson(
+                                           request[2].toUtf8())).object();
+        setStallData(idx, data);
+        response = "OK " + request[0] + " " + request[1]; // do not send the JSON part back
+      }  catch (...) {
+        response = "NO " + request[0] + " " + request[1];
+      }
+      client->sendTextMessage(response);
     }
-  else if (request == "OD") { // OrDer item (kiosk)
-
+  else if (request[0] == "OD") { // OrDer item (kiosk)
+      // TODO
     }
   else { // Unknown request
-
+      client->sendTextMessage("NO WTF");
     }
 }
 

@@ -19,10 +19,12 @@ class AbstractController : public QObject {
    * GS <idx> = get all info of stall at given index
    * IS <idx> = get image of stall at given index
    * LG <idx> <psw> = log into stall at given index with this password
-   * LM <idx> <psw> = log into stall at given index with administrative password
+   * LM <psw> = log into current stall with administrative password.
+   *  Stall must already have been logged in with basic rights.
    * GM <idx> = get menu for stall at given index
    * IM <stall idx> <menu idx> = get image of menu item at given index of stall at given index.
-   * SS <idx> <serialised stall JSON object> = set stall data (for stall app)
+   * SS <serialised stall JSON object> = set stall data (for stall app)
+   *  Stall must already have been logged in with administrative rights.
    * OD <idx> <serialised OrderInfo object> = send order to stall at index
    *
    * Binary Outgoing Protocol:
@@ -35,7 +37,7 @@ class AbstractController : public QObject {
    * NO <out>: Context-dependent failure (order rejected, login failure,...)
    *
    * Binary Incoming Protocol:
-   * 1 <sz1> <sz2> <out> <text> <bin>: Context-dependent action successful (replies to <out> with UTF-8 text and binary data).
+   * 1 <sz1> <sz2> <out><text><bin>: Context-dependent action successful (replies to <out> with UTF-8 text and binary data).
    *  sz1 is length of <out>, sz2 is length of <text>, all in UTF-8.
    * 0 <sz1> <out>: Context-dependent failure (replies to "out").
    *  sz1 is length of <out> in UTF-8.

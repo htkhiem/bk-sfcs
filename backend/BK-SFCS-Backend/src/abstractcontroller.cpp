@@ -61,8 +61,12 @@ void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
   bool result = (message.at(0) == '0') ? false : true;
   int sz1 = qFromLittleEndian<qint32_le>(message.mid(1, 4).data());
   QString request(message.mid(9, sz1));
-  int sz2 = qFromLittleEndian<qint32_le>(message.mid(5, 4).data());
-  QString text(message.mid(9 + sz1, sz2));
+  int sz2;
+  QString text;
+  if (result) {
+      sz2 = qFromLittleEndian<qint32_le>(message.mid(5, 4).data());
+      text = message.mid(9 + sz1, sz2);
+    }
   if (request.left(2) == "IS") { // Stall image
       if (result) { // succeeded
           int idx = request.right(request.length() - 3).toInt();

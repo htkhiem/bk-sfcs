@@ -33,7 +33,6 @@ class ServerController : public QObject
   QJsonObject getStallMenu(int idx);
   QByteArray getMenuItemImage(int sidx, int midx);
   bool setStallData(int idx, const QJsonObject& data);
-  bool forwardOrder(int idx, const QJsonObject& order);
 public:
   explicit ServerController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
   ~ServerController();
