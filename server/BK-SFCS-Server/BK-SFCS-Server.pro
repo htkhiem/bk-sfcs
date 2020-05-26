@@ -21,6 +21,8 @@ SOURCES += \
         ../../backend/BK-SFCS-Backend/src/jsonable.cpp \
         ../../backend/BK-SFCS-Backend/src/menu.cpp \
         ../../backend/BK-SFCS-Backend/src/orderinfo.cpp \
+        controller/client.cpp \
+        controller/servercontroller.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -44,4 +46,6 @@ HEADERS += \
     ../../backend/BK-SFCS-Backend/src/food.h \
     ../../backend/BK-SFCS-Backend/src/jsonable.h \
     ../../backend/BK-SFCS-Backend/src/menu.h \
-    ../../backend/BK-SFCS-Backend/src/orderinfo.h
+    ../../backend/BK-SFCS-Backend/src/orderinfo.h \
+    controller/client.h \
+    controller/servercontroller.h

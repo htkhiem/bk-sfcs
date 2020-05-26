@@ -45,6 +45,7 @@
 // Qt networking
 #include <QtEndian>
 #include <QWebSocket>
+#include <QWebSocketServer>
 
 using namespace std;
 
