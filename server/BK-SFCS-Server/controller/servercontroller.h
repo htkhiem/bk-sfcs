@@ -12,8 +12,28 @@ class ServerController : public QObject
   QString app_name;
   QDir getAppFolder();
   QList<Client *> clients;
-protected:
-  QQmlApplicationEngine* p_eng;
+
+  QList<QObject *> menu_view_model;
+  QList<QObject *> stall_view_model;
+
+  QQmlApplicationEngine* p_engine;
+
+  /** Loads stall data (and their menus) from ~/sfcs_data. Also populates the
+   * stall view model. */
+  void loadData();
+
+  /** Saves stall data to disk after running. This includes their menus. */
+  void saveData();
+
+  QJsonObject getCompactStallList();
+  QJsonObject getStallData(int idx);
+  QByteArray getStallImage(int idx);
+  bool loginStall(int idx, const QString& psw);
+  bool loginStallasManager(int idx, const QString& psw);
+  QJsonObject getStallMenu(int idx);
+  QByteArray getMenuItemImage(int sidx, int midx);
+  bool setStallData(int idx, const QJsonObject& data);
+  bool forwardOrder(int idx, const QJsonObject& order);
 public:
   explicit ServerController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
   ~ServerController();

@@ -19,10 +19,11 @@ class AbstractController : public QObject {
    * GS <idx> = get all info of stall at given index
    * IS <idx> = get image of stall at given index
    * LG <idx> <psw> = log into stall at given index with this password
+   * LM <idx> <psw> = log into stall at given index with administrative password
    * GM <idx> = get menu for stall at given index
    * IM <stall idx> <menu idx> = get image of menu item at given index of stall at given index.
-   * SS <serialised stall JSON object> = set stall data (for stall app)
-   * OD <serialised OrderInfo object> = send order info
+   * SS <idx> <serialised stall JSON object> = set stall data (for stall app)
+   * OD <idx> <serialised OrderInfo object> = send order to stall at index
    *
    * Binary Outgoing Protocol:
    * 1 <idx> <data>: Send new stall image for stall at index.

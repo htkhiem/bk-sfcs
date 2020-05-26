@@ -22,17 +22,11 @@ QFood& QFood::operator=(const QFood & _food){
   is_OOS = _food.is_OOS;
   return *this;
 };
-QUrl QFood::getImagePath(const QString &stall_name) const {
-  QDir stall_dir = QDir::home();
-  stall_dir.cd("sfcs_data");
-  stall_dir.cd(stall_name);
-  return QUrl::fromLocalFile(stall_dir.filePath(image_name));
+QUrl QFood::getImagePath(const QDir& stall_path) const {
+  return QUrl::fromLocalFile(stall_path.filePath(image_name));
 };
-void QFood::setImagePath(const QString &stall_name, const QUrl &imgpath){
-  QDir stall_dir = QDir::home();
-  stall_dir.cd("sfcs_data");
-  stall_dir.cd(stall_name);
-  QFile::copy(imgpath.path(), stall_dir.filePath(imgpath.fileName()));
+void QFood::setImagePath(const QDir& stall_path, const QUrl &imgpath){
+  QFile::copy(imgpath.path(), stall_path.filePath(imgpath.fileName()));
   image_name = imgpath.fileName();
 };
 QString QFood::getName()const{
