@@ -51,4 +51,7 @@ HEADERS += \ \
     ../../backend/BK-SFCS-Backend/src/orderinfo.h \
     controller/kioskcontroller.h
 
-DISTFILES +=
+DISTFILES += \
+    assets/forbidden.svg \
+    assets/loader.svg \
+    assets/tick.svg
