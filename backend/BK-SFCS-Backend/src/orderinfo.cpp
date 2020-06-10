@@ -29,7 +29,18 @@ void OrderInfo::setQuantity(int quantity){
   if (quantity <= 0) throw std::invalid_argument( "Quantity must not be negative or zero" );
   this->quantity = quantity;
 }
-
+void OrderInfo::setSlipNumber(int _number){
+    this->slip_number = _number;
+}
+int OrderInfo::getSlipNumber(){
+    return this->slip_number;
+}
+void OrderInfo::setOrderID(QString _id){
+    this->orderID = _id;
+}
+QString OrderInfo::getOrderID(){
+    return this->orderID;
+}
 double OrderInfo::getTotal(){
   return (this->food.getPrice() * this->quantity);
 }
@@ -40,10 +51,15 @@ QDateTime OrderInfo::getReceived(){
 void OrderInfo::setReceived(){
   this->time_received = QDateTime::currentDateTime();
 }
+
 QDateTime OrderInfo::getAnswered(){
   return this->time_answered;
 }
-void OrderInfo::setAnswered(){
+void OrderInfo::setAnswered(bool _reject){
+    if(_reject == true)
+        this->status = rejected;
+    else
+        this->status = processing;
   this->time_answered = QDateTime::currentDateTime();
 }
 QDateTime OrderInfo::getFinished(){
@@ -62,7 +78,10 @@ void OrderInfo::read(const QJsonObject &json){
   food.read(json);
   if (json.contains("quantity") && json["quantity"].isDouble())
     quantity= json["quantity"].toInt();
-
+  if (json.contains("orderID") && json["orderID"].isString())
+    orderID = json["orderID"].toString();
+  if (json.contains("slip_number") && json["slip_number"].isDouble())
+    quantity= json["slip_number"].toInt();
   if (json.contains("status") && json["status"].isDouble())
     {
       int ienum = json["status"].toInt();
@@ -98,6 +117,8 @@ void OrderInfo::write(QJsonObject &json) const {
   QJsonObject temp;
   food.write(temp);
   temp["quantity"] = quantity;
+  temp["orderID"] = orderID;
+  temp["slip_number"] = slip_number;
   json["order"] = temp;
   json["status"] = status;
   json["time received"] = time_received.toMSecsSinceEpoch();

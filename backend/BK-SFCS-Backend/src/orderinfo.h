@@ -12,6 +12,8 @@ class OrderInfo : public Jsonable {
   Q_PROPERTY(QString itemName READ getItemName)
   Q_PROPERTY(double total READ getTotal)
 
+  QString orderID;
+  int slip_number;
   OrderStatus status;
   QFood food;
   int quantity;
@@ -32,14 +34,17 @@ public:
   QFood * getFoodItem();
   void setFoodItem(const QFood& _food);
   void setQuantity(int quantity);
+  void setSlipNumber(int _number);
+  void setOrderID(QString _id);
   QDateTime getReceived();
   void setReceived();
   QDateTime getAnswered();
-  void setAnswered();
+  void setAnswered(bool _reject);
   QDateTime getFinished();
   void setFinished();
   int getResponseTime();
   int getProcessingTime();
+
   /**
    * Read from a JSON object from disk.
    * @param json JSON object to read from.
@@ -53,6 +58,8 @@ public:
   void write(QJsonObject &json) const;
 public slots:
   int getQuantity();
+  int getSlipNumber();
+  QString getOrderID();
   QString getItemName();
   double getTotal();
   QUrl getImagePath(const QString& stall_name);

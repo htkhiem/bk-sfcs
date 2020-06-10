@@ -84,6 +84,9 @@ public slots:
   /** Loads stall order from ~/sfcs_data/stall_name/order. Also populates the
    * order view model. */
   void loadOrder();
+  /** Set file data for kiosk */
+  void setReply(const QString _orderID);
+
 
 signals:
 };

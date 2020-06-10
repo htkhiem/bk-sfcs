@@ -102,8 +102,12 @@ void StallMgmtController::loadOrder() {
           QJsonDocument stall_order_json_doc(QJsonDocument::fromJson(stall_order_file.readAll()));
           OrderInfo* order = new OrderInfo();
           order->read(stall_order_json_doc.object());
+          //Set add load cuz yea
+          order->setOrderID(stall_order_file.fileName());
+
           waitlist_view_model.append(order);
           stall_order_file.close();
+          //stall_order_file.remove();
       }
       data_cursor.cdUp();
       data_cursor.cdUp();
@@ -113,6 +117,32 @@ void StallMgmtController::loadOrder() {
   p_engine->rootContext()->setContextProperty("stallWaitlistModel", QVariant::fromValue(stall_view_model));
 }
 
+void StallMgmtController::setReply(const QString _orderID){
+    QDir data_cursor = QDir::home();
+    //Access order folder from specific stall
+    data_cursor.cd("sfcs_data/" + getCurrentStallName() + "/orders");
+    QStringList stall_orders = data_cursor.entryList(QStringList() << "*.json",QDir::Files);
 
+        QFile stall_order_file(_orderID);
+            //Find the orderInfo within the waitlist
+            for(auto ptr : waitlist_view_model){
+                OrderInfo& order = *((OrderInfo* )ptr);
+                //If waitlist item matches the updated order name
+                if(order.getOrderID() == _orderID){
+                    QJsonObject order_data_json_obj;
+                    //Write that specific waitlist item into the exact name file
+                    order.write(order_data_json_obj);
+                    QJsonDocument order_data_json_doc(order_data_json_obj);
+                    stall_order_file.write(order_data_json_doc.toJson());
+                    stall_order_file.close();
+                    break;
+                }
+            }
+
+        data_cursor.cdUp();
+        data_cursor.cdUp();
+
+    data_cursor.cdUp();
+}
 
 

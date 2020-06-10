@@ -121,6 +121,7 @@ Page {
 
             PropertyChanges {
                 target: confirmButton
+                autoExclusive: false
                 visible: true
             }
 
