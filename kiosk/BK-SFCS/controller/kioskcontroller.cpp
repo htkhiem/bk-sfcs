@@ -26,7 +26,7 @@ void KioskController::searchFilter(const QString& _input) {
 }
 void KioskController::setOrderFoodItem(int idx) {
   if (idx < menu_view_model.size() && idx >= 0)
-    current_order.setFoodItem(getCurrentStall()->getMenu()->at(idx));
+    current_order.setFoodItem(*((QFood *) menu_view_model[idx]));
   else throw range_error("Selected food item index out of range.");
 }
 void KioskController::setOrderQuantity(int qty) {
