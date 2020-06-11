@@ -107,7 +107,7 @@ public slots:
      data on tapping the Confirm button. In case of kiosk app, the selected
      stall is the current stall. The menu is not editable.
  */
-  void populateMenuViewModel();
+  void populateMenuViewModel(const QJsonObject& list_obj);
   
   /** Populate stall list with name and image. */
   void populateStallViewModel(const QJsonObject& list_obj);
