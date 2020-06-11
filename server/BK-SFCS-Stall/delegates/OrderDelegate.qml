@@ -4,11 +4,11 @@ OrderDelegateForm {
 
     stepButton.onClicked: {
         model.modelData.setAnswered(false);
-        backend.setReply(orderID);
+        backend.setReply(model.modelData.orderID);
     }
     rejectButton.onClicked: {
-        model.modelData.setAnswered(true)
-        backend.setReply(orderID);
+        model.modelData.setAnswered(true);
+        backend.setReply(model.modelData.orderID);
     }
 
 }

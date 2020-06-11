@@ -11,7 +11,7 @@ class OrderInfo : public Jsonable {
   Q_PROPERTY(int quantity READ getQuantity)
   Q_PROPERTY(QString itemName READ getItemName)
   Q_PROPERTY(double total READ getTotal)
-
+  Q_PROPERTY(QString orderID READ getOrderID WRITE setOrderID)
   QString orderID;
   int slip_number;
   OrderStatus status;
