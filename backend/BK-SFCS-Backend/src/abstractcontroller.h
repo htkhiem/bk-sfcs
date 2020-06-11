@@ -15,6 +15,7 @@ class AbstractController : public QObject {
   /**
    * @brief WebSocket for communicating with server
    * Outgoing Protocol:
+   * KX = Get index of self within list of server clients
    * GL = get list of stalls
    * GS <idx> = get all info of stall at given index
    * IS <idx> = get image of stall at given index
@@ -28,8 +29,8 @@ class AbstractController : public QObject {
    * OD <idx1> <idx2> <serialised OrderInfo object> = send order from kiosk idx1 to stall idx2
    *
    * Binary Outgoing Protocol:
-   * 1 <idx> <data>: Send new stall image for stall at index.
-   * 2 <idx1> <idx2> <data>: Send new image for menu item idx2 of stall idx1.
+   * 1 <idx> <sz> <name> <data>: Send new stall image with filename "name" (of length sz) for stall at index.
+   * 2 <idx1> <idx2> <sz> <name> <name> <data>: Send new image with filename "name" (of length sz) for menu item idx2 of stall idx1.
    *
    * Incoming Protocol:
    * OK <out> <data>: Context-dependent action successful (replies to "out"
@@ -38,15 +39,16 @@ class AbstractController : public QObject {
    *
    * Binary Incoming Protocol:
    * 1 <sz1> <sz2> <out><text><bin>: Context-dependent action successful (replies to <out> with UTF-8 text and binary data).
-   *  sz1 is length of <out>, sz2 is length of <text>, all in UTF-8.
+   *  sz1 is length of <out>, sz2 is length of <text>, all in UTF-8. Text and binary part not mandatory.
    * 0 <sz1> <out>: Context-dependent failure (replies to "out").
    *  sz1 is length of <out> in UTF-8.
    */
-  QWebSocket web_socket;
+
   QUrl server_url;
   QString app_name;
-
+  int client_idx;
 protected:
+  QWebSocket web_socket;
   QQmlApplicationEngine *p_engine; // for connecting backend to the thing
   int current_stall_idx;
 
@@ -94,6 +96,9 @@ public:
   QList<QObject *> category_view_model;
   QList<QObject *> menu_view_model;
   QList<QObject *> stall_view_model;
+  int getClientIdx() const;
+  void setClientIdx(int value);
+
 public slots:
 
   /** Fills category info with hardcoded categories. (Low priority) TODO:

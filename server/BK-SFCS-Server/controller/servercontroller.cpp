@@ -48,6 +48,7 @@ void ServerController::onNewConnection() {
   connect(client, &Client::textMessageReceived, this, &ServerController::processTextMessage);
   connect(client, &Client::binaryMessageReceived, this, &ServerController::processBinaryMessage);
   connect(client, &Client::disconnected, this, &ServerController::socketDisconnected);
+  client->setClientIdx(clients.size());
   clients.append(client);
 }
 // See abstractcontroller.h for full protocol
@@ -92,7 +93,7 @@ void ServerController::processTextMessage(const QString& message) {
       QString response;
       if (loginStall(request[1].toInt(), request[2])) {
           client->setType(stall);
-          client->setStallIdx(request[1].toInt());
+          client->setClientIdx(request[1].toInt());
           response = "OK " + message;
         }
       else {
@@ -103,7 +104,7 @@ void ServerController::processTextMessage(const QString& message) {
   else if (request[0] == "LM") { // Login with Management rights (stall app)
       QString response;
       if (client->getType() == stall &&
-          loginStallasManager(client->getStallIdx(), request[2])) {
+          loginStallasManager(client->getClientIdx(), request[2])) {
           response = "OK " + message;
         }
       else {
@@ -160,7 +161,7 @@ void ServerController::processTextMessage(const QString& message) {
   else if (request[0] == "OD") { // OrDer item (kiosk)
       for (auto p : clients) {
           if (p->getType() == ClientType::stall) {
-              if (p->getStallIdx() == request[2].toInt()) {
+              if (p->getClientIdx() == request[2].toInt()) {
                   // Forward order request to stall
                   p->sendTextMessage(message);
                   break;
@@ -179,15 +180,41 @@ void ServerController::processTextMessage(const QString& message) {
 }
 
 void ServerController::processBinaryMessage(const QByteArray& message) {
+  Client *client = qobject_cast<Client *>(sender());
   int request = message.left(1).toInt();
   if (request == 1) { // Set new stall image
-
+      int idx = message.mid(1, 4).toInt();
+      int sz = message.mid(5, 4).toInt();
+      QString filename = message.mid(9, sz);
+      QDir data_cursor = this->getAppFolder();
+      data_cursor.mkdir(((Stall *) stall_view_model[idx])->getStallName());
+      data_cursor.cd(((Stall *) stall_view_model[idx])->getStallName());
+      QFile stall_image(data_cursor.filePath(filename));
+      if (!stall_image.open(QIODevice::WriteOnly)) {
+          throw runtime_error("Unable to write uploaded stall image to disk");
+        }
+      stall_image.write(message.right(message.size() - 9 - sz));
+      stall_image.close();
+      ((Stall *) stall_view_model[idx])->setImagePath(filename);
     }
   else if (request == 2) { // Set menu item image
-
+      int stall_idx = message.mid(1, 4).toInt();
+      int item_idx = message.mid(5, 4).toInt();
+      int sz = message.mid(9, 4).toInt();
+      QString filename = message.mid(13, sz);
+      QDir data_cursor = this->getAppFolder();
+      data_cursor.mkdir(((Stall *) stall_view_model[stall_idx])->getStallName());
+      data_cursor.cd(((Stall *) stall_view_model[stall_idx])->getStallName());
+      QFile stall_image(data_cursor.filePath(filename));
+      if (!stall_image.open(QIODevice::WriteOnly)) {
+          throw runtime_error("Unable to write uploaded stall image to disk");
+        }
+      stall_image.write(message.right(message.size() - 13 - sz));
+      stall_image.close();
+      (*((Stall *) stall_view_model[stall_idx])->getEditableMenu())[item_idx].setImageName(filename);
     }
   else { // unknown request
-
+      client->sendTextMessage("NO WTF");
     }
 }
 

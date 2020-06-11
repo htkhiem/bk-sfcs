@@ -54,6 +54,7 @@ public slots:
   /** getImagePath and setImagePath needs stall name for absolute path */
   QUrl getImagePath(const QDir& stall_path) const;
   void setImagePath(const QDir& stall_path, const QUrl& image_path);
+  void setImageName(const QString& name);
   QString getName() const;
   void setName(const QString& name);
   QString getType() const;

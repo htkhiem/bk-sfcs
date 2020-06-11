@@ -1,9 +1,8 @@
 #include "kioskcontroller.h"
 
 KioskController::KioskController(QQmlApplicationEngine *eng, QObject *parent)
-  : AbstractController(eng, parent)
+  : AbstractController(eng, "BK-SFCS Kiosk", parent)
 {
-  loadData();
 }
 int KioskController::getCurrentStallIdx() {
   return current_stall_idx;
@@ -13,8 +12,7 @@ void KioskController::setCurrentStallIdx(int idx) {
     current_stall_idx = idx;
   else throw range_error("Current stall index out of range.");
 }
-void KioskController::searchFilter(const QString& _input){
-
+void KioskController::searchFilter(const QString& _input) {
     for (auto ptr : menu_view_model) delete ptr;
     menu_view_model.clear();
     QVector<QFood>& temp = *(getCurrentStall()->getEditableMenu());
@@ -24,7 +22,6 @@ void KioskController::searchFilter(const QString& _input){
             menu_view_model.append(qfoodptr);
           }
       }
-
     p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
 }
 void KioskController::setOrderFoodItem(int idx) {
@@ -41,19 +38,10 @@ void KioskController::setOrderMethod(int method) {
 }
 void KioskController::sendOrder() {
   current_order.setStatus(waiting);
-  QDir stall_dir = QDir::home();
-  stall_dir.cd("sfcs_data");
-  stall_dir.cd(getCurrentStallName());
-  stall_dir.mkdir("waitlist");
-  stall_dir.cd("waitlist");
-
-  QFile order_file(stall_dir.filePath(QDateTime::currentDateTime().toString() + QString(".json")));
-  if (!order_file.open(QIODevice::WriteOnly)) {
-      throw runtime_error("Cannot write current order!");
-    }
-  QJsonObject order_json_obj;
-  current_order.write(order_json_obj);
-  QJsonDocument order_json_doc(order_json_obj);
-  order_file.write(order_json_doc.toJson());
-  order_file.close();
+  QJsonObject order_object;
+  current_order.write(order_object);
+  web_socket.sendTextMessage("OD " +
+                             QString::number(getClientIdx()) +
+                             " " + QString::number(getCurrentStallIdx()) +
+                             " " + QJsonDocument(order_object).toJson());
 }

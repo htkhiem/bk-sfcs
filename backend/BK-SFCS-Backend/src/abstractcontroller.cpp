@@ -33,6 +33,10 @@ void AbstractController::onConnected() {
   populateCategoryViewModel();
   qDebug() << "WebSocket connected to " << server_url;
   connect(&web_socket, &QWebSocket::textMessageReceived, this, &AbstractController::onTextMessageReceived);
+  // Get self index
+  web_socket.sendTextMessage("KX");
+  // Automatically fetch stall list
+  getStallList();
 }
 
 void AbstractController::onTextMessageReceived(const QString& message) {
@@ -61,6 +65,11 @@ void AbstractController::onTextMessageReceived(const QString& message) {
       else { // failed
           throw runtime_error("Server-side error: stall menu could not be sent.");
         }
+    }
+  else if (target == "KX") { // logically guaranteed to succeed
+      QStringRef data(&message, 6, message.length() - 7);
+      setClientIdx(data.toInt());
+      qDebug() << "Handshake complete";
     }
 }
 void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
@@ -193,6 +202,16 @@ bool AbstractController::setCurrentStall(int idx) {
   current_stall_idx = idx;
   return true;
 }
+int AbstractController::getClientIdx() const
+{
+  return client_idx;
+}
+
+void AbstractController::setClientIdx(int value)
+{
+  client_idx = value;
+}
+
 void AbstractController::loadData() { // from server
   QDir data_cursor = this->getAppFolder();
 

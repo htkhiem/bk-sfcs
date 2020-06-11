@@ -30,14 +30,14 @@ void Client::sendBinaryMessage(const QByteArray &message)
   socket->sendBinaryMessage(message);
 }
 
-int Client::getStallIdx() const
+int Client::getClientIdx() const
 {
-  return stall_idx;
+  return idx;
 }
 
-void Client::setStallIdx(int value)
+void Client::setClientIdx(int value)
 {
-  stall_idx = value;
+  idx = value;
 }
 
 Client::Client(QWebSocket *sk, QObject *parent) :

@@ -29,6 +29,10 @@ void QFood::setImagePath(const QDir& stall_path, const QUrl &imgpath){
   QFile::copy(imgpath.path(), stall_path.filePath(imgpath.fileName()));
   image_name = imgpath.fileName();
 };
+void QFood::setImageName(const QString& name) {
+  image_name = name;
+}
+
 QString QFood::getName()const{
   return this->name;
 };

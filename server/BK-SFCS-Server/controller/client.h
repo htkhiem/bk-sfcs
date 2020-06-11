@@ -9,7 +9,7 @@ class Client : public QObject
 {
   Q_OBJECT
   ClientType type;
-  int stall_idx; // if type != stall, this field is -1
+  int idx; // if type != stall, this field is the same as index within list of clients.
   QWebSocket* socket;
 public:
   explicit Client(QWebSocket *sk, QObject *parent = nullptr);
@@ -20,8 +20,8 @@ public:
   void setSocket(QWebSocket *value);
   void sendTextMessage(const QString& message);
   void sendBinaryMessage(const QByteArray& message);
-  int getStallIdx() const;
-  void setStallIdx(int value);
+  int getClientIdx() const;
+  void setClientIdx(int value);
 
 signals:
   void textMessageReceived(const QString& message);
