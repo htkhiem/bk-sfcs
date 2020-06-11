@@ -9,7 +9,11 @@ OrderPopupForm {
         orderButton.text = price * (quantitySelector.currentIndex + 1) + qsTr(" VND\nORDER")
         backend.setOrderQuantity(quantitySelector.currentIndex + 1);
     }
-    orderButton.onActivated: backend.sendOrder();
+    orderButton.onActivated: {
+        var orderName = backend.sendOrder();
+        close();
+        waitForOrderResponse(orderName);
+    }
     enter: Transition {
         NumberAnimation {
             property: "opacity"

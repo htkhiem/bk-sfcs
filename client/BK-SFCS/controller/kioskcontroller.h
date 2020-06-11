@@ -20,7 +20,8 @@ public slots:
     void setOrderFoodItem(int idx);
     void setOrderQuantity(int qty);
     void setOrderMethod(int method); // TODO
-    void sendOrder();
+    QString sendOrder();
+    bool waitForResults(const QString& order_name);
 signals:
 };
 
