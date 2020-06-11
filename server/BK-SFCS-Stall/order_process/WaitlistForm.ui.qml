@@ -6,6 +6,7 @@ Page {
     id: page
     width: 1280
     height: 720
+    property alias refreshButton: refreshButton
     anchors.fill: parent
     title: qsTr("Waitlist")
     ScrollView {
@@ -45,6 +46,16 @@ Page {
                 nameText.text: name
                 priceText.text: price
             }
+        }
+        
+        Button {
+            id: refreshButton
+            x: 1068
+            y: 650
+            width: 201
+            height: 60
+            text: qsTr("Refresh")
+            font.pointSize: 14
         }
     }
 }

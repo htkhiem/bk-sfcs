@@ -104,8 +104,18 @@ void StallMgmtController::loadOrder() {
           order->read(stall_order_json_doc.object());
           //Set add load cuz yea
           order->setOrderID(stall_order_file.fileName());
+          //Refresh start
+          bool add = true;
+          for(auto i : waitlist_view_model){
+              OrderInfo& o = *((OrderInfo*)i);
+              if(o.getOrderID() == order->getOrderID()){
+                    add = false;
+                    break;
+              }
 
-          waitlist_view_model.append(order);
+          }
+          if(add == true)   //Refresh end
+               waitlist_view_model.append(order);
           stall_order_file.close();
           //stall_order_file.remove();
       }
