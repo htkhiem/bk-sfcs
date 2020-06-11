@@ -25,7 +25,7 @@ class AbstractController : public QObject {
    * IM <stall idx> <menu idx> = get image of menu item at given index of stall at given index.
    * SS <serialised stall JSON object> = set stall data (for stall app)
    *  Stall must already have been logged in with administrative rights.
-   * OD <idx> <serialised OrderInfo object> = send order to stall at index
+   * OD <idx1> <idx2> <serialised OrderInfo object> = send order from kiosk idx1 to stall idx2
    *
    * Binary Outgoing Protocol:
    * 1 <idx> <data>: Send new stall image for stall at index.

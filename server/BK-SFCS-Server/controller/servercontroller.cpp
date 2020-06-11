@@ -100,7 +100,7 @@ void ServerController::processTextMessage(const QString& message) {
         }
       client->sendTextMessage(response);
     }
-  else if (request[0] == "LM") { // LoGin with management rights (stall app)
+  else if (request[0] == "LM") { // Login with Management rights (stall app)
       QString response;
       if (client->getType() == stall &&
           loginStallasManager(client->getStallIdx(), request[2])) {
@@ -158,7 +158,20 @@ void ServerController::processTextMessage(const QString& message) {
       client->sendTextMessage(response);
     }
   else if (request[0] == "OD") { // OrDer item (kiosk)
-      // TODO
+      for (auto p : clients) {
+          if (p->getType() == ClientType::stall) {
+              if (p->getStallIdx() == request[2].toInt()) {
+                  // Forward order request to stall
+                  p->sendTextMessage(message);
+                  break;
+                }
+            }
+        }
+    }
+  else if (request[0] == "OK" || request[0] == "NO") { // from Stall client (order replies)
+      // Third element should be kiosk index
+      int kiosk_idx = request[2].toInt();
+      clients[kiosk_idx]->sendTextMessage(message);
     }
   else { // Unknown request
       client->sendTextMessage("NO WTF");
