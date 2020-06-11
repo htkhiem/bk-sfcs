@@ -42,6 +42,8 @@ class AbstractController : public QObject {
    *  sz1 is length of <out>, sz2 is length of <text>, all in UTF-8. Text and binary part not mandatory.
    * 0 <sz1> <out>: Context-dependent failure (replies to "out").
    *  sz1 is length of <out> in UTF-8.
+   *
+   * Note for binary protocols: all numeric parameters are sent as TWO ASCII digits, padded with zeroes if necessary.
    */
 
   QUrl server_url;
@@ -75,7 +77,6 @@ protected:
   void getStallList();
   void getStallImage(int idx);
 
-  void getStallMenu(int idx);
   void getMenuItemImage(int stall_idx, int item_idx);
 public:
   /**
@@ -145,6 +146,11 @@ public slots:
    * @return Stall image path as QUrl (file://...).
    */
   QUrl getCurrentStallImagePath();
+
+  /**
+   * Send a request to get the menu of the stall at the given index.
+   */
+  void getStallMenu(int idx);
 
   void onConnected();
   void onTextMessageReceived(const QString& message);

@@ -85,20 +85,20 @@ void ServerController::processTextMessage(const QString& message) {
 
       QByteArray response;
       try {
-        response.append('1');
+        response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
         int idx = request[1].toInt();
         qDebug() << "Image of stall " << idx << " requested.";
         QByteArray name = ((Stall *) stall_view_model[idx])->getImagePath()
             .fileName().toUtf8();
         QByteArray image = getStallImage(idx);
-
-        response += QByteArray::number(message.toUtf8().size());
-        response += QByteArray::number(name.size());
+        response += QString("%1").arg(message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+        response += QString("%1").arg(name.size(), 2, 10, QChar('0')).toUtf8();
         response += message.toUtf8() + name + image;
         qDebug() << "Replying with " << QString::fromUtf8(response.left(48)) << " (...)";
         client->sendBinaryMessage(response);
       }  catch (...) {
-        response.append('0');
+        response.clear();
+        response += QString("%1").arg(0, 2, 10, QChar('0')).toUtf8();
         response += message.toUtf8().size();
         response += message.toUtf8();
       }
@@ -139,7 +139,7 @@ void ServerController::processTextMessage(const QString& message) {
   else if (request[0] == "IM") { // get Image of Menu item
       QByteArray response;
       try {
-        response.append('1');
+        response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
         int sidx = request[1].toInt();
         int midx = request[2].toInt();
         QDir stall_path = getAppFolder();
@@ -148,13 +148,13 @@ void ServerController::processTextMessage(const QString& message) {
             ((Stall *) stall_view_model[sidx])->getMenu()->at(midx)
             .getImagePath(stall_path).fileName().toUtf8();
         QByteArray image = getMenuItemImage(sidx, midx);
-
-        response += QByteArray::number(message.toUtf8().size());
-        response += QByteArray::number(name.size());
+        response += QString("%1").arg(message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+        response += QString("%1").arg(name.size(), 2, 10, QChar('0')).toUtf8();
         response += message.toUtf8() + name + image;
         client->sendBinaryMessage(response);
       }  catch (...) {
-        response.append('0');
+        response.clear();
+        response += QString("%1").arg(0, 2, 10, QChar('0')).toUtf8();
         response += message.toUtf8().size();
         response += message.toUtf8();
       }

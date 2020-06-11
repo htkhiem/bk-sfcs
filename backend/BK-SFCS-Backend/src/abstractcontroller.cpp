@@ -33,6 +33,7 @@ void AbstractController::onConnected() {
   populateCategoryViewModel();
   qDebug() << "WebSocket connected to " << server_url;
   connect(&web_socket, &QWebSocket::textMessageReceived, this, &AbstractController::onTextMessageReceived);
+  connect(&web_socket, &QWebSocket::binaryMessageReceived, this, &AbstractController::onBinaryMessageReceived);
   // Get self index
   web_socket.sendTextMessage("KX");
   // Automatically fetch stall list
@@ -74,17 +75,17 @@ void AbstractController::onTextMessageReceived(const QString& message) {
     }
 }
 void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
-  qDebug() << "Binary message received: " << message.left(48);
-  bool result = (message.at(0) == '0') ? false : true;
-  int sz1 = qFromLittleEndian<qint32_le>(message.mid(1, 4).data());
+  qDebug() << "Binary message: " << message.left(16);
+  int result = message.left(2).toInt();
+  int sz1 = message.mid(2, 2).toInt();
 
-  int sz2;
-  QString text;
   if (result) {
-      sz2 = qFromLittleEndian<qint32_le>(message.mid(5, 4).data());
-      QString request(message.mid(9, sz1));
+      int sz2 = message.mid(4, 2).toInt();
+      QString request(message.mid(6, sz1));
+      QString text(message.mid(6 + sz1, sz2));
       QStringList request_tokens = request.split(' ', QString::SkipEmptyParts);
-      text = message.mid(9 + sz1, sz2);
+      qDebug() << "Binary message decoded: " << result <<
+                  "sz1 = " << sz1 << ", sz2 = " << sz2 << "Text: " << text << ", R: " << request_tokens[0];
       if (request_tokens[0] == "IS") { // Stall image
           saveStallImage(request_tokens[1].toInt(), text, message.right(message.size() - 9 - sz1 - sz2));
         }
@@ -210,6 +211,7 @@ void AbstractController::setClientIdx(int value)
 }
 
 void AbstractController::saveStallImage(int idx, const QString& name, const QByteArray& data) {
+  qDebug() << "Received image for stall index " << idx << ", name: " << name;
   QDir data_cursor = this->getAppFolder();
   data_cursor.mkdir(((Stall *) stall_view_model[idx])->getStallName());
   data_cursor.cd(((Stall *) stall_view_model[idx])->getStallName());
