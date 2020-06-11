@@ -1,7 +1,7 @@
 import QtQuick 2.4
 import "../"
 MenuDelegateForm {
-    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallName())
+    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallPath())
     itemMouseArea.onClicked: {
         backend.setOrderFoodItem(index);
         console.log(name)

@@ -146,11 +146,12 @@ void ServerController::processTextMessage(const QString& message) {
         stall_path.cd(((Stall *) stall_view_model[sidx])->getStallName());
         QByteArray name =
             ((Stall *) stall_view_model[sidx])->getMenu()->at(midx)
-            .getImagePath(stall_path).fileName().toUtf8();
+            .getImagePath(stall_path.path()).fileName().toUtf8();
         QByteArray image = getMenuItemImage(sidx, midx);
         response += QString("%1").arg(message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
         response += QString("%1").arg(name.size(), 2, 10, QChar('0')).toUtf8();
         response += message.toUtf8() + name + image;
+        qDebug() << "Replying with " << response.left(48) << " (...)";
         client->sendBinaryMessage(response);
       }  catch (...) {
         response.clear();
@@ -334,7 +335,9 @@ QByteArray ServerController::getMenuItemImage(int sidx, int midx)
   Stall& s = *((Stall *) stall_view_model[sidx]);
   QDir stall_path = getAppFolder();
   stall_path.cd(s.getStallName());
-  QFile item_img(s.getMenu()->at(midx).getImagePath(stall_path).path());
+  QFile item_img(s.getMenu()->at(midx).getImagePath(stall_path.path()).path());
+  if (!item_img.open(QIODevice::ReadOnly))
+    throw runtime_error("Could not load stall image from disk.");
   return item_img.readAll();
 }
 

@@ -76,8 +76,8 @@ protected:
 
   void getStallList();
   void getStallImage(int idx);
-
   void getMenuItemImage(int stall_idx, int item_idx);
+
 public:
   /**
    * Main constructor.
@@ -147,10 +147,13 @@ public slots:
    */
   QUrl getCurrentStallImagePath();
 
+  QString getCurrentStallPath();
+
   /**
    * Send a request to get the menu of the stall at the given index.
    */
   void getStallMenu(int idx);
+
 
   void onConnected();
   void onTextMessageReceived(const QString& message);
