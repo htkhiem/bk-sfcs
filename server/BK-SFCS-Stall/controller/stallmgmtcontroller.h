@@ -85,7 +85,7 @@ public slots:
    * order view model. */
   void loadOrder();
   /** Set file data for kiosk */
-  void setReply(const QString _orderID);
+  void setReply(const QString _orderID, bool _status);
 
 
 signals:

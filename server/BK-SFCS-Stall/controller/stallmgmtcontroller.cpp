@@ -29,7 +29,7 @@ bool StallMgmtController::logout() {
 }
 void StallMgmtController::updateWaitlistViewModel() {
   // TODO
-
+    p_engine->rootContext()->setContextProperty("waitlistViewModel", QVariant::fromValue(waitlist_view_model));
 }
 void StallMgmtController::populateMgmtGraphs() {
   // TODO
@@ -127,12 +127,25 @@ void StallMgmtController::loadOrder() {
   p_engine->rootContext()->setContextProperty("stallWaitlistModel", QVariant::fromValue(stall_view_model));
 }
 
-void StallMgmtController::setReply(const QString _orderID){
+void StallMgmtController::setReply(const QString _orderID, bool accepted){
     QDir data_cursor = QDir::home();
     //Access order folder from specific stall
     data_cursor.cd("sfcs_data/" + getCurrentStallName() + "/orders");
-    QStringList stall_orders = data_cursor.entryList(QStringList() << "*.json",QDir::Files);
 
+        //Read
+        QFile order_file(data_cursor.filePath(_orderID + QString(".json")));
+        QJsonDocument order_doc(QJsonDocument::fromJson(order_file.readAll()));
+        OrderInfo* order = new OrderInfo();
+        order->read(order_doc.object());
+        order->setStatus(accepted? processing : rejected);
+        //Write
+        QJsonObject orderObj;
+        order->write(orderObj);
+        QJsonDocument order_json_doc(orderObj);
+        order_file.write(order_json_doc.toJson());
+        order_file.close();
+
+        /*  Backup
         QFile stall_order_file(_orderID);
             //Find the orderInfo within the waitlist
             for(auto ptr : waitlist_view_model){
@@ -147,7 +160,7 @@ void StallMgmtController::setReply(const QString _orderID){
                     stall_order_file.close();
                     break;
                 }
-            }
+            }*/
 
         data_cursor.cdUp();
         data_cursor.cdUp();

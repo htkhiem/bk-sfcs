@@ -21,30 +21,13 @@ Page {
             width: scrollView.width
             height: scrollView.height
             bottomMargin: 0
-            model: ListModel {
-                ListElement {
-                    image: "placeholders/200.png"
-                    qty: 1
-                    name: "Item name here"
-                    desc: "Some descriptions about this item."
-                    price: 10000
-                    isOOS: false
-                }
-                ListElement {
-                    image: "placeholders/200.png"
-                    qty: 5
-                    name: "Another item"
-                    desc: "Another meaningless description."
-                    price: 15000
-                    isOOS: true
-                }
-            }
+            model: waitlistViewModel
             delegate: OrderDelegate {
                 width: listView.width
-                itemImage.source: image
-                qtyNumber.text: qty
-                nameText.text: name
-                priceText.text: price
+                itemImage.source: model.modelData.imagePath
+                qtyNumber.text: model.modelData.quantity
+                nameText.text: model.modelData.itemName
+                priceText.text: model.modelData.total
             }
         }
         
