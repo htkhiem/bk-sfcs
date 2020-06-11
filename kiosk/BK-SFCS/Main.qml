@@ -51,13 +51,13 @@ MainForm {
 
     function openMenu(stallIdx) {
         backend.setCurrentStall(stallIdx);
-        backend.populateMenuViewModel(); // load menu
+        backend.getStallMenu(stallIdx); // load menu
         stallMenuLoader.source = "StallMenu.qml"
         stackView.push(stallMenuLoader)
         menuLoadWait.wait(300);
         stallMenuLoader.item.title = backend.getCurrentStallName();
         homeFormLoader.source = ""; // unload stall list
-        console.log(stackView.depth)
+        console.log(stackView.depth);
     }
 
 

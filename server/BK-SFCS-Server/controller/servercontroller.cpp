@@ -7,6 +7,8 @@ ServerController::ServerController(QQmlApplicationEngine *eng, QObject *parent) 
   app_name(web_socket_server->serverName()),
   p_engine(eng)
 {
+  // Loads disk data into RAM
+  loadData();
   // Loads server URL from config file
   QDir data_cursor = this->getAppFolder();
   QFile server_conf(data_cursor.filePath("server.conf"));
@@ -15,8 +17,15 @@ ServerController::ServerController(QQmlApplicationEngine *eng, QObject *parent) 
       if (!server_conf.open(QIODevice::ReadOnly)) {
           throw runtime_error("Cannot read configuration file.");
         }
-      result = web_socket_server->listen(QHostAddress(QString(server_conf.readLine())),
-                                         server_conf.readLine().toInt());
+      QString server_address = QString(server_conf.readLine());
+      server_address.remove(server_address.length() - 1, 1);
+      qDebug() << server_address;
+
+      int server_port = QString(server_conf.readLine()).toInt();
+      qDebug() << server_port;
+
+      result = web_socket_server->listen(QHostAddress(server_address),
+                                         server_port);
       server_conf.close();
     }
   else {
@@ -24,8 +33,7 @@ ServerController::ServerController(QQmlApplicationEngine *eng, QObject *parent) 
       if (!server_conf.open(QIODevice::WriteOnly)) {
           throw runtime_error("Cannot write initial configuration file.");
         }
-      server_conf.write(QByteArray("::1")); // defaults to localhost
-      server_conf.write(QByteArray("25678"));
+      server_conf.write(QByteArray("::1\n25678")); // defaults to localhost
       result = web_socket_server->listen(QHostAddress("::1"), 25678);
     }
   if (result) {
@@ -49,10 +57,13 @@ void ServerController::onNewConnection() {
   connect(client, &Client::binaryMessageReceived, this, &ServerController::processBinaryMessage);
   connect(client, &Client::disconnected, this, &ServerController::socketDisconnected);
   client->setClientIdx(clients.size());
+  qDebug() << "New client connected with index " << clients.size();
   clients.append(client);
+
 }
 // See abstractcontroller.h for full protocol
 void ServerController::processTextMessage(const QString& message) {
+  qDebug() << "Text message received: " << message;
   Client *client = qobject_cast<Client *>(sender());
   QStringList request = message.split(' ', QString::SkipEmptyParts);
   if (request[0] == "GL") { // Get List of stalls
@@ -71,17 +82,20 @@ void ServerController::processTextMessage(const QString& message) {
       client->sendTextMessage(response);
     }
   else if (request[0] == "IS") { // get Image of Stall
+
       QByteArray response;
       try {
         response.append('1');
         int idx = request[1].toInt();
+        qDebug() << "Image of stall " << idx << " requested.";
         QByteArray name = ((Stall *) stall_view_model[idx])->getImagePath()
             .fileName().toUtf8();
         QByteArray image = getStallImage(idx);
 
-        response += message.toUtf8().size();
-        response += name.size();
+        response += QByteArray::number(message.toUtf8().size());
+        response += QByteArray::number(name.size());
         response += message.toUtf8() + name + image;
+        qDebug() << "Replying with " << QString::fromUtf8(response.left(48)) << " (...)";
         client->sendBinaryMessage(response);
       }  catch (...) {
         response.append('0');
@@ -135,8 +149,8 @@ void ServerController::processTextMessage(const QString& message) {
             .getImagePath(stall_path).fileName().toUtf8();
         QByteArray image = getMenuItemImage(sidx, midx);
 
-        response += message.toUtf8().size();
-        response += name.size();
+        response += QByteArray::number(message.toUtf8().size());
+        response += QByteArray::number(name.size());
         response += message.toUtf8() + name + image;
         client->sendBinaryMessage(response);
       }  catch (...) {
@@ -173,6 +187,9 @@ void ServerController::processTextMessage(const QString& message) {
       // Third element should be kiosk index
       int kiosk_idx = request[2].toInt();
       clients[kiosk_idx]->sendTextMessage(message);
+    }
+  else if (request[0] == "KX") {
+      client->sendTextMessage("OK KX " + QString(client->getClientIdx()));
     }
   else { // Unknown request
       client->sendTextMessage("NO WTF");
@@ -216,6 +233,10 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
   else { // unknown request
       client->sendTextMessage("NO WTF");
     }
+}
+
+void ServerController::socketDisconnected() {
+
 }
 
 QDir ServerController::getAppFolder() {

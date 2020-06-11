@@ -40,6 +40,7 @@ void AbstractController::onConnected() {
 }
 
 void AbstractController::onTextMessageReceived(const QString& message) {
+  qDebug() << "Text message received: " << message;
   QStringRef result(&message, 0, 2);
   QStringRef target(&message, 3, 2);
   if (target == "GL") { // GetList of stalls
@@ -73,6 +74,7 @@ void AbstractController::onTextMessageReceived(const QString& message) {
     }
 }
 void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
+  qDebug() << "Binary message received: " << message.left(48);
   bool result = (message.at(0) == '0') ? false : true;
   int sz1 = qFromLittleEndian<qint32_le>(message.mid(1, 4).data());
 
@@ -84,17 +86,7 @@ void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
       QStringList request_tokens = request.split(' ', QString::SkipEmptyParts);
       text = message.mid(9 + sz1, sz2);
       if (request_tokens[0] == "IS") { // Stall image
-          int idx = request_tokens[1].toInt();
-          QDir data_cursor = this->getAppFolder();
-          data_cursor.mkdir(((Stall *) stall_view_model[idx])->getStallName());
-          data_cursor.cd(((Stall *) stall_view_model[idx])->getStallName());
-          QFile stall_image(data_cursor.filePath(text));
-          if (!stall_image.open(QIODevice::WriteOnly)) {
-              throw runtime_error("Unable to write downloaded stall image to disk");
-            }
-          stall_image.write(message.right(message.size() - 9 - sz1 - sz2));
-          stall_image.close();
-          ((Stall *) stall_view_model[idx])->setImagePath(text);
+          saveStallImage(request_tokens[1].toInt(), text, message.right(message.size() - 9 - sz1 - sz2));
         }
       else if (request_tokens[0] == "IM") { // Menu item image
           int stall_idx = request_tokens[1].toInt();
@@ -195,6 +187,11 @@ void AbstractController::populateStallViewModel(const QJsonObject& list_obj) {
           stall_view_model.append(temp);
         }
       p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
+
+      // Now query images for each of them
+      for (int i = 0; i < stall_view_model.size(); ++i) {
+          getStallImage(i);
+        }
     }
   else throw invalid_argument("Invalid QJsonObject passed to populateStallViewModel()");
 }
@@ -210,6 +207,19 @@ int AbstractController::getClientIdx() const
 void AbstractController::setClientIdx(int value)
 {
   client_idx = value;
+}
+
+void AbstractController::saveStallImage(int idx, const QString& name, const QByteArray& data) {
+  QDir data_cursor = this->getAppFolder();
+  data_cursor.mkdir(((Stall *) stall_view_model[idx])->getStallName());
+  data_cursor.cd(((Stall *) stall_view_model[idx])->getStallName());
+  QFile stall_image(data_cursor.filePath(name));
+  if (!stall_image.open(QIODevice::WriteOnly)) {
+      throw runtime_error("Unable to write downloaded stall image to disk");
+    }
+  stall_image.write(data);
+  stall_image.close();
+  ((Stall *) stall_view_model[idx])->setImagePath(name);
 }
 
 void AbstractController::loadData() { // from server

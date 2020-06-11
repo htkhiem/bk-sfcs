@@ -41,7 +41,7 @@ void Client::setClientIdx(int value)
 }
 
 Client::Client(QWebSocket *sk, QObject *parent) :
-  QObject(parent), type(kiosk), stall_idx(-1), socket(sk)
+  QObject(parent), type(kiosk), idx(-1), socket(sk)
 {
   connect(sk, &QWebSocket::textMessageReceived, this, &Client::textMessageReceived);
   connect(sk, &QWebSocket::binaryMessageReceived, this, &Client::binaryMessageReceived);

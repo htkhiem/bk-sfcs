@@ -116,7 +116,7 @@ public slots:
   
   /** Populate stall list with name and image. */
   void populateStallViewModel(const QJsonObject& list_obj);
-  void saveStallImage(const QString& stall_name, const QByteArray& image);
+  void saveStallImage(int stall_idx, const QString& filename, const QByteArray& image);
   
   /**
    * Set current stall to the one at the given index within stall_view_model.
@@ -149,11 +149,6 @@ public slots:
   void onConnected();
   void onTextMessageReceived(const QString& message);
   void onBinaryMessageReceived(const QByteArray &message);
-
-  void onStallImageReceived(int idx, const QByteArray& image);
-  void onStallDataReceived(const QString& serialised_json);
-  void onMenuReceived(const QString& serialised_json);
-  void onMenuItemImageReceived(int idx, const QByteArray& image);
 signals:
   void closed();
   void currentStallNameChanged();
