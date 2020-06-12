@@ -24,7 +24,7 @@ class AbstractController : public QObject {
    *  Stall must already have been logged in with basic rights.
    * GM <idx> = get menu for stall at given index
    * IM <stall idx> <menu idx> = get image of menu item at given index of stall at given index.
-   * SS <serialised stall JSON object> = set stall data (for stall app)
+   * SS <idx> <serialised stall JSON object> = set stall data (for stall app)
    *  Stall must already have been logged in with administrative rights.
    * OD <idx1> <idx2> <serialised OrderInfo object> = send order from kiosk idx1 to stall idx2
    *
@@ -83,7 +83,13 @@ protected:
    * It is delcared as a virtual function here to allow processTextMessage to call it.
    * @param message QString containing the full text message (for future extensibility).
    */
-  virtual void parseOrderReply(const QString& message) = 0;
+  virtual void parseRepliesToKiosk(const QString& message) = 0;
+
+  /**(
+   * @brief Parses stall app-specific replies. To be implemented by stall app.
+   * @param message QString containing the full text message.
+   */
+  virtual void parseRepliesToStall(const QString& message) = 0;
 public:
   /**
    * Main constructor.
@@ -159,8 +165,6 @@ public slots:
    * Send a request to get the menu of the stall at the given index.
    */
   void getStallMenu(int idx);
-
-
   void onConnected();
   void onTextMessageReceived(const QString& message);
   void onBinaryMessageReceived(const QByteArray &message);

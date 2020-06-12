@@ -3,7 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
 MenuDelegateForm {
     id: delegateForm
-    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallName());
+    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallPath());
     property bool itemImageLoaded: false;
     property bool oosCheckboxLoaded: false;
 

@@ -12,7 +12,8 @@ class KioskController : public AbstractController
   Q_PROPERTY(int currentOrderStatus READ getCurrentOrderStatus NOTIFY currentOrderStatusChanged)
   OrderInfo current_order;
   int current_stall_idx;
-  void parseOrderReply(const QString& message) override;
+  void parseRepliesToKiosk(const QString& message) override;
+  void parseRepliesToStall(const QString& message) override;
 public:
   explicit KioskController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
 public slots:

@@ -3,8 +3,12 @@ import QtQuick.Controls 2.5
 import QtGraphicalEffects 1.14
 
 WaitingPopupForm {
-    property int orderStatus: backend.currentOrderStatus;
-    onOrderStatusChanged: {
+    Connections {
+        target: backend
+        onCurrentOrderStatusChanged: checkOrderStatus();
+    }
+
+    function checkOrderStatus() {
         if (orderStatus == 1) { // order accepted
             waitingPopup.statusText.text = "Success! Your order is now being processed.";
             waitingPopup.statusImage.source = "assets/tick.png";
@@ -14,4 +18,5 @@ WaitingPopupForm {
             waitingPopup.statusImage.source = "./assets/forbidden.png";
         }
     }
+    onClosed: refocus();
 }

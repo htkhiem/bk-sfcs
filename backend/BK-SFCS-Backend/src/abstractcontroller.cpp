@@ -71,8 +71,11 @@ void AbstractController::onTextMessageReceived(const QString& message) {
       qDebug() << "Handshake complete";
     }
   else if (target == "OD") {
-      parseOrderReply(message);
-    }
+      parseRepliesToKiosk(message);
+  }
+  else {
+      parseRepliesToStall(message);
+  }
 }
 void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
   qDebug() << "Binary message: " << message.left(16);
@@ -237,47 +240,4 @@ QString AbstractController::getCurrentStallPath() {
 
 void AbstractController::loadData() { // from server
   QDir data_cursor = this->getAppFolder();
-
-  // Load stall menu and data
-  web_socket.sendTextMessage("GS");
-  data_cursor.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
-  QStringList stall_dirs = data_cursor.entryList();
-  for (auto qstr : stall_dirs) {
-      data_cursor.cd(qstr);
-      QFile stall_data_file(data_cursor.filePath(qstr + QString(".json")));
-      if (!stall_data_file.open(QIODevice::ReadOnly)) {
-          throw runtime_error("Cannot read data file: " + qstr.toStdString());
-        }
-      QJsonDocument stall_data_json_doc(QJsonDocument::fromJson(stall_data_file.readAll()));
-      Stall* stall = new Stall();
-      stall->read(stall_data_json_doc.object());
-      stall_view_model.append(stall);
-      stall_data_file.close();
-      data_cursor.cdUp();
-    }
-  data_cursor.cdUp();
-
-  p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
-}
-void AbstractController::saveData() {
-  QDir data_cursor = this->getAppFolder();
-  // Write stall menu and data
-  for (auto ptr : stall_view_model) {
-      Stall& stall = *((Stall* )ptr);
-      data_cursor.mkdir(stall.getStallName());
-      data_cursor.cd(stall.getStallName());
-      QFile stall_data_file(data_cursor.filePath(stall.getStallName() + QString(".json")));
-      if (!stall_data_file.open(QIODevice::WriteOnly)) {
-          throw runtime_error(
-                string("Cannot write data file for stall: ")
-                + stall.getStallName().toStdString());
-        }
-      QJsonObject stall_data_json_obj;
-      stall.write(stall_data_json_obj);
-      QJsonDocument stall_data_json_doc(stall_data_json_obj);
-      stall_data_file.write(stall_data_json_doc.toJson());
-      stall_data_file.close();
-      data_cursor.cdUp();
-    }
-  data_cursor.cdUp();
 }

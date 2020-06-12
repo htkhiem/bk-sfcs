@@ -94,7 +94,7 @@ void ServerController::processTextMessage(const QString& message) {
         response += QString("%1").arg(message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
         response += QString("%1").arg(name.size(), 2, 10, QChar('0')).toUtf8();
         response += message.toUtf8() + name + image;
-        qDebug() << "Replying with " << QString::fromUtf8(response.left(48)) << " (...)";
+        qDebug() << "Replying with " << response.left(48) << " (...)";
         client->sendBinaryMessage(response);
       }  catch (...) {
         response.clear();

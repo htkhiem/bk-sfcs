@@ -54,11 +54,15 @@ int KioskController::getCurrentOrderStatus() {
     }
 }
 
-void KioskController::parseOrderReply(const QString& message) {
+void KioskController::parseRepliesToKiosk(const QString& message) {
   QStringList response_tokens = message.split(' ', QString::SkipEmptyParts);
   if (response_tokens[0] == "OK") current_order.setAnswered();
   else {
       current_order.setAnswered(true);
     }
   emit currentOrderStatusChanged();
+}
+
+void KioskController::parseRepliesToStall(const QString &message) {
+  qDebug() << "[WARNING] Server sent stall-specific replies to this kiosk!";
 }

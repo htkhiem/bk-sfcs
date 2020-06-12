@@ -1,31 +1,33 @@
 #include "stallmgmtcontroller.h"
 
 StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *parent)
-  : AbstractController(eng, parent)
+  : AbstractController(eng, "BK-SFCS Stall Manager", parent), management_mode(false)
 {
-  loadData(); // Loads stall data and initialise the stall view model.
-  current_stall_idx = -1;
 }
 
-StallMgmtController::~StallMgmtController() {
-  saveData(); // Saves stall data
+StallMgmtController::~StallMgmtController()
+{
 }
 
-bool StallMgmtController::login(int idx, const QString& psw) {
+void StallMgmtController::login(int idx, const QString& psw) {
   if(idx < 0 || idx >= stall_view_model.size())
     throw range_error("Stall index out of range in login function.");
-  QString correct_psw = ((Stall*)stall_view_model[idx])->getPassword();
-  if (current_stall_idx != -1 || correct_psw != psw)
-    return false;
-  // Login successful
-  setCurrentStall(idx);
-  populateMenuViewModel();
-  return true;
+  web_socket.sendTextMessage("LG " + QString::number(idx) + " " + psw);
 }
-bool StallMgmtController::logout() {
+bool StallMgmtController::logout() { // currently useless in networked version
   if (current_stall_idx == -1) return false;
   current_stall_idx = -1;
   return true;
+}
+
+int StallMgmtController::getCurrentStallIdx()
+{
+  return current_stall_idx;
+}
+
+bool StallMgmtController::isManagementModeEnabled()
+{
+  return management_mode;
 }
 void StallMgmtController::updateWaitlistViewModel() {
   // TODO
@@ -34,10 +36,8 @@ void StallMgmtController::updateWaitlistViewModel() {
 void StallMgmtController::populateMgmtGraphs() {
   // TODO
 }
-bool StallMgmtController::loginAsManager(const QString& psw) {
-  const QString& mgmtPsw = getCurrentStall()->getMgmtPassword();
-  if (mgmtPsw != psw) return false;
-  return true;
+void StallMgmtController::loginAsManager(const QString& psw) {
+  web_socket.sendTextMessage("LM " + psw);
 }
 void StallMgmtController::proposeAddFood() {
   QFood* new_food = new QFood();
@@ -61,6 +61,14 @@ void StallMgmtController::applyProposal() {
   current_menu->clear();
   for (auto ptr : menu_view_model) current_menu->append(*(QFood *) ptr);
 }
+
+void StallMgmtController::updateStallData() {
+  QJsonObject stall_json;
+  getCurrentStall()->write(stall_json);
+  // Serialise current stall data into JSON and send it
+  QString request = "SS " + QString::number(getClientIdx()) + " " + QJsonDocument(stall_json).toJson();
+}
+
 bool StallMgmtController::setStallName(const QString& name) {
   if (name.isEmpty()) return false;
   getCurrentStall()->setStallName(name);
@@ -77,4 +85,36 @@ bool StallMgmtController::setStallMgmtPassword(const QString& mgmtpsw) {
 bool StallMgmtController::setStallImage(const QUrl& imgpath) {
   getCurrentStall()->setImagePath(imgpath);
   return true;
+}
+
+void StallMgmtController::parseRepliesToStall(const QString &message)
+{
+  // Stall-specific replies never come with file data so we can safely tokenise them.
+  QStringList response_tokens = message.split(' ', QString::SkipEmptyParts);
+  if (response_tokens[1] == "LG") {
+      qDebug() << "Login reply received";
+      if (response_tokens[0] == "OK") {
+          current_stall_idx = response_tokens[2].toInt();
+          qDebug() << "Logged into stall at index " << current_stall_idx;
+        }
+      else {
+          qDebug() << "Failed to log in.";
+          current_stall_idx = -2; // use -2 for wrong password
+        }
+      emit currentStallIndexChanged();
+    }
+  else if (response_tokens[1] == "LM") {
+      qDebug() << "Management login reply received";
+      if (response_tokens[0] == "OK") {
+          management_mode = true;
+        }
+      else {
+          management_mode = false;
+        }
+      emit managementModeChanged();
+    }
+}
+
+void StallMgmtController::parseRepliesToKiosk(const QString &message) {
+  qDebug() << "[WARNING] Server sent kiosk-specific replies to this stall!";
 }
