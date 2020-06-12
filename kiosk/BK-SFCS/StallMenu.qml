@@ -8,18 +8,12 @@ StallMenuForm {
         id: orderPopup
     }
     WaitingPopup {
-<<<<<<< HEAD:kiosk/BK-SFCS/StallMenu.qml
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
         id: waitingPopup
     }
 
-=======
-        id: waitingPopup
-        x: Math.round((parent.width - width) / 2)
-        y: Math.round((parent.height - height) / 2)
-    }
->>>>>>> master:client/BK-SFCS/StallMenu.qml
+
     function populateOrderPopup(name, desc, time, price, imgPath) {
         orderPopup.name.text = name;
         orderPopup.desc.text = desc;
@@ -31,7 +25,7 @@ StallMenuForm {
         blurUnfocused();
         orderPopup.open();
     }
-<<<<<<< HEAD:kiosk/BK-SFCS/StallMenu.qml
+
 
     function sendOrder() {
         orderPopup.close();
@@ -39,20 +33,5 @@ StallMenuForm {
         waitingPopup.statusText.text = tr("Please wait...");
         waitingPopup.statusImage.source = "assets/loader.png";
         waitingPopup.open();
-=======
-    function waitForOrderResponse(name) {
-        waitingPopup.statusText.text = "Your order has been sent. Please wait...";
-        waitingPopup.statusImage.source = "assets/loader.png";
-        waitingPopup.open();
-        var orderResult = backend.waitForResults(name);
-        if (orderResult) { // succeeded
-            waitingPopup.statusText.text = "Succeeded! Your order is now being processed.";
-            waitingPopup.statusImage.source = "assets/tick.png";
-        }
-        else {
-            waitingPopup.statusText.text = "The stall could not accept this order! Please try again later.";
-            waitingPopup.statusImage.source = "./assets/forbidden.png";
-        }
->>>>>>> master:client/BK-SFCS/StallMenu.qml
     }
 }
