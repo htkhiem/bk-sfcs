@@ -118,7 +118,7 @@ void ServerController::processTextMessage(const QString& message) {
   else if (request[0] == "LM") { // Login with Management rights (stall app)
       QString response;
       if (client->getType() == stall &&
-          loginStallasManager(client->getClientIdx(), request[2])) {
+          loginStallasManager(client->getClientIdx(), request[1])) {
           response = "OK " + message;
         }
       else {
@@ -164,8 +164,9 @@ void ServerController::processTextMessage(const QString& message) {
       QString response;
       try {
         int idx = request[1].toInt();
+        int json_start_pos = message.indexOf("{");
         QJsonObject data = QJsonDocument(QJsonDocument::fromJson(
-                                           request[2].toUtf8())).object();
+                                           message.midRef(json_start_pos, message.length() - json_start_pos - 1).toUtf8())).object();
         setStallData(idx, data);
         response = "OK " + request[0] + " " + request[1]; // do not send the JSON part back
       }  catch (...) {
@@ -199,11 +200,11 @@ void ServerController::processTextMessage(const QString& message) {
 
 void ServerController::processBinaryMessage(const QByteArray& message) {
   Client *client = qobject_cast<Client *>(sender());
-  int request = message.left(1).toInt();
+  int request = message.left(2).toInt();
   if (request == 1) { // Set new stall image
-      int idx = message.mid(1, 4).toInt();
-      int sz = message.mid(5, 4).toInt();
-      QString filename = message.mid(9, sz);
+      int idx = message.mid(2, 2).toInt();
+      int sz = message.mid(4, 2).toInt();
+      QString filename = message.mid(6, sz);
       QDir data_cursor = this->getAppFolder();
       data_cursor.mkdir(((Stall *) stall_view_model[idx])->getStallName());
       data_cursor.cd(((Stall *) stall_view_model[idx])->getStallName());
@@ -211,15 +212,15 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
       if (!stall_image.open(QIODevice::WriteOnly)) {
           throw runtime_error("Unable to write uploaded stall image to disk");
         }
-      stall_image.write(message.right(message.size() - 9 - sz));
+      stall_image.write(message.right(message.size() - 6 - sz));
       stall_image.close();
       ((Stall *) stall_view_model[idx])->setImagePath(filename);
     }
   else if (request == 2) { // Set menu item image
-      int stall_idx = message.mid(1, 4).toInt();
-      int item_idx = message.mid(5, 4).toInt();
-      int sz = message.mid(9, 4).toInt();
-      QString filename = message.mid(13, sz);
+      int stall_idx = message.mid(2, 2).toInt();
+      int item_idx = message.mid(4, 2).toInt();
+      int sz = message.mid(6, 2).toInt();
+      QString filename = message.mid(8, sz);
       QDir data_cursor = this->getAppFolder();
       data_cursor.mkdir(((Stall *) stall_view_model[stall_idx])->getStallName());
       data_cursor.cd(((Stall *) stall_view_model[stall_idx])->getStallName());
@@ -227,7 +228,7 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
       if (!stall_image.open(QIODevice::WriteOnly)) {
           throw runtime_error("Unable to write uploaded stall image to disk");
         }
-      stall_image.write(message.right(message.size() - 13 - sz));
+      stall_image.write(message.right(message.size() - 8 - sz));
       stall_image.close();
       (*((Stall *) stall_view_model[stall_idx])->getEditableMenu())[item_idx].setImageName(filename);
     }
@@ -346,6 +347,13 @@ bool ServerController::setStallData(int idx, const QJsonObject &data)
   try {
     Stall& s = *((Stall *) stall_view_model[idx]);
     s.read(data);
+
+    QDir data_cursor = getAppFolder();
+    data_cursor.cd(s.getStallName());
+    QFile stall_data_file(data_cursor.filePath(s.getStallName() + QString(".json")));
+    QJsonDocument stall_data_json_doc(data);
+    stall_data_file.write(stall_data_json_doc.toJson());
+    stall_data_file.close();
   }  catch (...) {
     return false;
   }

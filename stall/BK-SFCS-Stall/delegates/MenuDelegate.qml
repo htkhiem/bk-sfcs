@@ -40,36 +40,47 @@ MenuDelegateForm {
             estTimeField.placeholderText = "Must be >= 1!"
             model.modelData.isValid = false;
         }
-        enable_buttons();
         return model.modelData.isValid;
     }
 
     nameField.onEditingFinished: {
         model.modelData.name = nameField.text;
-        check_data();
+        if (check_data) {
+            enable_buttons();
+        }
     }
 
     descField.onEditingFinished: {
         model.modelData.description = descField.text;
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
     }
 
     priceField.onEditingFinished: {
         model.modelData.price = parseFloat(priceField.text);
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
 
     }
     estTimeField.onEditingFinished: {
         model.modelData.estimatedTime = parseFloat(estTimeField.text);
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
     }
     oosCheckbox.onCheckedChanged: { // this version waits for confirmation
         model.modelData.isOOS = oosCheckbox.checked;
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
     }
     categoryBox.onActivated: {
         model.modelData.type = categoryBox.currentText;
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
 
     }
     removeButton.onActivated: {

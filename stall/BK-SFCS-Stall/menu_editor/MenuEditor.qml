@@ -2,8 +2,13 @@ import QtQuick 2.0
 import "../delegates"
 MenuEditorForm {
     id: menuEditorForm
+    Connections {
+        target: backend
+        onManagementModeChanged: check_authorization();
+    }
+
     authorizeButton.onClicked: {
-        authorize_editing(mgrPswField.text);
+        backend.loginAsManager(mgrPswField.text);
     }
     function get_category_idx(name) {
         for (var i = 0; i < categoryViewModel.length; ++i) {
@@ -17,9 +22,8 @@ MenuEditorForm {
         else confirmButton.enabled = false;
         revertButton.enabled = true;
     }
-    function authorize_editing(psw) {
-        // placeholder for actual authorization code
-        if (backend.loginAsManager(psw)) {
+    function check_authorization() {
+        if (backend.isManagementModeEnabled()) {
             state = "authorized"
             console.log("State changed")
         }
@@ -35,7 +39,7 @@ MenuEditorForm {
     }
 
     revertButton.onActivated: {
-        backend.populateMenuViewModel();
+        backend.getStallMenu(backend.getCurrentStallIdx());
     }
 
     confirmButton.onActivated: backend.applyProposal();

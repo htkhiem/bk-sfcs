@@ -22,7 +22,7 @@ class AbstractController : public QObject {
    * LG <idx> <psw> = log into stall at given index with this password
    * LM <psw> = log into current stall with administrative password.
    *  Stall must already have been logged in with basic rights.
-   * GM <idx> = get menu for stall at given index
+   * GM <idx> = get menu for stall at given index.
    * IM <stall idx> <menu idx> = get image of menu item at given index of stall at given index.
    * SS <idx> <serialised stall JSON object> = set stall data (for stall app)
    *  Stall must already have been logged in with administrative rights.
