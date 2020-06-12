@@ -100,6 +100,7 @@ MenuDelegateForm {
             itemImage.source = imageBrowser.fileUrl;
             model.modelData.setImagePath(backend.getCurrentStallName(),imageBrowser.fileUrl);
             enable_buttons();
+            markUpdateImages();
             close()
         }
         onRejected: {

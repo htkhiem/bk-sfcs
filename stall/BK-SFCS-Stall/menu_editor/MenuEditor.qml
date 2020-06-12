@@ -6,7 +6,7 @@ MenuEditorForm {
         target: backend
         onManagementModeChanged: check_authorization();
     }
-
+    property bool needsToUpdateImages: false
     authorizeButton.onClicked: {
         backend.loginAsManager(mgrPswField.text);
     }
@@ -32,6 +32,10 @@ MenuEditorForm {
             mgrPswField.placeholderText = "Wrong password"
         }
     }
+    function markUpdateImages() {
+        needsToUpdateImages = true;
+    }
+
 
     addButton.onClicked: {
         backend.proposeAddFood();

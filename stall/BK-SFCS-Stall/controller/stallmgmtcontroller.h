@@ -84,8 +84,8 @@ public slots:
    */
   bool proposeRemoveFood(int idx);
   /** Apply all editing proposals to current_stall's menu. */
-  void applyProposal();
-  void updateStallData(bool alsoUpdateImages = false);
+  void applyProposal(bool also_update_images = false);
+  void updateStallData(bool also_update_images = false);
   /** QML-facing slots for GUI to edit stall data, exclusive to stall app. */
   bool setStallName(const QString &name);
   bool setStallPassword(const QString &password);
