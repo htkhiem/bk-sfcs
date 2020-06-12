@@ -43,8 +43,9 @@ void OrderInfo::setReceived(){
 QDateTime OrderInfo::getAnswered(){
   return this->time_answered;
 }
-void OrderInfo::setAnswered(){
+void OrderInfo::setAnswered(bool reject){
   this->time_answered = QDateTime::currentDateTime();
+  this->status = reject ? rejected : processing;
 }
 QDateTime OrderInfo::getFinished(){
   return this->time_finished;

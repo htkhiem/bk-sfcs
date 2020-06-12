@@ -7,6 +7,12 @@ StallMenuForm {
         y: Math.round((parent.height - height) / 2)
         id: orderPopup
     }
+    WaitingPopup {
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
+        id: waitingPopup
+    }
+
     function populateOrderPopup(name, desc, time, price, imgPath) {
         orderPopup.name.text = name;
         orderPopup.desc.text = desc;
@@ -17,5 +23,13 @@ StallMenuForm {
         orderPopup.image.source = imgPath;
         blurUnfocused();
         orderPopup.open();
+    }
+
+    function sendOrder() {
+        orderPopup.close();
+        backend.sendOrder();
+        waitingPopup.statusText.text = tr("Please wait...");
+        waitingPopup.statusImage.source = "assets/loader.png";
+        waitingPopup.open();
     }
 }

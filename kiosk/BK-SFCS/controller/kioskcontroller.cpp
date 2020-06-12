@@ -13,16 +13,16 @@ void KioskController::setCurrentStallIdx(int idx) {
   else throw range_error("Current stall index out of range.");
 }
 void KioskController::searchFilter(const QString& _input) {
-    for (auto ptr : menu_view_model) delete ptr;
-    menu_view_model.clear();
-    QVector<QFood>& temp = *(getCurrentStall()->getEditableMenu());
-    for (QFood& qfood : temp) {
-        if (categoryIsVisible(qfood.getType()) && qfood.getName().contains(_input)) {
-            QObject * qfoodptr = new QFood(qfood);
-            menu_view_model.append(qfoodptr);
-          }
-      }
-    p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
+  for (auto ptr : menu_view_model) delete ptr;
+  menu_view_model.clear();
+  QVector<QFood>& temp = *(getCurrentStall()->getEditableMenu());
+  for (QFood& qfood : temp) {
+      if (categoryIsVisible(qfood.getType()) && qfood.getName().contains(_input)) {
+          QObject * qfoodptr = new QFood(qfood);
+          menu_view_model.append(qfoodptr);
+        }
+    }
+  p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
 }
 void KioskController::setOrderFoodItem(int idx) {
   if (idx < menu_view_model.size() && idx >= 0)
@@ -44,4 +44,21 @@ void KioskController::sendOrder() {
                              QString::number(getClientIdx()) +
                              " " + QString::number(getCurrentStallIdx()) +
                              " " + QJsonDocument(order_object).toJson());
+}
+
+int KioskController::getCurrentOrderStatus() {
+  switch (current_order.getStatus()) {
+    case processing: return 1;
+    case rejected: return 2;
+    default: return 0;
+    }
+}
+
+void KioskController::parseOrderReply(const QString& message) {
+  QStringList response_tokens = message.split(' ', QString::SkipEmptyParts);
+  if (response_tokens[0] == "OK") current_order.setAnswered();
+  else {
+      current_order.setAnswered(true);
+    }
+  emit currentOrderStatusChanged();
 }

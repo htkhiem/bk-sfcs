@@ -70,6 +70,9 @@ void AbstractController::onTextMessageReceived(const QString& message) {
       setClientIdx(data.toInt());
       qDebug() << "Handshake complete";
     }
+  else if (target == "OD") {
+      parseOrderReply(message);
+    }
 }
 void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
   qDebug() << "Binary message: " << message.left(16);

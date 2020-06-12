@@ -78,6 +78,12 @@ protected:
   void getStallImage(int idx);
   void getMenuItemImage(int stall_idx, int item_idx);
 
+  /**
+   * @brief (For kiosk app) Parses order reply and sets currentOrderStatus accordingly.
+   * It is delcared as a virtual function here to allow processTextMessage to call it.
+   * @param message QString containing the full text message (for future extensibility).
+   */
+  virtual void parseOrderReply(const QString& message) = 0;
 public:
   /**
    * Main constructor.
