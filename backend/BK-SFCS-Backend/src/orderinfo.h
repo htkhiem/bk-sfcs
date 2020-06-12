@@ -57,6 +57,19 @@ public:
    * @param json JSON object to write to.
    */
   void write(QJsonObject &json) const;
+
+  /**
+   * Read from a JSON object from disk.
+   * @param json JSON object to read from.
+   */
+  void readLog(const QJsonObject &json);
+  /**
+   * Write to a file on disk used stall_name as path.
+   * @param i: index of an order to write log.
+   * @param finished: boolen to set status of that order in log
+   */
+  void writeLog(int i,bool finished,const QString& stall_name) const;
+
 public slots:
   int getQuantity();
   int getSlipNumber();

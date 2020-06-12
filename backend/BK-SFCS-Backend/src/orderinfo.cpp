@@ -6,6 +6,7 @@ OrderInfo::OrderInfo(QObject *parent) :
 
 
 }
+
 OrderStatus OrderInfo::getStatus(){
   return this->status;
 }
@@ -150,6 +151,27 @@ void OrderInfo::write(QJsonObject &json) const {
         json["time finished"] = 0;
       }
     }
+}
+void OrderInfo::readLog(const QJsonObject &json){
+
+}
+void OrderInfo::writeLog(int i,bool finished,const QString& stall_name) const{
+    //Access order folder from specific stall
+    QDir data_cursor = QDir::home();
+    data_cursor.cd("sfcs_data/"+ stall_name +"/log");
+    QFile order_file(data_cursor.filePath(orderID + QString(".json")));
+
+    //Create a json object, write into it
+    OrderInfo& order = *((OrderInfo*)i);
+    if (finished) order.setStatus(OrderStatus::finished);
+    else order.setStatus(OrderStatus::rejected);
+    QJsonObject json;
+    order.write(json);
+
+    //Then write that json object into disk
+    QJsonDocument order_json_log(json);
+    order_file.write(order_json_log.toJson());
+    order_file.close();
 }
 QFood * OrderInfo::getFoodItem() {
   return &food;
