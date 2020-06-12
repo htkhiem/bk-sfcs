@@ -351,6 +351,8 @@ bool ServerController::setStallData(int idx, const QJsonObject &data)
     QDir data_cursor = getAppFolder();
     data_cursor.cd(s.getStallName());
     QFile stall_data_file(data_cursor.filePath(s.getStallName() + QString(".json")));
+    if (!stall_data_file.open(QIODevice::WriteOnly))
+      throw runtime_error("Could not load stall image from disk.");
     QJsonDocument stall_data_json_doc(data);
     stall_data_file.write(stall_data_json_doc.toJson());
     stall_data_file.close();
