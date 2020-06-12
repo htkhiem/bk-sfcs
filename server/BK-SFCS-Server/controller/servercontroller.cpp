@@ -63,7 +63,7 @@ void ServerController::onNewConnection() {
 }
 // See abstractcontroller.h for full protocol
 void ServerController::processTextMessage(const QString& message) {
-  qDebug() << "Text message received: " << message;
+  qDebug() << "Text message received: " << message.left(48) << " (...)";
   Client *client = qobject_cast<Client *>(sender());
   QStringList request = message.split(' ', QString::SkipEmptyParts);
   if (request[0] == "GL") { // Get List of stalls

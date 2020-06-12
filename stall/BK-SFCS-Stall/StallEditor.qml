@@ -3,9 +3,9 @@ import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
 
 StallEditorForm {
-    function authorize_editing(psw) {
-        // placeholder for actual authorization code
-        if (backend.loginAsManager(psw)) {
+    property bool needsToUpdateImage: false;
+    function check_authorization() {
+        if (backend.isManagementModeEnabled()) {
             state = "authorized"
             console.log("State changed")
         }
@@ -15,24 +15,37 @@ StallEditorForm {
         }
     }
 
-    function check_edits() {
+    function checkAndApplyEdits() {
+        var valid = true;
         // If password is edited, make sure it matches the confirmation
-        if (stallPswField.text != "") {
-            if (stallPswField.text == stallPswConfField.text)
-                backend.setStallPassword(stallPswField.text)
+        if (stallPswField.text != "" && stallPswField.text == stallPswConfField.text) {
+            backend.setStallPassword(stallPswField.text);
         }
-        if (stallMgmtPswField.text != "") {
-            if (stallMgmtPswField.text == stallMgmtPswConfField.text)
-                backend.setStallPassword(stallPswField.text)
+        else {
+            valid = false;
+            stallPswField.text = "";
+            stallPswConfField.text = "";
+            stallPswField.placeholderText = "Invalid stall password";
         }
-        if (!backend.setStallName(stallNameField.text))
-            console.log("Empty name entered!") // TODO: actually notifying user of this error
 
+        if (stallMgmtPswField.text != "" && stallMgmtPswField.text == stallMgmtPswConfField.text) {
+                backend.setStallPassword(stallPswField.text)
+        }
+        else {
+            valid = false;
+            stallMgmtPswField.text = "";
+            stallMgmtPswConfField.text = "";
+            stallMgmtPswField.placeholderText = "Invalid stall password";
+        }
+        if (!backend.setStallName(stallNameField.text)) {
+            valid = false;
+            stallNameField.text = "";
+            stallNameField.placeholderText = "Invalid stall name";
+        }
         // Copy stall image to folder, then set source
-
         if (!backend.setStallImage(bigImage.source))
             console.log("Invalid path")
-
+        return valid;
     }
 
     // Data initialisation code
@@ -52,6 +65,7 @@ StallEditorForm {
         onAccepted: {
             console.log("You chose: " + imageBrowser.fileUrl)
             bigImage.source = imageBrowser.fileUrl;
+            needsToUpdateImage = true;
             close()
         }
         onRejected: {
@@ -59,11 +73,11 @@ StallEditorForm {
             close()
         }
     }
-    authorizeButton.onClicked: authorize_editing(authPswField.text)
+    authorizeButton.onClicked: backend.loginAsManager(authPswField.text);
     changeImageButton.onClicked: {
         imageBrowser.open();
     }
     confirmButton.onClicked: {
-        check_edits()
+        if (checkAndApplyEdits()) backend.updateStallData(needsToUpdateImage);
     }
 }
