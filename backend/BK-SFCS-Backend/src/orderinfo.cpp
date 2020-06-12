@@ -142,7 +142,7 @@ void OrderInfo::write(QJsonObject &json) const {
         double t_ans = time_answered.toMSecsSinceEpoch();
         json["time answered"] = t_ans;
         double t_fin = time_finished.toMSecsSinceEpoch();
-        json["time finished"] = t_fin;
+        json["time rejected"] = t_fin;
         break;
       }
     case OrderStatus::waiting :
