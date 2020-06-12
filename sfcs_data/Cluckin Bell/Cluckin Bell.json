@@ -1,0 +1,88 @@
+{
+    "image_path": "download.jpg",
+    "menu": [
+        {
+            "description": "Cluckin Bell's Signature Burger, packed with chicken, cheese, onions, pickles and Cluckin Bell Special Sauce.",
+            "estimated_time": 3,
+            "image_path": "fillet-burger-familychickenandribs.jpg",
+            "name": "No.1: Cluckin Burger",
+            "price": 30000,
+            "type": "Main dishes"
+        },
+        {
+            "description": "Cluckin Bell's Burger, but even bigger with an extra layer of bun and two pieces of chicken.",
+            "estimated_time": 5,
+            "image_path": "The-KFC-Hacker-Burger-e1562661063760.jpg",
+            "name": "No.2: Cluckin Huge Burger",
+            "price": 45000,
+            "type": "Main dishes"
+        },
+        {
+            "description": "Cluckin Bell's Burger with extra huge pieces of chicken.",
+            "estimated_time": 4,
+            "image_path": "Butchies-2.jpg",
+            "name": "No5: Cluckin Fly Burger",
+            "price": 40000,
+            "type": "Main dishes"
+        },
+        {
+            "description": "Cluckin Bell's specially marinated chicken wings.",
+            "estimated_time": 4,
+            "image_path": "190416-air-fryer-wings-137-1556204553.jpg",
+            "name": "No.6: Cluckin Wings",
+            "price": 40000,
+            "type": "Specials"
+        },
+        {
+            "description": "Cluckin Bell's specially marinated chicken bucket.",
+            "estimated_time": 5,
+            "image_path": "384-3844221_fried-chicken-bucket-png-transparent-png.png",
+            "name": "No.7: Cluckin Bucket",
+            "price": 50000,
+            "type": "Specials"
+        },
+        {
+            "description": "Cluckin Bell's Special Fillet Burger, packed with huge chicken pieces, salad and onions. There are regular size and large size.",
+            "estimated_time": 5,
+            "image_path": "9829ee3be375d4cd36f9d0a0541f0a66.jpg",
+            "name": "No.9: Cluckin Fillet",
+            "price": 45000,
+            "type": "Main dishes"
+        },
+        {
+            "description": "Cluckin Bell's French Fries.",
+            "estimated_time": 3,
+            "image_path": "Fries_2.jpg",
+            "name": "No.30: Cluckin Fries",
+            "price": 20000,
+            "type": "Side dishes"
+        },
+        {
+            "description": "Cluckin Bell's Special Fowl Burger. Can be ordered with cheese.",
+            "estimated_time": 5,
+            "image_path": "tumblr_lu1iy6mZVQ1qjhjgyo1_1280.jpg",
+            "name": "No.45: Cluckin Fowl",
+            "price": 35000,
+            "type": "Main dishes"
+        },
+        {
+            "description": "Cluckin Bell's Soda. There are regular size and large size.",
+            "estimated_time": 2,
+            "image_path": "566-5669348_soda-clipart-coldrink-picture-transparent-png-fast-food.png",
+            "name": "No.92: Cluckin Soda",
+            "price": 15000,
+            "type": "Drinks"
+        },
+        {
+            "description": "Cluckin Bell's Ice Cream, with three different flavor: vanilla, chocolate or strawberry.",
+            "estimated_time": 2,
+            "image_path": "tpotvien.jpg",
+            "name": "No.97: Cluckin Cream",
+            "price": 15000,
+            "type": "Desserts"
+        }
+    ],
+    "stall_mgmt_password": "smokebig",
+    "stall_name": "Cluckin Bell",
+    "stall_password": "bigsmoke"
+}

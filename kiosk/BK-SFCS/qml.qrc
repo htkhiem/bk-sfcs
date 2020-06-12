@@ -18,6 +18,7 @@
         <file>StallMenu.qml</file>
         <file>Main.qml</file>
         <file>MainForm.ui.qml</file>
+<<<<<<< HEAD:kiosk/BK-SFCS/qml.qrc
         <file>assets/forbidden.png</file>
         <file>assets/forbidden.svg</file>
         <file>assets/loader.png</file>
@@ -26,5 +27,15 @@
         <file>assets/tick.svg</file>
         <file>WaitingPopupForm.ui.qml</file>
         <file>WaitingPopup.qml</file>
+=======
+        <file>WaitingPopup.qml</file>
+        <file>WaitingPopupForm.ui.qml</file>
+        <file>assets/forbidden.svg</file>
+        <file>assets/loader.svg</file>
+        <file>assets/tick.svg</file>
+        <file>assets/tick.png</file>
+        <file>assets/loader.png</file>
+        <file>assets/forbidden.png</file>
+>>>>>>> master:client/BK-SFCS/qml.qrc
     </qresource>
 </RCC>

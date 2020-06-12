@@ -1,0 +1,15 @@
+{
+    "order": {
+        "description": "a Vietnamese dish of grilled pork and noodle, which is thought to have originated from Hanoi, Vietnam.[1] Bún chả is served with grilled fatty pork (chả) over a plate of white rice noodle (bún) and herbs with a side dish of dipping sauce",
+        "estimated_time": 15,
+        "image_path": "bun-cha",
+        "name": "Bun cha Obama",
+        "price": 35000,
+        "quantity": 4,
+        "type": "Main dishes"
+    },
+    "status": 1,
+    "time answered": 0,
+    "time finished": 0,
+    "time received": -25200000
+}

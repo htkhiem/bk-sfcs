@@ -31,8 +31,8 @@ Popup {
             id: statusImage
             x: 270
             y: 118
-            width: 100
-            height: 100
+            width: 150
+            height: 150
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: 100
