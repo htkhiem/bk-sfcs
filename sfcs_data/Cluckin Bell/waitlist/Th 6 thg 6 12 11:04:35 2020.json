@@ -1,0 +1,15 @@
+{
+    "order": {
+        "description": "Cluckin Bell's Signature Burger, packed with chicken, cheese, onions, pickles and Cluckin Bell Special Sauce.",
+        "estimated_time": 3,
+        "image_path": "fillet-burger-familychickenandribs.jpg",
+        "name": "No.1: Cluckin Burger",
+        "price": 30000,
+        "quantity": 5,
+        "type": "Main dishes"
+    },
+    "status": 1,
+    "time answered": 0,
+    "time finished": 0,
+    "time received": 1591934634203
+}

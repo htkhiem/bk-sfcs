@@ -1,0 +1,15 @@
+{
+    "order": {
+        "description": "Where's the lamb sauce",
+        "estimated_time": 666,
+        "image_path": "gordon",
+        "name": "Lamb sauce",
+        "price": 999,
+        "quantity": 1,
+        "type": "Specials"
+    },
+    "status": 1,
+    "time answered": 0,
+    "time finished": 0,
+    "time received": -25200000
+}
