@@ -14,6 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ../../backend/BK-SFCS-Backend/src/controller.cpp \
+    ../../backend/BK-SFCS-Backend/src/orderinfo.cpp \
         controller/stallmgmtcontroller.cpp \
         main.cpp \
         ../../backend/BK-SFCS-Backend/src/orderinfo.cpp \
@@ -42,6 +44,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    ../../backend/BK-SFCS-Backend/src/common.h \
+    ../../backend/BK-SFCS-Backend/src/controller.h \
+    ../../backend/BK-SFCS-Backend/src/orderinfo.h \
     controller/stallmgmtcontroller.h \
         ../../backend/BK-SFCS-Backend/src/orderinfo.h \
         ../../backend/BK-SFCS-Backend/src/abstractcontroller.h \

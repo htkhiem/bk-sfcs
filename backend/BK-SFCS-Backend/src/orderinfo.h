@@ -21,6 +21,8 @@ class OrderInfo : public Jsonable {
   QDateTime time_received;
   QDateTime time_answered;
   QDateTime time_finished;
+  int kiosk;
+  int stall;
 public:
   
   /**
@@ -57,6 +59,7 @@ public:
    */
   void write(QJsonObject &json) const;
 
+
   /**
      * Read from a JSON object from disk.
      * @param json JSON object to read from.
@@ -68,6 +71,13 @@ public:
      * @param finished: boolen to set status of that order in log
      */
     void writeLog(int i,bool finished,const QString& stall_name) const;
+
+  int getKiosk() const;
+  void setKiosk(int value);
+
+  int getStall() const;
+  void setStall(int value);
+
 
 public slots:
   int getQuantity();
