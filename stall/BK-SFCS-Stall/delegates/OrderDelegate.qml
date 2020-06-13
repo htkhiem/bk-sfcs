@@ -2,11 +2,10 @@ import QtQuick 2.4
 
 OrderDelegateForm {
     stepButton.onClicked: {
-           model.modelData.setAnswered(false);
-           backend.hold(model.modeldata.orderID);
+           backend.hold(index);
        }
        rejectButton.onClicked: {
-           model.modelData.setAnswered(true);
-           backend.reject(model.modeldata.orderID);
+           backend.reject(index);
        }
+    itemImage.source: backend.getItemImagePath(backend.getCurrentStallIdx(), model.modelData.getFoodIdx())
 }

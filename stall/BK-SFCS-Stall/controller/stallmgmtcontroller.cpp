@@ -152,6 +152,7 @@ void StallMgmtController::hold(int idx)
                                + " " + QString::number(getCurrentStallIdx()));
     // TODO: update waitlist
     // Don't forget to set status.
+    processing_order->setAnswered(false);
 }
 
 void StallMgmtController::complete(int idx)
@@ -171,6 +172,7 @@ void StallMgmtController::reject(int idx)
                                + " " + QString::number(getCurrentStallIdx()));
     // TODO: log then deallocate this OrderInfo and update waitlist
     // Don't forget to set status before logging.
+    rejected_order->setAnswered(true);
 }
 
 void StallMgmtController::parseRepliesToStall(const QString &message)
