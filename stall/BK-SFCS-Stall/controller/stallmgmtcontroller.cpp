@@ -1,5 +1,4 @@
 #include "stallmgmtcontroller.h"
-#include "../../backend/BK-SFCS-Backend/src/orderinfo.h"
 
 StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *parent)
   : AbstractController(eng, "BK-SFCS Stall Manager", parent), management_mode(false)

@@ -2,6 +2,7 @@
 #define STALLMGMTCONTROLLER_H
 
 #include "../../../backend/BK-SFCS-Backend/src/abstractcontroller.h"
+#include "../../../backend/BK-SFCS-Backend/src/orderinfo.h"
 #include <QObject>
 
 class StallMgmtController : public AbstractController {
@@ -58,9 +59,6 @@ public slots:
    * @return True if management mode is enabled, false otherwise.
    */
   bool isManagementModeEnabled();
-
-  /** Reloads waitlist. This is called periodically to receive new orders. */
-  void updateWaitlistViewModel();
 
   /** TODO */
   void populateMgmtGraphs();
