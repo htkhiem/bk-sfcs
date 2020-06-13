@@ -19,7 +19,7 @@ Page {
         }
         TabButton {
             text: qsTr("Waitlist")
-            onClicked: tabLoader.source = "WaitList.qml"
+            onClicked: tabLoader.source = "order_process/WaitList.qml"
         }
         TabButton {
             text: qsTr("Menu")
@@ -38,7 +38,7 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.topMargin: 0
-        source: "WaitList.qml"
+        source: "order_process/WaitList.qml"
     }
 }
 

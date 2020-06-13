@@ -50,7 +50,24 @@ void OrderInfo::setQuantity(int quantity){
   this->quantity = quantity;
 }
 
+<<<<<<< HEAD
 double OrderInfo::getTotal() const {
+=======
+void OrderInfo::setSlipNumber(int _number){
+    this->slip_number = _number;
+}
+int OrderInfo::getSlipNumber(){
+    return this->slip_number;
+}
+void OrderInfo::setOrderID(QString _id){
+    this->orderID = _id;
+}
+QString OrderInfo::getOrderID(){
+    return this->orderID;
+}
+
+double OrderInfo::getTotal(){
+>>>>>>> 4778c87ba07fdb1776ffc405586cf50aa264a25a
   return (this->food.getPrice() * this->quantity);
 }
 
@@ -84,6 +101,10 @@ void OrderInfo::read(const QJsonObject &json){
   if (json.contains("quantity") && json["quantity"].isDouble())
     quantity= json["quantity"].toInt();
 
+  if (json.contains("orderID") && json["orderID"].isString())
+      orderID = json["orderID"].toString();
+  if (json.contains("slip_number") && json["slip_number"].isDouble())
+      slip_number= json["slip_number"].toInt();
   if (json.contains("status") && json["status"].isDouble())
     {
       int ienum = json["status"].toInt();
@@ -119,6 +140,8 @@ void OrderInfo::write(QJsonObject &json) const {
   QJsonObject temp;
   food.write(temp);
   temp["quantity"] = quantity;
+  temp["orderID"] = orderID;
+  temp["slip_number"] = slip_number;
   json["order"] = temp;
   json["status"] = status;
   json["time received"] = time_received.toMSecsSinceEpoch();
@@ -141,7 +164,7 @@ void OrderInfo::write(QJsonObject &json) const {
         double t_ans = time_answered.toMSecsSinceEpoch();
         json["time answered"] = t_ans;
         double t_fin = time_finished.toMSecsSinceEpoch();
-        json["time finished"] = t_fin;
+        json["time rejected"] = t_fin;
         break;
       }
     case OrderStatus::waiting :
@@ -151,7 +174,35 @@ void OrderInfo::write(QJsonObject &json) const {
       }
     }
 }
+<<<<<<< HEAD
 const QFood * OrderInfo::getFoodItem() const {
+=======
+
+void OrderInfo::readLog(const QJsonObject &json){
+
+}
+void OrderInfo::writeLog(int i,bool finished,const QString& stall_name) const{
+    //Access order folder from specific stall
+    QDir data_cursor = QDir::home();
+    data_cursor.cd("sfcs_data/"+ stall_name +"/log");
+    QFile order_file(data_cursor.filePath(orderID + QString(".json")));
+
+    //Create a json object, write into it
+    OrderInfo& order = *((OrderInfo*)i);
+    if (finished) order.setStatus(OrderStatus::finished);
+    else order.setStatus(OrderStatus::rejected);
+    QJsonObject json;
+    order.write(json);
+
+    //Then write that json object into disk
+    QJsonDocument order_json_log(json);
+    order_file.write(order_json_log.toJson());
+    order_file.close();
+}
+
+
+QFood * OrderInfo::getFoodItem() {
+>>>>>>> 4778c87ba07fdb1776ffc405586cf50aa264a25a
   return &food;
 }
 void OrderInfo::setFoodItem(const QFood& _food) {
