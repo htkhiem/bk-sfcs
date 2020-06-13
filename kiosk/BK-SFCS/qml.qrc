@@ -28,5 +28,6 @@
         <file>WaitingPopup.qml</file>
         <file>assets/loader_animated.gif</file>
         <file>assets/success.gif</file>
+        <file>assets/success2.gif</file>
     </qresource>
 </RCC>
