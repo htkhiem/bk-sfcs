@@ -1,13 +1,33 @@
 #include "orderinfo.h"
 #include <chrono>
-OrderInfo::OrderInfo(QObject *parent) :
-  Jsonable(parent)
+int OrderInfo::getKiosk() const
 {
+    return kiosk;
+}
 
+void OrderInfo::setKiosk(int value)
+{
+    kiosk = value;
+}
 
+int OrderInfo::getStall() const
+{
+    return stall;
+}
+
+void OrderInfo::setStall(int value)
+{
+    stall = value;
+}
+
+OrderInfo::OrderInfo(QObject *parent) :
+    Jsonable(parent), kiosk(-1), stall(-1)
+{
+    
+    
 }
 OrderStatus OrderInfo::getStatus(){
-  return this->status;
+    return this->status;
 }
 void OrderInfo::setStatus(OrderStatus _status){
   this->status = _status;

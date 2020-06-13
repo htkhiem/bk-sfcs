@@ -95,6 +95,10 @@ public slots:
    */
   bool setStallImage(const QUrl& imgpath);
 
+  // ORDERING FUNCTIONS
+  void hold(int idx);
+  void complete(int idx);
+  void reject(int idx);
 
 signals:
   void currentStallIndexChanged();

@@ -18,6 +18,8 @@ class OrderInfo : public Jsonable {
   QDateTime time_received;
   QDateTime time_answered;
   QDateTime time_finished;
+  int kiosk;
+  int stall;
 public:
   
   /**
@@ -51,6 +53,12 @@ public:
    * @param json JSON object to write to.
    */
   void write(QJsonObject &json) const;
+  int getKiosk() const;
+  void setKiosk(int value);
+
+  int getStall() const;
+  void setStall(int value);
+
 public slots:
   int getQuantity();
   QString getItemName();
