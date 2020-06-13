@@ -10,9 +10,7 @@ OrderPopupForm {
         backend.setOrderQuantity(quantitySelector.currentIndex + 1);
     }
     orderButton.onActivated: {
-        var orderName = backend.sendOrder();
-        close();
-        waitForOrderResponse(orderName);
+        sendOrder();
     }
     enter: Transition {
         NumberAnimation {

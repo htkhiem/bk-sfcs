@@ -1,6 +1,25 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.5
 import QtGraphicalEffects 1.12
 StallMenuForm {
+    Connections {
+        target: backend
+        function onCurrentOrderStatusChanged(slip) {
+            waitingPopup.width = 640;
+            if (slip !== -1) { // accepted
+                waitingPopup.statusText.text = "Success! Your slip number is " + slip + ".";
+                waitingPopup.playOnce = true;
+                waitingPopup.statusImage.source = "assets/success2.gif";
+            }
+            else { // rejected
+                waitingPopup.statusText.text = "We're sorry. Your order was rejected.";
+                waitingPopup.statusImage.source = "assets/forbidden.png";
+            }
+            waitingPopup.modal = false;
+            waitingPopup.closePolicy = Popup.CloseOnEscape | Popup.CloseOnPressOutside;
+        }
+    }
+
     pageBg.source: backend.getCurrentStallImagePath();
     OrderPopup {
         x: Math.round((parent.width - width) / 2)
@@ -12,7 +31,6 @@ StallMenuForm {
         y: Math.round((parent.height - height) / 2)
         id: waitingPopup
     }
-
 
     function populateOrderPopup(name, desc, time, price, imgPath) {
         orderPopup.name.text = name;
@@ -30,8 +48,12 @@ StallMenuForm {
     function sendOrder() {
         orderPopup.close();
         backend.sendOrder();
-        waitingPopup.statusText.text = tr("Please wait...");
-        waitingPopup.statusImage.source = "assets/loader.png";
+        waitingPopup.width = 320;
+        waitingPopup.playOnce = false;
+        waitingPopup.statusText.text = qsTr("Please wait...");
+        waitingPopup.statusImage.source = "assets/loader_animated.gif";
+        waitingPopup.modal = true;
+        waitingPopup.closePolicy = Popup.NoAutoClose;
         waitingPopup.open();
     }
 }

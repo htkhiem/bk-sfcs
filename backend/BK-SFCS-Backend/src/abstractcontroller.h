@@ -37,6 +37,8 @@ class AbstractController : public QObject {
    * OK <out> <data>: Context-dependent action successful (replies to "out"
    *  with data, for example replying to GL with a JSON list of stalls.
    * NO <out>: Context-dependent failure (order rejected, login failure,...)
+   * Special case: OK OD <slip>: Replies that the current order is accepted and returns the slip.
+   *               NO OD: Replies that the current order is rejected.
    *
    * Binary Incoming Protocol:
    * 1 <sz1> <sz2> <out><text><bin>: Context-dependent action successful (replies to <out> with UTF-8 text and binary data).

@@ -48,13 +48,18 @@ int KioskController::getCurrentOrderStatus() {
     }
 }
 
-void KioskController::parseRepliesToKiosk(const QString& message) {
+void KioskController::parseRepliesToKiosk(const QString& message) { // Only runs for case "OD"
     QStringList response_tokens = message.split(' ', QString::SkipEmptyParts);
-    if (response_tokens[0] == "OK") current_order.setAnswered();
+    if (response_tokens[0] == "OK") {
+        int slip = response_tokens[2].toInt();
+        current_order.setAnswered();
+        emit currentOrderStatusChanged(slip);
+    }
     else {
         current_order.setAnswered(true);
+        emit currentOrderStatusChanged(); // defaults to -1, which means rejected
     }
-    emit currentOrderStatusChanged();
+
 }
 
 void KioskController::parseRepliesToStall(const QString &message) {

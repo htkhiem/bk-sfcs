@@ -27,6 +27,7 @@ Popup {
         radius: 10
         anchors.fill: parent
     }
+    modal: true // Still allows tapping outside to close, but won't immediately register on other tiles.
     Rectangle {
         id: popupBg
         color: "#00000000"

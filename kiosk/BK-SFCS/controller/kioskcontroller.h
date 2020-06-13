@@ -25,7 +25,7 @@ public slots:
   int getCurrentOrderStatus();
 
   signals:
-  void currentOrderStatusChanged();
+  void currentOrderStatusChanged(int slip = -1);
 };
 
 #endif // KIOSKCONTROLLER_H
