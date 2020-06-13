@@ -56,9 +56,10 @@ Rectangle {
         }
     }
 
-    Button {
+    DelayButton {
         id: stepButton
         x: 523
+        delay: 1000
         height: 100
         text: qsTr("Hold")
         font.bold: true
