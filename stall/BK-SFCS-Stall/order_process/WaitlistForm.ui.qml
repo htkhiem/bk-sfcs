@@ -3,6 +3,7 @@ import QtQuick.Controls 2.5
 import "../delegates"
 
 Page {
+    property alias waitlistLoader: waitlistLoader
     id: page
     width: 1280
     height: 720
@@ -14,20 +15,10 @@ Page {
         clip: true
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-
-        ListView {
-            id: listView
-            width: scrollView.width
-            height: scrollView.height
-            bottomMargin: 0
-            model: waitlistViewModel
-            delegate: OrderDelegate {
-                width: listView.width
-                itemImage.source:  model.modelData.imagePath
-                qtyNumber.text:  model.modelData.quantity
-                nameText.text:  model.modelData.itemName
-                priceText.text:  model.modelData.total
-            }
+        Loader {
+            id: waitlistLoader
+            anchors.fill: parent
+            sourceComponent: waitlistview
         }
     }
 }
@@ -37,3 +28,4 @@ Designer {
     D{i:0;formeditorZoom:0.75}
 }
 ##^##*/
+
