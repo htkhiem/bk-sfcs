@@ -66,8 +66,7 @@ QString OrderInfo::getOrderID(){
     return this->orderID;
 }
 
-double OrderInfo::getTotal(){
->>>>>>> 4778c87ba07fdb1776ffc405586cf50aa264a25a
+double OrderInfo::getTotal() {
   return (this->food.getPrice() * this->quantity);
 }
 
@@ -80,7 +79,7 @@ void OrderInfo::setReceived(){
 QDateTime OrderInfo::getAnswered() const {
   return this->time_answered;
 }
-void OrderInfo::setAnswered(bool reject){
+void OrderInfo::setAnswered(bool reject) {
   this->time_answered = QDateTime::currentDateTime();
   this->status = reject ? rejected : processing;
 }
@@ -174,35 +173,7 @@ void OrderInfo::write(QJsonObject &json) const {
       }
     }
 }
-<<<<<<< HEAD
 const QFood * OrderInfo::getFoodItem() const {
-=======
-
-void OrderInfo::readLog(const QJsonObject &json){
-
-}
-void OrderInfo::writeLog(int i,bool finished,const QString& stall_name) const{
-    //Access order folder from specific stall
-    QDir data_cursor = QDir::home();
-    data_cursor.cd("sfcs_data/"+ stall_name +"/log");
-    QFile order_file(data_cursor.filePath(orderID + QString(".json")));
-
-    //Create a json object, write into it
-    OrderInfo& order = *((OrderInfo*)i);
-    if (finished) order.setStatus(OrderStatus::finished);
-    else order.setStatus(OrderStatus::rejected);
-    QJsonObject json;
-    order.write(json);
-
-    //Then write that json object into disk
-    QJsonDocument order_json_log(json);
-    order_file.write(order_json_log.toJson());
-    order_file.close();
-}
-
-
-QFood * OrderInfo::getFoodItem() {
->>>>>>> 4778c87ba07fdb1776ffc405586cf50aa264a25a
   return &food;
 }
 void OrderInfo::setFoodItem(const QFood& _food) {
