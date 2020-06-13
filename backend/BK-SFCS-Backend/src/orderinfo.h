@@ -11,12 +11,10 @@ class OrderInfo : public Jsonable {
   Q_PROPERTY(int quantity READ getQuantity)
   Q_PROPERTY(QString itemName READ getItemName)
   Q_PROPERTY(double total READ getTotal)
-  Q_PROPERTY(QString orderID READ getOrderID WRITE setOrderID)
-  Q_PROPERTY(QUrl imagePath READ getImagePath)
   OrderStatus status;
+  int food_idx;
   QFood food;
   int quantity;
-  QString orderID;
   int slip_number;
   QDateTime time_received;
   QDateTime time_answered;
@@ -24,7 +22,7 @@ class OrderInfo : public Jsonable {
   int kiosk;
   int stall;
 public:
-  
+
   /**
    * Basic constructor.
    * @param parent Pointer to parent QObject, if any.
@@ -38,8 +36,8 @@ public:
   void setFoodItem(const QFood& _food);
   void setQuantity(int quantity);
   QDateTime getReceived() const;
+  int getSlipNumber() const;
   void setSlipNumber(int _number);
-  void setOrderID(QString _id);
   void setReceived();
   QDateTime getAnswered() const;
   void setAnswered(bool reject = false);
@@ -52,7 +50,7 @@ public:
    * @param json JSON object to read from.
    */
   void read(const QJsonObject &json);
-  
+
   /**
    * Write to a JSON object for writing to file on disk.
    * @param json JSON object to write to.
@@ -65,13 +63,14 @@ public:
   int getStall() const;
   void setStall(int value);
 
+  int getFoodIdx() const;
+  void setFoodIdx(int value);
 
 public slots:
   int getQuantity() const;
   QString getItemName() const;
   double getTotal() const;
   QString getImageName() const;
-  QString getOrderID();
 };
 
 #endif // ORDERINFO_H

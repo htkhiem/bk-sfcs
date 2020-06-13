@@ -48,12 +48,6 @@ bool StallMgmtController::isManagementModeEnabled()
 {
     return management_mode;
 }
-
-void StallMgmtController::updateWaitlistViewModel() {
-  // TODO
-  p_engine->rootContext()->setContextProperty("waitlistViewModel", QVariant::fromValue(waitlist_view_model));
-}
-
 void StallMgmtController::populateMgmtGraphs() {
     // TODO
 }
