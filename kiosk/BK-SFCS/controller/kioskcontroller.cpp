@@ -4,14 +4,6 @@ KioskController::KioskController(QQmlApplicationEngine *eng, QObject *parent)
   : AbstractController(eng, "BK-SFCS Kiosk", parent)
 {
 }
-int KioskController::getCurrentStallIdx() {
-  return current_stall_idx;
-}
-void KioskController::setCurrentStallIdx(int idx) {
-  if (idx < stall_view_model.size() && idx >= 0)
-    current_stall_idx = idx;
-  else throw range_error("Current stall index out of range.");
-}
 void KioskController::searchFilter(const QString& _input) {
   for (auto ptr : menu_view_model) delete ptr;
   menu_view_model.clear();

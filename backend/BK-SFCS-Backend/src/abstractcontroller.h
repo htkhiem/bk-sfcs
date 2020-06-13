@@ -54,37 +54,53 @@ protected:
   QQmlApplicationEngine *p_engine; // for connecting backend to the thing
   int current_stall_idx;
 
-  /** Loads stall data (and their menus) from ~/sfcs_data. Also populates the
-   * stall view model. */
-  void loadData();
-
-  /** Saves stall data to disk after running. This includes their menus. */
-  void saveData();
-
   /**
    * Checks if the category with the given name is visible. Usually called by QFood.
    * @param cat_name Category name as stored in QFood.
    * @return True if found and visible, false otherwise.
    */
   bool categoryIsVisible(const QString& cat_name) const;
-
   /**
    * @brief Gets the absolute path to the data folder of the current app.
    * @return a QDir containing the absolute path.
    */
   QDir getAppFolder();
-
+  /**
+   * @brief Asks for stall list from server.
+   */
   void getStallList();
+  /**
+   * @brief Asks for stall image from server.
+   * @param idx Index of target stall.
+   */
   void getStallImage(int idx);
+  /**
+   * @brief Saves downloaded stall image into the respective stall folder for later loading.
+   * @param stall_idx Index of target stall (for locating folder and setting name).
+   * @param filename Name of saved file.
+   * @param image Binary data of the file.
+   */
+  void saveStallImage(int stall_idx, const QString& filename, const QByteArray& image);
+  /**
+   * @brief Ask for item image from server.
+   * @param stall_idx Index of target stall.
+   * @param item_idx Index of target item within that stall.
+   */
   void getMenuItemImage(int stall_idx, int item_idx);
-
+  /**
+   * @brief Saves downloaded item image into the respective stall folder for later loading.
+   * @param stall_idx Index of target stall (for locating folder).
+   * @param item_idx Index of target item within that stall (for setting name).
+   * @param filename Name of saved file.
+   * @param image Binary data of the file.
+   */
+  void saveMenuItemImage(int stall_idx, int item_idx, const QString& filename, const QByteArray& image);
   /**
    * @brief (For kiosk app) Parses order reply and sets currentOrderStatus accordingly.
    * It is delcared as a virtual function here to allow processTextMessage to call it.
    * @param message QString containing the full text message (for future extensibility).
    */
   virtual void parseRepliesToKiosk(const QString& message) = 0;
-
   /**(
    * @brief Parses stall app-specific replies. To be implemented by stall app.
    * @param message QString containing the full text message.
@@ -109,62 +125,85 @@ public:
   QList<QObject *> category_view_model;
   QList<QObject *> menu_view_model;
   QList<QObject *> stall_view_model;
+
   int getClientIdx() const;
   void setClientIdx(int value);
 
 public slots:
-
+  // Populators
   /** Fills category info with hardcoded categories. (Low priority) TODO:
    * implement loadable category lists. */
   void populateCategoryViewModel();
-
-  /** Fills menu view model with menu of current stall. It keeps its own data
-   * so that the stall-side app can have safely modify the menu.
-      In case of stall app, the logged in stall is the current stall. The menu
-     view is mutable (for MenuEditor) but only written back to the actual menu
-     data on tapping the Confirm button. In case of kiosk app, the selected
-     stall is the current stall. The menu is not editable.
- */
+  /**
+   * Send a request to get the menu of the stall at the given index.
+   * It is declared as a public slot so that QML GUI can directly call it.
+   * @param idx Index of target stall.
+   */
+  void getStallMenu(int idx);
+  /**
+   * @brief Fills menu view model with data downloaded from server.
+   * @param list_obj a JSON list of item data downloaded from server.
+   */
   void populateMenuViewModel(const QJsonObject& list_obj);
-  
-  /** Populate stall list with name and image. */
+  /**
+   * @brief Fills stall view model with data downloaded from server.
+   * @param list_obj a compact JSON list (that does not contain menus) of stalls downloaded from server.
+   */
   void populateStallViewModel(const QJsonObject& list_obj);
-  void saveStallImage(int stall_idx, const QString& filename, const QByteArray& image);
-  
+
+  // Universal data operations on local cache
+  /**
+   * @brief Returns absolute image path of stall at given index (for QML stall list view).
+   * @param idx Index of stall.
+   * @return Absolute local QUrl path to image.
+   */
+  QUrl getStallImagePath(int idx);
+  /**
+   * @brief Returns absolute image path of item of CURRENT stall (for QML menu list view).
+   * If you need item images of another stall, set that stall to being the current stall first.
+   * @param stall_idx Index of stall.
+   * @param item_idx Index of item within that stall.
+   * @return Absolute local QUrl path to image.
+   */
+  QUrl getItemImagePath(int item_idx);
+
+  // Syntactic sugar for data operations on current stall
   /**
    * Set current stall to the one at the given index within stall_view_model.
    * @param idx Index of target stall.
    * @return False if out-of-range, true otherwise.
    */
-  bool setCurrentStall(int idx);
-
+  bool setCurrentStallIdx(int idx);
   /**
    * Returns a pointer to the current stall. Used internally but I'll leave it in public
    * slots for now.
    * @return Pointer to current stall.
    */
   Stall *getCurrentStall();
-  
+  /**
+   * @brief getCurrentStallIdx Returns the index of the current stall.
+   * @return Index of the current stall.
+   */
+  int getCurrentStallIdx();
   /**
    * QML-facing slot for exposing current stall name. Included in AbstractController
    * since both kiosk and stall app needs it.
    * @return Stall name as QString.
    */
   QString getCurrentStallName();
-  
   /**
    * Same as above, for image path. Note that it returns the absolute path to the copy
    * in the stall folder.
    * @return Stall image path as QUrl (file://...).
    */
   QUrl getCurrentStallImagePath();
-
+  /**
+   * @brief Syntactic sugar for getting absolute path to current stall.
+   * @return Absolute path as a QString that can be used to initialise a QDir.
+   */
   QString getCurrentStallPath();
 
-  /**
-   * Send a request to get the menu of the stall at the given index.
-   */
-  void getStallMenu(int idx);
+
   void onConnected();
   void onTextMessageReceived(const QString& message);
   void onBinaryMessageReceived(const QByteArray &message);
@@ -172,6 +211,8 @@ signals:
   void closed();
   void currentStallNameChanged();
   void currentStallImagePathChanged();
+  void stallImageChanged(int idx);
+  void itemImageChanged(int sidx, int midx);
 };
 
 #endif // ABSTRACTCONTROLLER_H

@@ -14,6 +14,7 @@ class StallMgmtController : public AbstractController {
 
   void parseRepliesToStall(const QString& message) override;
   void parseRepliesToKiosk(const QString& message) override;
+  void manualCopy(const QUrl& from);
 public:
   /** TODO */
   QList<QObject *> logs_db;
@@ -88,11 +89,14 @@ public slots:
   bool setStallName(const QString &name);
   bool setStallPassword(const QString &password);
   bool setStallMgmtPassword(const QString &mgmtpsw);
-  /** QML-facing slot for setting image. It copies the given image to the stall folder and
+  /** QML-facing slot for setting stall image. It copies the given image to the stall folder and
    * links from there.
    */
-  bool setStallImage(const QUrl& imgpath);
-
+  bool setStallImage(const QUrl& filepath);
+  /** QML-facing slot for setting image for item at index idx. It copies the given image to the stall folder and
+   * links from there.
+   */
+  bool setItemImage(const QUrl& filepath, const int idx);
   // ORDERING FUNCTIONS
   void hold(int idx);
   void complete(int idx);

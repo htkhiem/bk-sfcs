@@ -29,19 +29,19 @@ public:
   OrderInfo(QObject *parent = nullptr);
 
   /** Basic getters/setters */
-  OrderStatus getStatus();
+  OrderStatus getStatus() const;
   void setStatus(OrderStatus _status);
-  QFood * getFoodItem();
+  const QFood * getFoodItem() const;
   void setFoodItem(const QFood& _food);
   void setQuantity(int quantity);
-  QDateTime getReceived();
+  QDateTime getReceived() const;
   void setReceived();
-  QDateTime getAnswered();
+  QDateTime getAnswered() const;
   void setAnswered(bool reject = false);
-  QDateTime getFinished();
+  QDateTime getFinished() const;
   void setFinished();
-  int getResponseTime();
-  int getProcessingTime();
+  int getResponseTime() const;
+  int getProcessingTime() const;
   /**
    * Read from a JSON object from disk.
    * @param json JSON object to read from.
@@ -60,10 +60,10 @@ public:
   void setStall(int value);
 
 public slots:
-  int getQuantity();
-  QString getItemName();
-  double getTotal();
-  QUrl getImagePath(const QString& stall_name);
+  int getQuantity() const;
+  QString getItemName() const;
+  double getTotal() const;
+  QString getImageName() const;
 };
 
 #endif // ORDERINFO_H

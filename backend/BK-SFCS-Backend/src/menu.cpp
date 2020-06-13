@@ -46,22 +46,14 @@ void Stall::setStallName(const QString& name) {
   stallName = name;
 }
 
-
-QUrl Stall::getImagePath() const {
-    QDir stall_dir = QDir::home();
-    stall_dir.cd("sfcs_data");
-    stall_dir.cd(getStallName());
-    return QUrl::fromLocalFile(stall_dir.filePath(image_name));
+QString Stall::getImageName() const
+{
+  return image_name;
 }
-void Stall::setImagePath(const QUrl& imgpath) {
-    QDir stall_dir = QDir::home();
-    stall_dir.cd("sfcs_data");
-    stall_dir.cd(getStallName());
-    QFile::copy(imgpath.path(), stall_dir.filePath(imgpath.fileName()));
-    image_name = imgpath.fileName();
-    emit imagePathChanged(); // Notify GUI to update image
+void Stall::setImageName(const QString &name)
+{
+  image_name = name;
 }
-
 
 void Stall::read(const QJsonObject &json){
   if (json.contains("stall_name") && json["stall_name"].isString())

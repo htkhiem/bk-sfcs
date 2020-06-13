@@ -8,17 +8,13 @@
 class KioskController : public AbstractController
 {
   Q_OBJECT
-  Q_PROPERTY(int currentStallIdx READ getCurrentStallIdx WRITE setCurrentStallIdx)
   Q_PROPERTY(int currentOrderStatus READ getCurrentOrderStatus NOTIFY currentOrderStatusChanged)
   OrderInfo current_order;
-  int current_stall_idx;
   void parseRepliesToKiosk(const QString& message) override;
   void parseRepliesToStall(const QString& message) override;
 public:
   explicit KioskController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
 public slots:
-  int getCurrentStallIdx();
-  void setCurrentStallIdx(int idx);
   void searchFilter(const QString& _input);
   void setOrderFoodItem(int idx);
   void setOrderQuantity(int qty);

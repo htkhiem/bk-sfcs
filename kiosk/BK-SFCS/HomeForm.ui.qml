@@ -29,7 +29,6 @@ Page {
         anchors.fill: parent
         model: stallViewModel
         delegate: StallDelegate {
-            stallImage.source: model.modelData.imagePath
             stallName.text: model.modelData.stallName
             gradStart.color: "#ffffff"
             gradEnd.color: "#ffffff"

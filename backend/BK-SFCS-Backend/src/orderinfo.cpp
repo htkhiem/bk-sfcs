@@ -26,7 +26,7 @@ OrderInfo::OrderInfo(QObject *parent) :
     
     
 }
-OrderStatus OrderInfo::getStatus(){
+OrderStatus OrderInfo::getStatus() const {
     return this->status;
 }
 void OrderInfo::setStatus(OrderStatus _status){
@@ -42,7 +42,7 @@ void OrderInfo::setStatus(OrderStatus _status){
       this->time_finished = QDateTime::currentDateTime();
     }
 }
-int OrderInfo::getQuantity(){
+int OrderInfo::getQuantity() const {
   return this->quantity;
 }
 void OrderInfo::setQuantity(int quantity){
@@ -50,33 +50,33 @@ void OrderInfo::setQuantity(int quantity){
   this->quantity = quantity;
 }
 
-double OrderInfo::getTotal(){
+double OrderInfo::getTotal() const {
   return (this->food.getPrice() * this->quantity);
 }
 
-QDateTime OrderInfo::getReceived(){
+QDateTime OrderInfo::getReceived() const {
   return this->time_received;
 }
 void OrderInfo::setReceived(){
   this->time_received = QDateTime::currentDateTime();
 }
-QDateTime OrderInfo::getAnswered(){
+QDateTime OrderInfo::getAnswered() const {
   return this->time_answered;
 }
 void OrderInfo::setAnswered(bool reject){
   this->time_answered = QDateTime::currentDateTime();
   this->status = reject ? rejected : processing;
 }
-QDateTime OrderInfo::getFinished(){
+QDateTime OrderInfo::getFinished() const {
   return this->time_finished;
 }
 void OrderInfo::setFinished(){
   this->time_finished = QDateTime::currentDateTime();
 }
-int OrderInfo::getResponseTime(){
+int OrderInfo::getResponseTime() const {
   return this->time_received.time().secsTo(this->time_answered.time());
 }
-int OrderInfo::getProcessingTime(){
+int OrderInfo::getProcessingTime() const {
   return this->time_answered.time().secsTo(this->time_finished.time());
 }
 void OrderInfo::read(const QJsonObject &json){
@@ -151,15 +151,15 @@ void OrderInfo::write(QJsonObject &json) const {
       }
     }
 }
-QFood * OrderInfo::getFoodItem() {
+const QFood * OrderInfo::getFoodItem() const {
   return &food;
 }
 void OrderInfo::setFoodItem(const QFood& _food) {
   food = _food;
 }
-QString OrderInfo::getItemName() {
+QString OrderInfo::getItemName() const {
   return food.getName();
 }
-QUrl OrderInfo::getImagePath(const QString& stall_name) {
-  return food.getImagePath(stall_name);
+QString OrderInfo::getImageName() const {
+  return food.getImageName();
 }

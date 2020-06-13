@@ -50,7 +50,7 @@ MainForm {
     }
 
     function openMenu(stallIdx) {
-        backend.setCurrentStall(stallIdx);
+        backend.setCurrentStallIdx(stallIdx);
         backend.getStallMenu(stallIdx); // load menu
         stallMenuLoader.source = "StallMenu.qml"
         stackView.push(stallMenuLoader)
@@ -59,6 +59,4 @@ MainForm {
         homeFormLoader.source = ""; // unload stall list
         console.log(stackView.depth);
     }
-
-
 }

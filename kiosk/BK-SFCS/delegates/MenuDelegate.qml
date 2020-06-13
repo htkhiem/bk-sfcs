@@ -1,7 +1,15 @@
 import QtQuick 2.4
 import "../"
 MenuDelegateForm {
-    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallPath())
+    Connections {
+        target: backend
+        function onItemImageChanged(sidx, midx) {
+            // only update if it is the one and also currently visible on screen
+            if (sidx === backend.getCurrentStallIdx() && midx === index)
+                itemImage.source = backend.getItemImagePath(midx);
+        }
+    }
+
     itemMouseArea.onClicked: {
         console.log(index)
         backend.setOrderFoodItem(index);

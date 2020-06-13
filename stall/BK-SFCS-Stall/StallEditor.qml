@@ -3,8 +3,13 @@ import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
 
 StallEditorForm {
+    Connections {
+        target: backend
+        onManagementModeChanged: checkAuthorization();
+    }
+
     property bool needsToUpdateImage: false;
-    function check_authorization() {
+    function checkAuthorization() {
         if (backend.isManagementModeEnabled()) {
             state = "authorized"
             console.log("State changed")
@@ -18,33 +23,31 @@ StallEditorForm {
     function checkAndApplyEdits() {
         var valid = true;
         // If password is edited, make sure it matches the confirmation
-        if (stallPswField.text != "" && stallPswField.text == stallPswConfField.text) {
+        if (stallPswField.text != "") {
+            if (stallPswField.text == stallPswConfField.text)
             backend.setStallPassword(stallPswField.text);
+            else {
+                valid = false;
+                stallPswField.text = "";
+                stallPswConfField.text = "";
+                stallPswField.placeholderText = "Invalid stall password";
+            }
         }
-        else {
-            valid = false;
-            stallPswField.text = "";
-            stallPswConfField.text = "";
-            stallPswField.placeholderText = "Invalid stall password";
-        }
-
-        if (stallMgmtPswField.text != "" && stallMgmtPswField.text == stallMgmtPswConfField.text) {
+        if (stallMgmtPswField.text != "") {
+            if (stallMgmtPswField.text == stallMgmtPswConfField.text)
                 backend.setStallPassword(stallPswField.text)
-        }
-        else {
-            valid = false;
-            stallMgmtPswField.text = "";
-            stallMgmtPswConfField.text = "";
-            stallMgmtPswField.placeholderText = "Invalid stall password";
+            else {
+                valid = false;
+                stallMgmtPswField.text = "";
+                stallMgmtPswConfField.text = "";
+                stallMgmtPswField.placeholderText = "Invalid management password";
+            }
         }
         if (!backend.setStallName(stallNameField.text)) {
             valid = false;
             stallNameField.text = "";
             stallNameField.placeholderText = "Invalid stall name";
         }
-        // Copy stall image to folder, then set source
-        if (!backend.setStallImage(bigImage.source))
-            console.log("Invalid path")
         return valid;
     }
 
@@ -65,6 +68,7 @@ StallEditorForm {
         onAccepted: {
             console.log("You chose: " + imageBrowser.fileUrl)
             bigImage.source = imageBrowser.fileUrl;
+            backend.setStallImage(imageBrowser.fileUrl);
             needsToUpdateImage = true;
             close()
         }
@@ -78,6 +82,9 @@ StallEditorForm {
         imageBrowser.open();
     }
     confirmButton.onClicked: {
-        if (checkAndApplyEdits()) backend.updateStallData(needsToUpdateImage);
+        if (checkAndApplyEdits()) {
+            backend.updateStallData(needsToUpdateImage);
+            console.log("Stall data uploaded.");
+        }
     }
 }
