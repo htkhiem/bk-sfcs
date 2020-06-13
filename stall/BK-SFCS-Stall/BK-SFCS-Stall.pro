@@ -18,7 +18,6 @@ SOURCES += \
     ../../backend/BK-SFCS-Backend/src/orderinfo.cpp \
         controller/stallmgmtcontroller.cpp \
         main.cpp \
-        ../../backend/BK-SFCS-Backend/src/orderinfo.cpp \
         ../../backend/BK-SFCS-Backend/src/abstractcontroller.cpp \
         ../../backend/BK-SFCS-Backend/src/food.cpp \
         ../../backend/BK-SFCS-Backend/src/menu.cpp \
@@ -48,7 +47,6 @@ HEADERS += \
     ../../backend/BK-SFCS-Backend/src/controller.h \
     ../../backend/BK-SFCS-Backend/src/orderinfo.h \
     controller/stallmgmtcontroller.h \
-        ../../backend/BK-SFCS-Backend/src/orderinfo.h \
         ../../backend/BK-SFCS-Backend/src/abstractcontroller.h \
         ../../backend/BK-SFCS-Backend/src/food.h \
         ../../backend/BK-SFCS-Backend/src/menu.h \

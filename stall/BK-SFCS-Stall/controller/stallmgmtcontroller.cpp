@@ -38,12 +38,6 @@ bool StallMgmtController::logout() { // currently useless in networked version
     current_stall_idx = -1;
     return true;
 }
-
-int StallMgmtController::getCurrentStallIdx()
-{
-    return current_stall_idx;
-}
-
 bool StallMgmtController::isManagementModeEnabled()
 {
     return management_mode;
@@ -104,11 +98,11 @@ void StallMgmtController::updateStallData(bool also_update_images) {
         // Send menu item images
         for (int i = 0; i < getCurrentStall()->getMenu()->size(); ++i) {
             message.clear();
-            QFile item_image(getCurrentStall()->getMenu()->at(i).getImagePath(getCurrentStallPath()).path());
+            QFile item_image(cursor.filePath(getCurrentStall()->getMenu()->at(i).getImageName()));
             filename = item_image.fileName();
             if (!item_image.open(QIODevice::ReadOnly))
                 throw runtime_error("Could not load item image from disk.");
-            filename = getCurrentStall()->getMenu()->at(i).getImagePath(getCurrentStallPath()).fileName();
+            filename = item_image.fileName();
             message += QString("%1").arg(2, 2, 10, QChar('0')).toUtf8();
             message += QString("%1").arg(getCurrentStallIdx(), 2, 10, QChar('0')).toUtf8();
             message += QString("%1").arg(i, 2, 10, QChar('0')).toUtf8();

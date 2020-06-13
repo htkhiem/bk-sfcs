@@ -4,6 +4,7 @@
 #include "common.h"
 #include "food.h"
 #include "jsonable.h"
+
 enum OrderStatus { waiting, processing, finished, rejected };
 
 class OrderInfo : public Jsonable {

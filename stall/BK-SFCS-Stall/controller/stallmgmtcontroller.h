@@ -2,8 +2,6 @@
 #define STALLMGMTCONTROLLER_H
 
 #include "../../../backend/BK-SFCS-Backend/src/abstractcontroller.h"
-#include "../../../backend/BK-SFCS-Backend/src/orderinfo.h"
-#include <QObject>
 
 class StallMgmtController : public AbstractController {
   Q_OBJECT
@@ -41,20 +39,18 @@ public slots:
    * @throw range_error if given index is out-of-range.
    */
   void login(int idx, const QString &psw);
-
+  /**
+   * Attempts to authorise data editing for current stall, such as menu prices
+   * and stall name by sending a request to the server.
+   * @param psw Given password.
+   */
+  void loginAsManager(const QString &psw);
   /**
    * Logs out of current stall. It also sets current_stall_idx to -1, which is
    * understood as not logged in.
    * @return False if no stall is currently logged in, true otherwise.
    */
   bool logout();
-
-  /**
-   * @brief Gets current stall index for QML.
-   * @return Current stall index as int.
-   */
-  int getCurrentStallIdx();
-
   /**
    * @brief Checks whether management mode is enabled or not for QML.
    * @return True if management mode is enabled, false otherwise.
@@ -65,26 +61,22 @@ public slots:
   void populateMgmtGraphs();
 
   /**
-   * Attempts to authorise data editing for current stall, such as menu prices
-   * and stall name by sending a request to the server.
-   * @param psw Given password.
-   */
-  void loginAsManager(const QString &psw);
-
-  /**
    * QML-facing slot for proposing to a food item to the current stall.
    */
   void proposeAddFood();
-
   /**
    * QML-facing slot for proposing to remove a food item from the current stall.
    * @param idx Index of food item to remove.
    * @return True if food item is within range and removed, false otherwise.
    */
   bool proposeRemoveFood(int idx);
+  /** QML-facing slot for setting image for item at index idx. It copies the given image to the stall folder and
+   * links from there.
+   */
+  bool setItemImage(const QUrl& filepath, const int idx);
   /** Apply all editing proposals to current_stall's menu. */
   void applyProposal(bool also_update_images = false);
-  void updateStallData(bool also_update_images = false);
+
   /** QML-facing slots for GUI to edit stall data, exclusive to stall app. */
   bool setStallName(const QString &name);
   bool setStallPassword(const QString &password);
@@ -93,10 +85,10 @@ public slots:
    * links from there.
    */
   bool setStallImage(const QUrl& filepath);
-  /** QML-facing slot for setting image for item at index idx. It copies the given image to the stall folder and
-   * links from there.
-   */
-  bool setItemImage(const QUrl& filepath, const int idx);
+
+  /** Sync stall data with server */
+  void updateStallData(bool also_update_images = false);
+
   // ORDERING FUNCTIONS
   void hold(int idx);
   void complete(int idx);

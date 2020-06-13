@@ -4,6 +4,7 @@
 #include "category.h"
 #include "menu.h"
 #include "common.h"
+#include "orderinfo.h"
 
 /** Abstract class for per-app controllers. Contains features used by all apps.
  */

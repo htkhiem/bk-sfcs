@@ -92,7 +92,6 @@ Page {
             orientation: ListView.Horizontal
             delegate: StallDelegate {
                 stallName.text: model.modelData.stallName
-                stallImage.source: model.modelData.imagePath
             }
             model: stallViewModel
             focus: true
