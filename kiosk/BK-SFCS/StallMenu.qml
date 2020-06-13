@@ -8,10 +8,12 @@ StallMenuForm {
         id: orderPopup
     }
     WaitingPopup {
-        id: waitingPopup
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
+        id: waitingPopup
     }
+
+
     function populateOrderPopup(name, desc, time, price, imgPath) {
         orderPopup.name.text = name;
         orderPopup.desc.text = desc;
@@ -23,18 +25,13 @@ StallMenuForm {
         blurUnfocused();
         orderPopup.open();
     }
-    function waitForOrderResponse(name) {
-        waitingPopup.statusText.text = "Your order has been sent. Please wait...";
+
+
+    function sendOrder() {
+        orderPopup.close();
+        backend.sendOrder();
+        waitingPopup.statusText.text = tr("Please wait...");
         waitingPopup.statusImage.source = "assets/loader.png";
         waitingPopup.open();
-        var orderResult = backend.waitForResults(name);
-        if (orderResult) { // succeeded
-            waitingPopup.statusText.text = "Succeeded! Your order is now being processed.";
-            waitingPopup.statusImage.source = "assets/tick.png";
-        }
-        else {
-            waitingPopup.statusText.text = "The stall could not accept this order! Please try again later.";
-            waitingPopup.statusImage.source = "./assets/forbidden.png";
-        }
     }
 }

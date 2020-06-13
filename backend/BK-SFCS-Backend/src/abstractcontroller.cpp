@@ -1,10 +1,128 @@
 #include "abstractcontroller.h"
 #include "category.h"
 #include "food.h"
-AbstractController::AbstractController(QQmlApplicationEngine *eng, QObject *parent)
-  : QObject(parent), p_engine(eng), current_stall_idx(0)
+AbstractController::AbstractController(QQmlApplicationEngine *eng, const QString& name, QObject *parent)
+  : QObject(parent), app_name(name), p_engine(eng), current_stall_idx(0)
 {
+  // Loads server URL from config file
+  QDir data_cursor = this->getAppFolder();
+  QFile server_conf(data_cursor.filePath("server.conf"));
+  if (server_conf.exists()) {
+      if (!server_conf.open(QIODevice::ReadOnly)) {
+          throw runtime_error("Cannot read configuration file.");
+        }
+      server_url = QUrl(QString(server_conf.readAll()));
+      server_conf.close();
+    }
+  else {
+      if (!server_conf.open(QIODevice::WriteOnly)) {
+          throw runtime_error("Cannot write initial configuration file.");
+        }
+      server_conf.write(QByteArray("ws://localhost:25678"));
+      server_url = QUrl("ws://localhost:25678");
+    }
+  qDebug() << "Server set to " << server_url;
+  connect(&web_socket, &QWebSocket::connected, this, &AbstractController::onConnected);
+  connect(&web_socket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::error),
+          [=](QAbstractSocket::SocketError error){ qDebug() << "Error: " << (int) error << "."; });
+  connect(&web_socket, &QWebSocket::disconnected, this, &AbstractController::closed);
+  web_socket.open(QUrl(server_url));
+}
+
+void AbstractController::onConnected() {
   populateCategoryViewModel();
+  qDebug() << "WebSocket connected to " << server_url;
+  connect(&web_socket, &QWebSocket::textMessageReceived, this, &AbstractController::onTextMessageReceived);
+  connect(&web_socket, &QWebSocket::binaryMessageReceived, this, &AbstractController::onBinaryMessageReceived);
+  // Get self index
+  web_socket.sendTextMessage("KX");
+  // Automatically fetch stall list
+  getStallList();
+}
+
+void AbstractController::onTextMessageReceived(const QString& message) {
+  qDebug() << "Text message received: " << message;
+  QStringRef result(&message, 0, 2);
+  QStringRef target(&message, 3, 2);
+  if (target == "GL") { // GetList of stalls
+      if (result == "OK") { // succeeded
+          QStringRef data(&message, 6, message.length() - 7);
+          QJsonObject stall_list_json = QJsonDocument(QJsonDocument::fromJson(data.toUtf8())).object();
+          populateStallViewModel(stall_list_json);
+        }
+      else { //failed
+          throw runtime_error("Server-side error: stall data could not be sent.");
+        }
+    }
+  else if (target == "GM") { // GetMenu, might be received without asking in case menu is updated
+      if (result == "OK") { // succeeded
+          int json_start_pos = message.indexOf("{");
+          QStringRef data(&message, json_start_pos, message.length() - json_start_pos - 1);
+          QJsonObject menu_json = QJsonDocument(QJsonDocument::fromJson(data.toUtf8())).object();
+          populateMenuViewModel(menu_json);
+        }
+      else { // failed
+          throw runtime_error("Server-side error: stall menu could not be sent.");
+        }
+    }
+  else if (target == "KX") { // logically guaranteed to succeed
+      QStringRef data(&message, 6, message.length() - 7);
+      setClientIdx(data.toInt());
+      qDebug() << "Handshake complete";
+    }
+  else if (target == "OD") {
+      parseRepliesToKiosk(message);
+  }
+  else {
+      parseRepliesToStall(message);
+  }
+}
+void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
+  qDebug() << "Binary message: " << message.left(16);
+  int result = message.left(2).toInt();
+  int sz1 = message.mid(2, 2).toInt();
+
+  if (result) {
+      int sz2 = message.mid(4, 2).toInt();
+      QString request(message.mid(6, sz1));
+      QString text(message.mid(6 + sz1, sz2));
+      QStringList request_tokens = request.split(' ', QString::SkipEmptyParts);
+      qDebug() << "Binary message decoded: " << result <<
+                  "sz1 = " << sz1 << ", sz2 = " << sz2 << "Text: " << text << ", R: " << request_tokens[0];
+      if (request_tokens[0] == "IS") { // Stall image
+          saveStallImage(request_tokens[1].toInt(), text, message.right(message.size() - 6 - sz1 - sz2));
+        }
+      else if (request_tokens[0] == "IM") { // Menu item image
+          int stall_idx = request_tokens[1].toInt();
+          int item_idx = request_tokens[2].toInt();
+          QDir data_cursor = this->getAppFolder();
+          data_cursor.mkdir(((Stall *) stall_view_model[stall_idx])->getStallName());
+          data_cursor.cd(((Stall *) stall_view_model[stall_idx])->getStallName());
+          QFile item_image(data_cursor.filePath(text));
+          if (!item_image.open(QIODevice::WriteOnly)) {
+              throw runtime_error("Unable to write downloaded item image to disk");
+            }
+          item_image.write(message.right(message.size() - 6 - sz1 - sz2));
+          item_image.close();
+          ((QFood *) menu_view_model[item_idx])->setImagePath(data_cursor, text);
+          p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
+        }
+    }
+}
+void AbstractController::getStallList() {
+  web_socket.sendTextMessage("GL");
+}
+void AbstractController::getStallImage(int idx) {
+  QString message = "IS " + QString::number(idx);
+  web_socket.sendTextMessage(message);
+}
+void AbstractController::getStallMenu(int idx) {
+  QString message = "GM " + QString::number(idx);
+  web_socket.sendTextMessage(message);
+}
+void AbstractController::getMenuItemImage(int stall_idx, int item_idx) {
+  QString message = "IM " + QString::number(stall_idx) + " " + QString::number(item_idx);
+  web_socket.sendTextMessage(message);
 }
 
 bool AbstractController::categoryIsVisible(const QString& cat_name) const {
@@ -15,7 +133,14 @@ bool AbstractController::categoryIsVisible(const QString& cat_name) const {
     }
   return false; // Category not found
 }
-void AbstractController::populateCategoryViewModel() {
+
+QDir AbstractController::getAppFolder() {
+  QDir data_cursor = QDir::home();
+  data_cursor.mkdir(app_name);
+  data_cursor.cd(app_name);
+  return data_cursor;
+}
+void AbstractController::populateCategoryViewModel() { // Offline
   category_view_model.clear();
   // Run only once on startup
   category_view_model.append(new Category("Main dishes", QChar(127837), "#EF5350", "#EF5350"));
@@ -26,6 +151,7 @@ void AbstractController::populateCategoryViewModel() {
 
   p_engine->rootContext()->setContextProperty("categoryViewModel", QVariant::fromValue(category_view_model));
 }
+
 Stall* AbstractController::getCurrentStall() {
   return (Stall *) (stall_view_model[current_stall_idx]);
 }
@@ -35,78 +161,83 @@ QString AbstractController::getCurrentStallName() {
 QUrl AbstractController::getCurrentStallImagePath() {
   return getCurrentStall()->getImagePath();
 }
-void AbstractController::populateMenuViewModel() {
-  for (auto ptr : menu_view_model) delete ptr;
-  menu_view_model.clear();
-  QVector<QFood>& temp = *(getCurrentStall()->getEditableMenu());
-  for (QFood& qfood : temp) {
-      if (categoryIsVisible(qfood.getType())) {
-          QObject * qfoodptr = new QFood(qfood);
-          ((QFood *) qfoodptr)->setValid(true);
-          menu_view_model.append(qfoodptr);
+void AbstractController::populateMenuViewModel(const QJsonObject& list_obj) {
+  if (list_obj.contains("menu") && list_obj["menu"].isArray()) {
+      QJsonArray menuArr = list_obj["menu"].toArray();
+      for (auto ptr : menu_view_model) delete ptr;
+      menu_view_model.clear();
+      menu_view_model.reserve(menuArr.size());
+      for (int i = 0; i < menuArr.size(); ++i) {
+          QFood *temp = new QFood(); // Lite stall object, containing just name
+          QJsonObject obj = menuArr[i].toObject();
+          temp->read(obj);
+          menu_view_model.append(temp);
         }
     }
-
   p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
+
+  // Now we can request images
+  for (int i = 0; i < menu_view_model.size(); ++i) {
+      getMenuItemImage(current_stall_idx, i);
+    }
 }
-void AbstractController::repopulateStallViewModel() {
+void AbstractController::populateStallViewModel(const QJsonObject& list_obj) {
   // deallocate, since we'll freshly load from JSON
-  for (auto p : stall_view_model) delete p;
-  stall_view_model.clear();
-  loadData();
+  if (list_obj.contains("stall_list") && list_obj["stall_list"].isArray()) {
+      QJsonArray stallArr = list_obj["stall_list"].toArray();
+      for (auto p : stall_view_model) delete p;
+      stall_view_model.clear();
+      stall_view_model.reserve(stallArr.size());
+      for(int i = 0; i < stallArr.size(); ++i){
+          Stall *temp = new Stall(); // Lite stall object, containing just name
+          QJsonObject obj = stallArr[i].toObject();
+          if (obj.contains("name") && obj["name"].isString())
+            temp->setStallName(obj["name"].toString());
+          stall_view_model.append(temp);
+        }
+      p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
+
+      // Now query images for each of them
+      for (int i = 0; i < stall_view_model.size(); ++i) {
+          getStallImage(i);
+        }
+    }
+  else throw invalid_argument("Invalid QJsonObject passed to populateStallViewModel()");
 }
 bool AbstractController::setCurrentStall(int idx) {
   current_stall_idx = idx;
   return true;
 }
-void AbstractController::loadData() {
-  QDir data_cursor = QDir::home();
-  if (!data_cursor.cd("sfcs_data")) {
-      throw runtime_error("Data folder not found. A blank folder will be created after this run.");
-    }
-
-  // Load stall menu and data
-  data_cursor.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
-  QStringList stall_dirs = data_cursor.entryList();
-  for (auto qstr : stall_dirs) {
-      data_cursor.cd(qstr);
-      QFile stall_data_file(data_cursor.filePath(qstr + QString(".json")));
-      if (!stall_data_file.open(QIODevice::ReadOnly)) {
-          throw runtime_error("Cannot read data file: " + qstr.toStdString());
-        }
-      QJsonDocument stall_data_json_doc(QJsonDocument::fromJson(stall_data_file.readAll()));
-      Stall* stall = new Stall();
-      stall->read(stall_data_json_doc.object());
-      stall_view_model.append(stall);
-      stall_data_file.close();
-      data_cursor.cdUp();
-    }
-  data_cursor.cdUp();
-
-  p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
+int AbstractController::getClientIdx() const
+{
+  return client_idx;
 }
-void AbstractController::saveData() {
-  QDir data_cursor = QDir::home();
-  data_cursor.mkdir("sfcs_data");
-  data_cursor.cd("sfcs_data");
 
-  // Write stall menu and data
-  for (auto ptr : stall_view_model) {
-      Stall& stall = *((Stall* )ptr);
-      data_cursor.mkdir(stall.getStallName());
-      data_cursor.cd(stall.getStallName());
-      QFile stall_data_file(data_cursor.filePath(stall.getStallName() + QString(".json")));
-      if (!stall_data_file.open(QIODevice::WriteOnly)) {
-          throw runtime_error(
-                string("Cannot write data file for stall: ")
-                + stall.getStallName().toStdString());
-        }
-      QJsonObject stall_data_json_obj;
-      stall.write(stall_data_json_obj);
-      QJsonDocument stall_data_json_doc(stall_data_json_obj);
-      stall_data_file.write(stall_data_json_doc.toJson());
-      stall_data_file.close();
-      data_cursor.cdUp();
+void AbstractController::setClientIdx(int value)
+{
+  client_idx = value;
+}
+
+void AbstractController::saveStallImage(int idx, const QString& name, const QByteArray& data) {
+  qDebug() << "Received image for stall index " << idx << ", name: " << name;
+  QDir data_cursor = this->getAppFolder();
+  data_cursor.mkdir(((Stall *) stall_view_model[idx])->getStallName());
+  data_cursor.cd(((Stall *) stall_view_model[idx])->getStallName());
+  QFile stall_image(data_cursor.filePath(name));
+  if (!stall_image.open(QIODevice::WriteOnly)) {
+      throw runtime_error("Unable to write downloaded stall image to disk");
     }
-  data_cursor.cdUp();
+  stall_image.write(data);
+  stall_image.close();
+  ((Stall *) stall_view_model[idx])->setImagePath(name);
+}
+
+QString AbstractController::getCurrentStallPath() {
+  QDir result = getAppFolder();
+  result.cd(getCurrentStallName());
+  return result.path();
+}
+
+void AbstractController::loadData() { // from server
+  QDir data_cursor = this->getAppFolder();
 }

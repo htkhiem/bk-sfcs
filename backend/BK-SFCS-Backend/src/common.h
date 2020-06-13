@@ -37,10 +37,16 @@
 #include <QDate>
 #include <QList>
 #include <QtCore>
+#include <QQuickView>
 
 // Qt File IO
 #include <QFile>
 #include <QDir>
+
+// Qt networking
+#include <QtEndian>
+#include <QWebSocket>
+#include <QWebSocketServer>
 
 using namespace std;
 

@@ -32,10 +32,12 @@
 *.app
 
 # Build directories
-client/build*
+kiosk/build*
 server/build*
-client/build*/*
+kiosk/build*/*
 server/build*/*
 backend/build*
-backend/build/*
+backend/build*/*
+stall/build*
+stall/build*/*
 

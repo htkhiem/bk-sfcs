@@ -59,6 +59,7 @@ void Stall::setImagePath(const QUrl& imgpath) {
     stall_dir.cd(getStallName());
     QFile::copy(imgpath.path(), stall_dir.filePath(imgpath.fileName()));
     image_name = imgpath.fileName();
+    emit imagePathChanged(); // Notify GUI to update image
 }
 
 

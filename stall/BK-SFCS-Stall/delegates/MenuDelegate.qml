@@ -3,7 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
 MenuDelegateForm {
     id: delegateForm
-    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallName());
+    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallPath());
     property bool itemImageLoaded: false;
     property bool oosCheckboxLoaded: false;
 
@@ -40,36 +40,47 @@ MenuDelegateForm {
             estTimeField.placeholderText = "Must be >= 1!"
             model.modelData.isValid = false;
         }
-        enable_buttons();
         return model.modelData.isValid;
     }
 
     nameField.onEditingFinished: {
         model.modelData.name = nameField.text;
-        check_data();
+        if (check_data) {
+            enable_buttons();
+        }
     }
 
     descField.onEditingFinished: {
         model.modelData.description = descField.text;
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
     }
 
     priceField.onEditingFinished: {
         model.modelData.price = parseFloat(priceField.text);
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
 
     }
     estTimeField.onEditingFinished: {
         model.modelData.estimatedTime = parseFloat(estTimeField.text);
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
     }
     oosCheckbox.onCheckedChanged: { // this version waits for confirmation
         model.modelData.isOOS = oosCheckbox.checked;
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
     }
     categoryBox.onActivated: {
         model.modelData.type = categoryBox.currentText;
-        check_data();
+        if (check_data()) {
+            enable_buttons();
+        }
 
     }
     removeButton.onActivated: {
@@ -89,6 +100,7 @@ MenuDelegateForm {
             itemImage.source = imageBrowser.fileUrl;
             model.modelData.setImagePath(backend.getCurrentStallName(),imageBrowser.fileUrl);
             enable_buttons();
+            markUpdateImages();
             close()
         }
         onRejected: {

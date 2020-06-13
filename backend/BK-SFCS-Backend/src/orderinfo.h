@@ -35,7 +35,7 @@ public:
   QDateTime getReceived();
   void setReceived();
   QDateTime getAnswered();
-  void setAnswered();
+  void setAnswered(bool reject = false);
   QDateTime getFinished();
   void setFinished();
   int getResponseTime();

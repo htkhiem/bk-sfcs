@@ -8,7 +8,7 @@
 class Stall : public Jsonable {
   Q_OBJECT
   Q_PROPERTY(QString stallName READ getStallName WRITE setStallName)
-  Q_PROPERTY(QUrl imagePath READ getImagePath WRITE setImagePath)
+  Q_PROPERTY(QUrl imagePath READ getImagePath WRITE setImagePath NOTIFY imagePathChanged)
 public:
   /**
    * Basic constructor.
@@ -64,6 +64,7 @@ public slots:
   void setPassword(QString password);
   QString getMgmtPassword() const;
   void setMgmtPassword(QString mgmt_password);
-
+signals:
+  void imagePathChanged();
 };
 #endif // MENU_H

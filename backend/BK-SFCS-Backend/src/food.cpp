@@ -22,19 +22,17 @@ QFood& QFood::operator=(const QFood & _food){
   is_OOS = _food.is_OOS;
   return *this;
 };
-QUrl QFood::getImagePath(const QString &stall_name) const {
-  QDir stall_dir = QDir::home();
-  stall_dir.cd("sfcs_data");
-  stall_dir.cd(stall_name);
-  return QUrl::fromLocalFile(stall_dir.filePath(image_name));
+QUrl QFood::getImagePath(const QString& stall_path) const {
+  return QUrl::fromLocalFile(QDir(stall_path).filePath(image_name));
 };
-void QFood::setImagePath(const QString &stall_name, const QUrl &imgpath){
-  QDir stall_dir = QDir::home();
-  stall_dir.cd("sfcs_data");
-  stall_dir.cd(stall_name);
-  QFile::copy(imgpath.path(), stall_dir.filePath(imgpath.fileName()));
+void QFood::setImagePath(const QDir& stall_path, const QUrl &imgpath){
+  QFile::copy(imgpath.path(), stall_path.filePath(imgpath.fileName()));
   image_name = imgpath.fileName();
 };
+void QFood::setImageName(const QString& name) {
+  image_name = name;
+}
+
 QString QFood::getName()const{
   return this->name;
 };
@@ -74,6 +72,7 @@ void QFood::setPrice(double price) {
     price = json["price"].toDouble();
   if (json.contains("estimated_time") && json["estimated_time"].isDouble())
     estimated_time = (size_t)json["estimated_time"].toDouble();
+  setValid(true);
 };
 
 void QFood::write(QJsonObject &json) const {
