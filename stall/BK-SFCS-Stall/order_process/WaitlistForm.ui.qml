@@ -15,10 +15,18 @@ Page {
         clip: true
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-        Loader {
-            id: waitlistLoader
-            anchors.fill: parent
-            sourceComponent: waitlistview
+        ListView {
+            id: listView
+            width: scrollView.width
+            height: scrollView.height
+            bottomMargin: 0
+            model: waitlistViewModel
+            delegate: OrderDelegate {
+                width: listView.width
+                qtyNumber.text:  model.modelData.quantity
+                nameText.text:  model.modelData.itemName
+                priceText.text:  model.modelData.total
+            }
         }
     }
 }
