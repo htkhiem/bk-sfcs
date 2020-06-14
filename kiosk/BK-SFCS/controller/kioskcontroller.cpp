@@ -4,6 +4,15 @@ KioskController::KioskController(QQmlApplicationEngine *eng, QObject *parent)
     : AbstractController(eng, "BK-SFCS Kiosk", parent)
 {
 }
+
+void KioskController::initOrder(int idx)
+{
+    current_order.setQuantity(1);
+    current_order.setKiosk(getClientIdx());
+    current_order.setFoodIdx(idx);
+    current_order.setFoodItem(*((QFood *) menu_view_model[idx]));
+    current_order.setStall(getCurrentStallIdx());
+}
 void KioskController::searchFilter(const QString& _input) {
     for (auto ptr : menu_view_model) delete ptr;
     menu_view_model.clear();

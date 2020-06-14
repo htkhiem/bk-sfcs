@@ -41,7 +41,7 @@ void AbstractController::onConnected() {
 }
 
 void AbstractController::onTextMessageReceived(const QString& message) {
-    qDebug() << "Text message received: " << message;
+    qDebug() << "Text message received: " << message.left(48) << " (...)";
     QStringRef result(&message, 0, 2);
     QStringRef target(&message, 3, 2);
     if (target == "GL") { // GetList of stalls
@@ -66,8 +66,8 @@ void AbstractController::onTextMessageReceived(const QString& message) {
         }
     }
     else if (target == "KX") { // logically guaranteed to succeed
-        QStringRef data(&message, 6, message.length() - 7);
-        setClientIdx(data.toInt());
+        QStringList tokens = message.split(' ', QString::SkipEmptyParts);
+        setClientIdx(tokens[2].toInt());
         qDebug() << "Handshake complete";
     }
     else if (target == "OD") {

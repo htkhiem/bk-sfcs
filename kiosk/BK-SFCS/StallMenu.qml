@@ -32,15 +32,16 @@ StallMenuForm {
         id: waitingPopup
     }
 
-    function populateOrderPopup(name, desc, time, price, imgPath) {
+    function populateOrderPopup(name, desc, time, price, idx) {
         orderPopup.name.text = name;
         orderPopup.desc.text = desc;
         orderPopup.estTime.text = qsTr("Estimated waiting time: ") + time + qsTr(" minutes");
         orderPopup.price = parseFloat(price);
         orderPopup.quantitySelector.currentIndex = 0;
+        orderPopup.image.source = backend.getItemImagePath(idx);
         orderPopup.orderButton.text = price + " VND\nORDER";
-        orderPopup.image.source = imgPath;
         blurUnfocused();
+        backend.initOrder(idx);
         orderPopup.open();
     }
 

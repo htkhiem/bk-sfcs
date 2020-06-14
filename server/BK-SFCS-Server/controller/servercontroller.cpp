@@ -192,7 +192,7 @@ void ServerController::processTextMessage(const QString& message) {
       clients[kiosk_idx]->sendTextMessage(message);
     }
   else if (request[0] == "KX") {
-      client->sendTextMessage("OK KX " + QString(client->getClientIdx()));
+      client->sendTextMessage("OK KX " + QString::number(client->getClientIdx()));
     }
   else { // Unknown request
       client->sendTextMessage("NO WTF");

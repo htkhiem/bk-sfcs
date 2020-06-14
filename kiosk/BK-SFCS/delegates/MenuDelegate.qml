@@ -14,7 +14,7 @@ MenuDelegateForm {
         console.log(index)
         backend.setOrderFoodItem(index);
         console.log(name)
-        populateOrderPopup(itemName.text, model.modelData.description, model.modelData.estimatedTime, itemPrice.text, itemImage.source);
+        populateOrderPopup(itemName.text, model.modelData.description, model.modelData.estimatedTime, itemPrice.text, index);
     }
 }
 
