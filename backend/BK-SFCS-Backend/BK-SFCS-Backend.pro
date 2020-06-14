@@ -1,5 +1,6 @@
 # QT -= gui
 QT += qml websockets
+QT += qml charts
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -23,7 +24,8 @@ SOURCES += \
         src/food.cpp \
         src/jsonable.cpp \
         src/menu.cpp \
-        src/orderinfo.cpp
+        src/orderinfo.cpp \
+        src/sales.cpp
 
 TRANSLATIONS += \
     BK-SFCS-Backend_vi_VN.ts
@@ -41,4 +43,5 @@ HEADERS += \
     src/food.h \
     src/jsonable.h \
     src/menu.h \
-    src/orderinfo.h
+    src/orderinfo.h \
+    src/sales.h
