@@ -39,6 +39,8 @@ Window {
         height: 530
         anchors.fill: parent
         loginButton.onClicked: login(stallSelector.currentIndex);
+        Keys.onReturnPressed: login(stallSelector.currentIndex) // Enter key
+        Keys.onEnterPressed: login(stallSelector.currentIndex) // Numpad enter k
     }
 }
 
