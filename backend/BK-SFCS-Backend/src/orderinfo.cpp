@@ -1,6 +1,4 @@
 #include "orderinfo.h"
-#include<iostream>
-using namespace std;
 int OrderInfo::getKiosk() const
 {
     return kiosk;
@@ -98,10 +96,8 @@ void OrderInfo::read(const QJsonObject &json) {
 
   food.read(json["order"].toObject());
   QJsonObject temp = json["order"].toObject();
-  //cout<< food.getName().toUtf8().constData();
   if (temp.contains("quantity") && temp["quantity"].isDouble())
     quantity= temp["quantity"].toInt();
-  //cout<<"/n"<<quantity<<" PEKO~/n";
   if (temp.contains("food_idx") && temp["food_idx"].isDouble())
     quantity= temp["food_idx"].toInt();
   if (temp.contains("slip_number") && temp["slip_number"].isDouble())
