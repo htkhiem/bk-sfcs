@@ -69,6 +69,8 @@ void QFood::setPrice(double price) {
     price = json["price"].toDouble();
   if (json.contains("estimated_time") && json["estimated_time"].isDouble())
     estimated_time = (size_t)json["estimated_time"].toDouble();
+  if (json.contains("oos") && json["oos"].isBool())
+    is_OOS = json["oos"].toBool();
   setValid(true);
 }
 
@@ -79,6 +81,7 @@ void QFood::write(QJsonObject &json) const {
   json["type"] = type;
   json["price"] = price;
   json["estimated_time"] = (double)estimated_time;
+  json["oos"] = is_OOS;
 }
 
 bool QFood::isOOS() {

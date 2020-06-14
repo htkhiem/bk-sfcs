@@ -3,13 +3,21 @@ import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
 MenuDelegateForm {
     id: delegateForm
-    itemImage.source: model.modelData.getImagePath(backend.getCurrentStallPath());
+    Connections {
+        target: backend
+        function onItemImageChanged(sidx, midx) {
+            if (sidx === backend.getCurrentStallIdx() && midx === index) {
+                backend.getItemImagePath(midx);
+            }
+        }
+    }
+    itemImage.source: backend.getItemImagePath(index)
     property bool itemImageLoaded: false;
     property bool oosCheckboxLoaded: false;
 
     function check_data() {
         model.modelData.isValid = true;
-        if (nameField.text == "") {
+        if (nameField.text === "") {
             nameField.placeholderText = "Name cannot be blank!";
             model.modelData.isValid = false;
         }
@@ -24,7 +32,7 @@ MenuDelegateForm {
                 break;
             }
         }
-        if (descField.text == "") {
+        if (descField.text === "") {
             descField.placeholderText = "Description cannot be blank!";
             model.modelData.isValid = false;
         }

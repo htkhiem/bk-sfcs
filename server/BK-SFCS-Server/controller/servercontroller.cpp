@@ -177,6 +177,13 @@ void ServerController::processTextMessage(const QString& message) {
                                            message.midRef(json_start_pos, message.length() - json_start_pos - 1).toUtf8())).object();
         setStallData(idx, data);
         response = "OK " + request[0] + " " + request[1]; // do not send the JSON part back
+        // Notify each currently-viewing kiosk about menu changes
+        for (auto c : clients) {
+            if (c->getType() == ClientType::kiosk && c->getCurrentlyViewingStall() == idx) {
+                // Re-send menu (stall will instantly update GUI menu)
+                c->sendTextMessage("OK GM " + QString::number(idx) + " " + QJsonDocument(getStallMenu(idx)).toJson());
+              }
+          }
       }  catch (...) {
         response = "NO " + request[0] + " " + request[1];
       }
@@ -209,6 +216,7 @@ void ServerController::processTextMessage(const QString& message) {
 }
 
 void ServerController::processBinaryMessage(const QByteArray& message) {
+  qDebug() << "Binary message received: " << message.left(48) << " (...)";
   Client *client = qobject_cast<Client *>(sender());
   int request = message.left(2).toInt();
   if (request == 1) { // Set new stall image
@@ -222,9 +230,23 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
       if (!stall_image.open(QIODevice::WriteOnly)) {
           throw runtime_error("Unable to write uploaded stall image to disk");
         }
-      stall_image.write(message.right(message.size() - 6 - sz));
+      QByteArray image_binary = message.right(message.size() - 6 - sz);
+      stall_image.write(image_binary);
       stall_image.close();
       ((Stall *) stall_view_model[idx])->setImageName(filename);
+      // Update all kiosks with new image
+      QString self_message = "IS " + QString::number(idx);
+      for (auto c : clients) {
+          if (c->getType() == ClientType::kiosk) {
+              QByteArray response;
+              response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
+              response += QString("%1").arg(self_message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+              response += QString("%1").arg(filename.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+              response += self_message.toUtf8() + filename.toUtf8() + image_binary;
+              qDebug() << "Replying with " << response.left(48) << " (...)";
+              c->sendBinaryMessage(response);
+            }
+        }
     }
   else if (request == 2) { // Set menu item image
       int stall_idx = message.mid(2, 2).toInt();
@@ -238,9 +260,23 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
       if (!stall_image.open(QIODevice::WriteOnly)) {
           throw runtime_error("Unable to write uploaded stall image to disk");
         }
-      stall_image.write(message.right(message.size() - 8 - sz));
+      QByteArray image_binary = message.right(message.size() - 8 - sz);
+      stall_image.write(image_binary);
       stall_image.close();
       (*((Stall *) stall_view_model[stall_idx])->getEditableMenu())[item_idx].setImageName(filename);
+
+      // Update any stall viewing the menu that has this image
+      QString self_message = "IM " + QString::number(stall_idx) + " " + QString::number(item_idx);
+      for (auto c : clients) {
+          if (c->getType() == ClientType::kiosk) {
+              QByteArray response;
+              response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
+              response += QString("%1").arg(self_message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+              response += QString("%1").arg(filename.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+              response += self_message.toUtf8() + filename.toUtf8() + image_binary;
+              c->sendBinaryMessage(response);
+            }
+        }
     }
   else { // unknown request
       client->sendTextMessage("NO WTF");
@@ -330,10 +366,12 @@ QJsonObject ServerController::getStallMenu(int idx)
   Stall& s = *((Stall *) stall_view_model[idx]);
   const QVector<QFood>& menu_vec = *(s.getMenu());
   for (auto f : menu_vec) {
-      QJsonObject json;
-      f.write(json);
-      json["image_path"] = ""; // empty path since image has not been downloaded
-      menu.append(json);
+      if (!(f.isOOS())) {
+          QJsonObject json;
+          f.write(json);
+          json["image_path"] = ""; // empty path since image has not been downloaded
+          menu.append(json);
+        }
     }
   result["menu"] = menu;
   return result;

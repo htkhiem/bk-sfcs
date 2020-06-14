@@ -11,6 +11,7 @@ class Client : public QObject
   ClientType type;
   int idx; // if type != stall, this field is the same as index within list of clients.
   QWebSocket* socket;
+  int currently_viewing_stall; // for kiosk only (so server knows which stall to notify about menu changes)
 public:
   explicit Client(QWebSocket *sk, QObject *parent = nullptr);
   ClientType getType() const;
@@ -22,6 +23,9 @@ public:
   void sendBinaryMessage(const QByteArray& message);
   int getClientIdx() const;
   void setClientIdx(int value);
+
+  int getCurrentlyViewingStall() const;
+  void setCurrentlyViewingStall(int value);
 
 signals:
   void textMessageReceived(const QString& message);

@@ -40,10 +40,20 @@ void Client::setClientIdx(int value)
   idx = value;
 }
 
-Client::Client(QWebSocket *sk, QObject *parent) :
-  QObject(parent), type(kiosk), idx(-1), socket(sk)
+int Client::getCurrentlyViewingStall() const
 {
-  connect(sk, &QWebSocket::textMessageReceived, this, &Client::textMessageReceived);
+    return currently_viewing_stall;
+}
+
+void Client::setCurrentlyViewingStall(int value)
+{
+    currently_viewing_stall = value;
+}
+
+Client::Client(QWebSocket *sk, QObject *parent) :
+    QObject(parent), type(kiosk), idx(-1), socket(sk)
+{
+    connect(sk, &QWebSocket::textMessageReceived, this, &Client::textMessageReceived);
   connect(sk, &QWebSocket::binaryMessageReceived, this, &Client::binaryMessageReceived);
   connect(sk, &QWebSocket::disconnected, this, &Client::disconnected);
 }
