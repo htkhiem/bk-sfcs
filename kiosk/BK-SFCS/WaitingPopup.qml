@@ -17,27 +17,33 @@ WaitingPopupForm {
         }
     }
     function setWaiting() {
-        waitingPopup.width = 320;
-        waitingPopup.playOnce = false;
-        waitingPopup.statusText.text = qsTr("Please wait...");
-        waitingPopup.statusImage.source = "assets/loader_animated.gif";
-        waitingPopup.modal = true;
-        waitingPopup.closePolicy = Popup.NoAutoClose;
+        width = 320;
+        playOnce = false;
+        statusText.text = qsTr("Please wait...");
+        statusImage.width = 180;
+        statusImage.height = 180;
+        statusImage.source = "assets/loader_animated.gif";
+        statusImage.paused = false;
+        modal = true;
+        closePolicy = Popup.NoAutoClose;
     }
 
     function setAccepted(slip) {
-        waitingPopup.statusText.text = "Success! Your slip number is " + slip + ".";
-        waitingPopup.playOnce = true;
-        waitingPopup.statusImage.source = "assets/success.gif";
+        statusText.text = "Success! Your slip number is " + slip + ".";
+        playOnce = true;
+        statusImage.source = "assets/success.gif";
+        statusImage.currentFrame = 3;
     }
 
     function setRejected() {
-        waitingPopup.statusText.text = "We're sorry. Your order was rejected.";
-        waitingPopup.statusImage.source = "assets/rejected.png";
+        statusText.text = "We're sorry. Your order was rejected.";
+        statusImage.width = 50;
+        statusImage.width = 50;
+        statusImage.source = "assets/rejected.png";
     }
 
     function allowClose() {
-        waitingPopup.modal = false;
-        waitingPopup.closePolicy = Popup.CloseOnEscape | Popup.CloseOnPressOutside;
+        modal = false;
+        closePolicy = Popup.CloseOnEscape | Popup.CloseOnPressOutside;
     }
 }
