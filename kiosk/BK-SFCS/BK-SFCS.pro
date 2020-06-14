@@ -52,6 +52,5 @@ HEADERS += \ \
     controller/kioskcontroller.h
 
 DISTFILES += \
-    assets/forbidden.svg \
     assets/loader.svg \
     assets/tick.svg

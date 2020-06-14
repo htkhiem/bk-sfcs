@@ -18,16 +18,10 @@
         <file>StallMenu.qml</file>
         <file>Main.qml</file>
         <file>MainForm.ui.qml</file>
-        <file>assets/forbidden.png</file>
-        <file>assets/forbidden.svg</file>
-        <file>assets/loader.png</file>
-        <file>assets/loader.svg</file>
-        <file>assets/tick.png</file>
-        <file>assets/tick.svg</file>
         <file>WaitingPopupForm.ui.qml</file>
         <file>WaitingPopup.qml</file>
         <file>assets/loader_animated.gif</file>
         <file>assets/success.gif</file>
-        <file>assets/success2.gif</file>
+        <file>assets/rejected.png</file>
     </qresource>
 </RCC>

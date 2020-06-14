@@ -7,16 +7,12 @@ StallMenuForm {
         function onCurrentOrderStatusChanged(slip) {
             waitingPopup.width = 640;
             if (slip !== -1) { // accepted
-                waitingPopup.statusText.text = "Success! Your slip number is " + slip + ".";
-                waitingPopup.playOnce = true;
-                waitingPopup.statusImage.source = "assets/success2.gif";
+                waitingPopup.setAccepted(slip);
             }
             else { // rejected
-                waitingPopup.statusText.text = "We're sorry. Your order was rejected.";
-                waitingPopup.statusImage.source = "assets/forbidden.png";
+                waitingPopup.setRejected();
             }
-            waitingPopup.modal = false;
-            waitingPopup.closePolicy = Popup.CloseOnEscape | Popup.CloseOnPressOutside;
+            waitingPopup.allowClose();
         }
     }
 
@@ -49,12 +45,7 @@ StallMenuForm {
     function sendOrder() {
         orderPopup.close();
         backend.sendOrder();
-        waitingPopup.width = 320;
-        waitingPopup.playOnce = false;
-        waitingPopup.statusText.text = qsTr("Please wait...");
-        waitingPopup.statusImage.source = "assets/loader_animated.gif";
-        waitingPopup.modal = true;
-        waitingPopup.closePolicy = Popup.NoAutoClose;
+        waitingPopup.setWaiting();
         waitingPopup.open();
     }
 }
