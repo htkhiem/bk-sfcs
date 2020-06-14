@@ -1,4 +1,4 @@
-QT += quick
+QT += quick charts
 
 CONFIG += c++11
 
@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ../../backend/BK-SFCS-Backend/src/sales.cpp \
         controller/stallmgmtcontroller.cpp \
         main.cpp \
         ../../backend/BK-SFCS-Backend/src/abstractcontroller.cpp \
@@ -41,6 +42,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    ../../backend/BK-SFCS-Backend/src/common.h \
+    ../../backend/BK-SFCS-Backend/src/sales.h \
+    C:/Users/bac/Desktop/sales.h \
     controller/stallmgmtcontroller.h \
     ../../backend/BK-SFCS-Backend/src/abstractcontroller.h \
         ../../backend/BK-SFCS-Backend/src/food.h \

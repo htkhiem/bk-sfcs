@@ -37,6 +37,7 @@
 #include <QDate>
 #include <QList>
 #include <QtCore>
+#include <QtCharts>
 
 // Qt File IO
 #include <QFile>
