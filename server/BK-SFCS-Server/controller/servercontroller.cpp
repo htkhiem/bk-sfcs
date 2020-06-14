@@ -178,11 +178,13 @@ void ServerController::processTextMessage(const QString& message) {
           if (p->getType() == ClientType::stall) {
               if (p->getClientIdx() == request[2].toInt()) {
                   // Forward order request to stall
+                  qDebug() << "Forwarding order to stall " << request[2] << "...";
                   p->sendTextMessage(message);
-                  break;
+                  return;
                 }
             }
         }
+      qDebug() << "Error: Stall not online or not found.";
     }
   else if (request[0] == "OK" || request[0] == "NO") { // from Stall client (order replies)
       // Third element should be kiosk index

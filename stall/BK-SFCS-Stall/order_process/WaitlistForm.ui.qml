@@ -3,7 +3,6 @@ import QtQuick.Controls 2.5
 import "../delegates"
 
 Page {
-    property alias waitlistLoader: waitlistLoader
     id: page
     width: 1280
     height: 720
@@ -23,9 +22,9 @@ Page {
             model: waitlistViewModel
             delegate: OrderDelegate {
                 width: listView.width
-                qtyNumber.text:  model.modelData.quantity
-                nameText.text:  model.modelData.itemName
-                priceText.text:  model.modelData.total
+                qtyNumber.text: model.modelData.quantity
+                nameText.text: model.modelData.itemName
+                priceText.text: model.modelData.total
             }
         }
     }

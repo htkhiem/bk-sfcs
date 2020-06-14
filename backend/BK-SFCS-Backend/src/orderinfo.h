@@ -64,14 +64,14 @@ public:
   int getStall() const;
   void setStall(int value);
 
-  int getFoodIdx() const;
-  void setFoodIdx(int value);
-
 public slots:
   int getQuantity() const;
   QString getItemName() const;
   double getTotal() const;
   QString getImageName() const;
+
+  int getFoodIdx() const;
+  void setFoodIdx(int value);
 };
 
 #endif // ORDERINFO_H
