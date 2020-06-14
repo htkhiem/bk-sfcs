@@ -59,8 +59,17 @@ void ServerController::onNewConnection() {
   client->setClientIdx(clients.size());
   qDebug() << "New client connected with index " << clients.size();
   clients.append(client);
-
 }
+
+void ServerController::socketDisconnected() {
+  Client *client = qobject_cast<Client *>(sender());
+      qDebug() << "Client " << client->getClientIdx() << " disconnected.";
+  if (client) {
+      clients.removeAll(client);
+      client->deleteLater();
+    }
+}
+
 // See abstractcontroller.h for full protocol
 void ServerController::processTextMessage(const QString& message) {
   qDebug() << "Text message received: " << message.left(48) << " (...)";
@@ -236,10 +245,6 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
   else { // unknown request
       client->sendTextMessage("NO WTF");
     }
-}
-
-void ServerController::socketDisconnected() {
-
 }
 
 QDir ServerController::getAppFolder() {
