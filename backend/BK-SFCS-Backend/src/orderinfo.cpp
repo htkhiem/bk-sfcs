@@ -1,5 +1,4 @@
 #include "orderinfo.h"
-
 int OrderInfo::getKiosk() const
 {
     return kiosk;
@@ -94,11 +93,17 @@ int OrderInfo::getProcessingTime() const {
   return this->time_answered.time().secsTo(this->time_finished.time());
 }
 void OrderInfo::read(const QJsonObject &json) {
-  food.read(json);
+  food.read(json["order"].toObject());
   if (json.contains("quantity") && json["quantity"].isDouble())
-    quantity= json["quantity"].toInt();
+    quantity = json["quantity"].toInt();
+  if (json.contains("food_idx") && json["food_idx"].isDouble())
+    food_idx = json["food_idx"].toInt();
+  if (json.contains("kiosk") && json["kiosk"].isDouble())
+    kiosk = json["kiosk"].toInt();
+  if (json.contains("stall") && json["stall"].isDouble())
+    stall = json["stall"].toInt();
   if (json.contains("slip_number") && json["slip_number"].isDouble())
-      slip_number= json["slip_number"].toInt();
+      slip_number = json["slip_number"].toInt();
   if (json.contains("status") && json["status"].isDouble())
     {
       int ienum = json["status"].toInt();
@@ -127,8 +132,11 @@ void OrderInfo::read(const QJsonObject &json) {
 void OrderInfo::write(QJsonObject &json) const {
   QJsonObject temp;
   food.write(temp);
-  temp["quantity"] = quantity;
-  temp["slip_number"] = slip_number;
+  json["quantity"] = quantity;
+  json["slip_number"] = slip_number;
+  json["food_idx"] = food_idx;
+  json["kiosk"] = kiosk;
+  json["stall"] = stall;
   json["order"] = temp;
   json["status"] = status;
   json["time received"] = time_received.toMSecsSinceEpoch();

@@ -59,8 +59,17 @@ void ServerController::onNewConnection() {
   client->setClientIdx(clients.size());
   qDebug() << "New client connected with index " << clients.size();
   clients.append(client);
-
 }
+
+void ServerController::socketDisconnected() {
+  Client *client = qobject_cast<Client *>(sender());
+      qDebug() << "Client " << client->getClientIdx() << " disconnected.";
+  if (client) {
+      clients.removeAll(client);
+      client->deleteLater();
+    }
+}
+
 // See abstractcontroller.h for full protocol
 void ServerController::processTextMessage(const QString& message) {
   qDebug() << "Text message received: " << message.left(48) << " (...)";
@@ -178,11 +187,13 @@ void ServerController::processTextMessage(const QString& message) {
           if (p->getType() == ClientType::stall) {
               if (p->getClientIdx() == request[2].toInt()) {
                   // Forward order request to stall
+                  qDebug() << "Forwarding order to stall " << request[2] << "...";
                   p->sendTextMessage(message);
-                  break;
+                  return;
                 }
             }
         }
+      qDebug() << "Error: Stall not online or not found.";
     }
   else if (request[0] == "OK" || request[0] == "NO") { // from Stall client (order replies)
       // Third element should be kiosk index
@@ -190,7 +201,7 @@ void ServerController::processTextMessage(const QString& message) {
       clients[kiosk_idx]->sendTextMessage(message);
     }
   else if (request[0] == "KX") {
-      client->sendTextMessage("OK KX " + QString(client->getClientIdx()));
+      client->sendTextMessage("OK KX " + QString::number(client->getClientIdx()));
     }
   else { // Unknown request
       client->sendTextMessage("NO WTF");
@@ -234,10 +245,6 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
   else { // unknown request
       client->sendTextMessage("NO WTF");
     }
-}
-
-void ServerController::socketDisconnected() {
-
 }
 
 QDir ServerController::getAppFolder() {

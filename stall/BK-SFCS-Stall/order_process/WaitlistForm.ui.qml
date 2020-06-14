@@ -14,7 +14,6 @@ Page {
         clip: true
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-
         ListView {
             id: listView
             width: scrollView.width
@@ -23,10 +22,9 @@ Page {
             model: waitlistViewModel
             delegate: OrderDelegate {
                 width: listView.width
-                itemImage.source:  model.modelData.imagePath
-                qtyNumber.text:  model.modelData.quantity
-                nameText.text:  model.modelData.itemName
-                priceText.text:  model.modelData.total
+                qtyNumber.text: model.modelData.quantity
+                nameText.text: model.modelData.itemName
+                priceText.text: model.modelData.total
             }
         }
     }
@@ -37,3 +35,4 @@ Designer {
     D{i:0;formeditorZoom:0.75}
 }
 ##^##*/
+
