@@ -4,12 +4,6 @@ sales::sales(QObject *parent) : QObject(parent) {
 
 }
 
-double sales::getRevenue(QDateTime date) {
-    for (int i = 0; i < salesData.size(); i++) {
-
-    }
-}
-
 void sales::updateOldestDate(QDateTime date) {
     if (date.daysTo(latestDate) <= 30)
         oldestDate = date;
@@ -20,14 +14,59 @@ void sales::updateLatestDate(QDateTime date) {
         latestDate = date;
 }
 
-QBarSeries sales::drawRevenueBarGraph() {
-    QBarSeries *revenue = new QBarSeries();
-
-}
-
 QBarSeries sales::drawQuantityBarGraph() {
     QBarSeries *quantity = new QBarSeries();
 
+    QDateTime start = oldestDate;
+    start.setTime(QTime());
+    QDateTime end = start.addSecs(86399);
+    QVector<QPair<QString, int>> foodList;
+    while (end <= latestDate) {
+        for (int i = 0; i < salesData.size(); i++) {
+            if (start <= salesData[i].getFinished() && salesData[i].getFinished() <= end) {
+                for (int j = 0; j < foodList.size(); j++) {
+                    if (foodList[i].first == salesData[i].getItemName())
+                        foodList[i].second += salesData[i].getQuantity();
+                    else
+                        foodList.push_back(qMakePair(salesData[i].getItemName(), salesData[i].getQuantity()));
+                }
+            }
+        }
+        start = start.addDays(1);
+        end = end.addDays(1);
+    }
+
+    for (int i = 0; i < foodList.size(); i++) {
+        QBarSet *set = new QBarSet(foodList[i].first);
+        *set << foodList[i].second;
+        quantity->append(set);
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(quantity);
+    chart->legend()->hide();
+    chart->setTitle("Quantity Chart");
+
+    QDateTimeAxis *axisX = new QDateTimeAxis;
+    axisX->setTickCount(10);
+    axisX->setFormat("dd:mm:yyyy");
+    axisX->setTitleText("Date");
+    chart->addAxis(axisX, Qt::AlignBottom);
+    quantity->attachAxis(axisX);
+
+    QValueAxis *axisY = new QValueAxis;
+    axisY->setLabelFormat("%i");
+    axisY->setTitleText("Orders");
+    chart->addAxis(axisY, Qt::AlignLeft);
+    quantity->attachAxis(axisY);
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    QMainWindow window;
+    window.setCentralWidget(chartView);
+    window.resize(820, 600);
+    window.show();
 }
 
 QLineSeries sales::drawTimeLineGraph() {

@@ -11,7 +11,7 @@ class sales : public Jsonable {
 
     /* Fields */
     QVector<OrderInfo> salesData;
-    bool revenue, quantity, response, rejectedOrder;
+    bool quantity, response, rejectedOrder;
     QDateTime oldestDate;
     QDateTime latestDate;
 
@@ -20,10 +20,8 @@ public:
     sales(QObject *parent = nullptr);
 
     /* Functions */
-    double getRevenue(QDateTime date);
     void updateOldestDate(QDateTime date);
     void updateLatestDate(QDateTime date);
-    QBarSeries drawRevenueBarGraph();
     QBarSeries drawQuantityBarGraph();
     QLineSeries drawTimeLineGraph();
     QBarSeries drawRejectedBarGraph();
