@@ -6,7 +6,7 @@
 #include "jsonable.h"
 #include "orderinfo.h"
 
-class sales : public Jsonable {
+class Sales : public QObject {
     Q_OBJECT
 
     /* Fields */
@@ -17,7 +17,7 @@ class sales : public Jsonable {
 
 public:
     /* Constructor */
-    sales(QObject *parent = nullptr);
+    Sales(QObject *parent = nullptr);
 
     /* Functions */
     void updateOldestDate(QDateTime date);
