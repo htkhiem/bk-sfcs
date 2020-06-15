@@ -58,7 +58,7 @@ QLineSeries sales::drawTimeLineGraph() {
     chart->addSeries(response);
     chart->addSeries(processing);
     chart->legend()->hide();
-    chart->setTitle("Response and Processing Time");
+    chart->setTitle("Response and Processing Time Per Day");
 
     QDateTimeAxis *axisX = new QDateTimeAxis;
     axisX->setTickCount(10);
@@ -86,7 +86,49 @@ QLineSeries sales::drawTimeLineGraph() {
 
 QBarSeries sales::drawRejectedBarGraph() {
     QBarSeries *rejected = new QBarSeries();
+    QBarSet *set = new QBarSet("Rejected Order");
 
+    QDateTime start = oldestDate;
+    start.setTime(QTime());
+    QDateTime end = start.addSecs(86399);
+    while (end <= latestDate) {
+        int reject = 0;
+        for (int i = 0; i < salesData.size(); i++) {
+            if (start <= salesData[i].getFinished() && salesData[i].getFinished() <= end) {
+                reject++;
+            }
+        }
+        *set << reject;
+        start = start.addDays(1);
+        end = end.addDays(1);
+    }
+    rejected->append(set);
+
+    QChart *chart = new QChart();
+    chart->addSeries(rejected);
+    chart->legend()->hide();
+    chart->setTitle("Rejected Order Per Day");
+
+    QDateTimeAxis *axisX = new QDateTimeAxis;
+    axisX->setTickCount(10);
+    axisX->setFormat("dd:mm:yyyy");
+    axisX->setTitleText("Date");
+    chart->addAxis(axisX, Qt::AlignBottom);
+    rejected->attachAxis(axisX);
+
+    QValueAxis *axisY = new QValueAxis;
+    axisY->setLabelFormat("%i");
+    axisY->setTitleText("Orders");
+    chart->addAxis(axisY, Qt::AlignLeft);
+    rejected->attachAxis(axisY);
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    QMainWindow window;
+    window.setCentralWidget(chartView);
+    window.resize(820, 600);
+    window.show();
 }
 
 void sales::advancedExport() {
