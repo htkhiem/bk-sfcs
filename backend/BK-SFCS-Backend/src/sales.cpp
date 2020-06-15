@@ -22,30 +22,36 @@ void sales::updateLatestDate(QDateTime date) {
 
 QBarSeries sales::drawRevenueBarGraph() {
     QBarSeries *revenue = new QBarSeries();
-    for (int i = 0; i < salesData.size(); i++) {
-        if (salesData[i].getFinished().date() == QDateTime::currentDateTime().date()) {
 
-        }
-    }
 }
 
 QBarSeries sales::drawQuantityBarGraph() {
     QBarSeries *quantity = new QBarSeries();
-    for (int i = 0; i < salesData.size(); i++) {
-        if (salesData[i].getFinished().date() == QDateTime::currentDateTime().date()) {
 
-        }
-    }
 }
 
 QLineSeries sales::drawTimeLineGraph() {
     QLineSeries *response = new QLineSeries();
     QLineSeries *processing = new QLineSeries();
-    for (int i = 0; i < salesData.size(); i++) {
-        if (salesData[i].getFinished().date() == QDateTime::currentDateTime().date()) {
-            response->append(salesData[i].getFinished().toMSecsSinceEpoch(), salesData[i].getResponseTime());
-            processing->append(salesData[i].getFinished().toMSecsSinceEpoch(), salesData[i].getProcessingTime());
+
+    QDateTime start = oldestDate;
+    start.setTime(QTime());
+    QDateTime end = start.addSecs(86399);
+    while (end <= latestDate) {
+        int avg_response = 0, avg_processing = 0, n = 0;
+        for (int i = 0; i < salesData.size(); i++) {
+            if (start <= salesData[i].getFinished() && salesData[i].getFinished() <= end) {
+                avg_response += salesData[i].getResponseTime();
+                avg_processing += salesData[i].getProcessingTime();
+                n++;
+            }
         }
+        avg_response /= n;
+        avg_processing /= n;
+        response->append(start.toMSecsSinceEpoch(), avg_response);
+        processing->append(start.toMSecsSinceEpoch(), avg_processing);
+        start = start.addDays(1);
+        end = end.addDays(1);
     }
 
     QChart *chart = new QChart();
@@ -56,7 +62,7 @@ QLineSeries sales::drawTimeLineGraph() {
 
     QDateTimeAxis *axisX = new QDateTimeAxis;
     axisX->setTickCount(10);
-    axisX->setFormat("hh:mm:ss");
+    axisX->setFormat("dd:mm:yyyy");
     axisX->setTitleText("Date");
     chart->addAxis(axisX, Qt::AlignBottom);
     response->attachAxis(axisX);
@@ -80,11 +86,7 @@ QLineSeries sales::drawTimeLineGraph() {
 
 QBarSeries sales::drawRejectedBarGraph() {
     QBarSeries *rejected = new QBarSeries();
-    for (int i = 0; i < salesData.size(); i++) {
-        if (salesData[i].getFinished().date() == QDateTime::currentDateTime().date()) {
 
-        }
-    }
 }
 
 void sales::advancedExport() {
