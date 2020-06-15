@@ -95,7 +95,7 @@ QBarSeries sales::drawRejectedBarGraph() {
         int reject = 0;
         for (int i = 0; i < salesData.size(); i++) {
             if (start <= salesData[i].getFinished() && salesData[i].getFinished() <= end) {
-                reject++;
+                if (salesData[i].getStatus() == OrderStatus::rejected) reject++;
             }
         }
         *set << reject;
