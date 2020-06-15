@@ -1,20 +1,20 @@
 #include "sales.h"
 
-sales::sales(QObject *parent) : QObject(parent) {
+Sales::Sales(QObject *parent) : QObject(parent) {
 
 }
 
-void sales::updateOldestDate(QDateTime date) {
+void Sales::updateOldestDate(QDateTime date) {
     if (date.daysTo(latestDate) <= 30)
         oldestDate = date;
 }
 
-void sales::updateLatestDate(QDateTime date) {
+void Sales::updateLatestDate(QDateTime date) {
     if (oldestDate.daysTo(date) <= 30)
         latestDate = date;
 }
 
-QBarSeries sales::drawQuantityBarGraph() {
+QBarSeries Sales::drawQuantityBarGraph() {
     QBarSeries *quantity = new QBarSeries();
 
     QDateTime start = oldestDate;
@@ -69,7 +69,7 @@ QBarSeries sales::drawQuantityBarGraph() {
     window.show();
 }
 
-QLineSeries sales::drawTimeLineGraph() {
+QLineSeries Sales::drawTimeLineGraph() {
     QLineSeries *response = new QLineSeries();
     QLineSeries *processing = new QLineSeries();
 
@@ -123,7 +123,7 @@ QLineSeries sales::drawTimeLineGraph() {
     window.show();
 }
 
-QBarSeries sales::drawRejectedBarGraph() {
+QBarSeries Sales::drawRejectedBarGraph() {
     QBarSeries *rejected = new QBarSeries();
     QBarSet *set = new QBarSet("Rejected Order");
 
@@ -170,6 +170,6 @@ QBarSeries sales::drawRejectedBarGraph() {
     window.show();
 }
 
-void sales::advancedExport() {
+void Sales::advancedExport() {
 
 }
