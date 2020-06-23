@@ -2,9 +2,9 @@
 #define SALES_H
 
 #include <QObject>
-#include "common.h"
-#include "jsonable.h"
-#include "orderinfo.h"
+#include "../../../backend/BK-SFCS-Backend/src/common.h"
+#include "../../../backend/BK-SFCS-Backend/src/jsonable.h"
+#include "../../../backend/BK-SFCS-Backend/src/orderinfo.h"
 
 class Sales : public QObject {
     Q_OBJECT
