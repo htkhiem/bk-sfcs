@@ -163,6 +163,11 @@ void StallMgmtController::complete(int idx)
     //  // TODO: log then deallocate this OrderInfo and update waitlist
     //  // Don't forget to set status before logging.
     // This will have to wait until we have a pager display emulator.
+
+
+
+    waitlist_view_model.removeAt(idx);
+    p_engine->rootContext()->setContextProperty("waitlistViewModel", QVariant::fromValue(waitlist_view_model));
 }
 
 void StallMgmtController::reject(int idx)
@@ -173,6 +178,8 @@ void StallMgmtController::reject(int idx)
     // TODO: log then deallocate this OrderInfo and update waitlist
     // Don't forget to set status before logging.
     rejected_order->setAnswered(true);
+    waitlist_view_model.removeAt(idx);
+    p_engine->rootContext()->setContextProperty("waitlistViewModel", QVariant::fromValue(waitlist_view_model));
 }
 
 void StallMgmtController::parseRepliesToStall(const QString &message)
