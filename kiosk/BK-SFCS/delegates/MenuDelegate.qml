@@ -10,16 +10,16 @@ MenuDelegateForm {
                 itemImage.source = backend.getItemImagePath(midx);
         }
     }
+    Component.onCompleted: itemImage.source = backend.getItemImagePath(index);
     onMatchingChanged: {
+        itemImage.source = backend.getItemImagePath(index);
         if (matching) {
             opacity = 1;
             itemMouseArea.enabled = true;
-            itemImage.source = backend.getItemImagePath(index);
         }
         else {
             opacity = 0.3;
             itemMouseArea.enabled = false;
-            itemImage.source = backend.getItemImagePath(index); // unclear why this is needed
         }
     }
 

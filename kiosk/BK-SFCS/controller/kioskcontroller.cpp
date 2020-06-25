@@ -16,10 +16,11 @@ void KioskController::initOrder(int idx)
 void KioskController::searchFilter(const QString& _input) {
     for (auto p : menu_view_model) {
         QFood& qfood = *(QFood *) p;
-        if (!categoryIsVisible(qfood.getType()) || !(qfood.getName().contains(_input) || _input.isEmpty())) {
+        if (!categoryIsVisible(qfood.getType()) || (!_input.isEmpty() && !qfood.getName().contains(_input)))
             qfood.setMatching(false);
+        else {
+            qfood.setMatching(true);
         }
-        else qfood.setMatching(true);
     }
     p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
 }
