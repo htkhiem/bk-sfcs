@@ -10,13 +10,13 @@ CategoryDelegateForm {
             gradStart.color = enabledGradStart;
             gradEnd.color = enabledGradEnd;
             model.modelData.toggleVisibility(true);
-            backend.populateMenuViewModel();
+            searchMenu()
         }
         else {
             gradStart.color = disabledGradStart;
             gradEnd.color = disabledGradEnd;
             model.modelData.toggleVisibility(false);
-            backend.populateMenuViewModel();
+            searchMenu()
         }
     }
 }

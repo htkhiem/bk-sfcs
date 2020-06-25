@@ -6,19 +6,23 @@ import QtGraphicalEffects 1.0
 Page {
     property alias gridView: gridView
     property alias listView: listView
-    property alias pageBg: pageBg
+    property alias pageBg: fastBlurredBg
     width: 1280
     height: 720
-    Image {
-        id: pageBg
+    Rectangle {
+        id: bg
         anchors.fill: parent
-        fillMode: Image.PreserveAspectCrop
         FastBlur {
             id: bgBlur
             anchors.fill: parent
-            source: pageBg
+            source: Image {
+                id: fastBlurredBg
+                fillMode: Image.PreserveAspectCrop
+                anchors.fill: parent
+            }
+
             radius: 64
-            cached: true // higher perf
+            cached: true
         }
 
         ScrollView {
@@ -74,6 +78,7 @@ Page {
                     delegate: MenuDelegate {
                         itemPrice.text: model.modelData.price
                         itemName.text: model.modelData.name
+                        matching: model.modelData.matching
                     }
                 }
             }

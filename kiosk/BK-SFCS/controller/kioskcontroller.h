@@ -16,7 +16,7 @@ public:
   explicit KioskController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
 public slots:
   void initOrder(int idx);
-  void searchFilter(const QString& _input);
+  void searchFilter(const QString& _input = "");
   void setOrderFoodItem(int idx);
   void setOrderQuantity(int qty);
   void setOrderMethod(int method); // TODO

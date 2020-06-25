@@ -1,6 +1,16 @@
 #include "food.h"
+bool QFood::getMatching() const
+{
+  return matching;
+}
+
+void QFood::setMatching(bool value)
+{
+  matching = value;
+}
+
 QFood::QFood(QObject *parent) :
-  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false), estimated_time(0), is_valid(false) {}
+  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false), estimated_time(0), is_valid(false), matching(true) {}
 QFood::QFood(const QFood &_food, QObject *parent) :
   Jsonable(parent)
 {
@@ -11,6 +21,7 @@ QFood::QFood(const QFood &_food, QObject *parent) :
   image_name = _food.image_name;
   estimated_time = _food.estimated_time;
   is_OOS = _food.is_OOS;
+  matching = _food.matching;
 }
 QFood& QFood::operator=(const QFood & _food){
   name = _food.name;

@@ -41,7 +41,6 @@ StallMenuForm {
         orderPopup.open();
     }
 
-
     function sendOrder() {
         orderPopup.close();
         backend.sendOrder();

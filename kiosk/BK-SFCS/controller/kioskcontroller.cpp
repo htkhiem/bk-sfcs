@@ -14,14 +14,12 @@ void KioskController::initOrder(int idx)
     current_order.setStall(getCurrentStallIdx());
 }
 void KioskController::searchFilter(const QString& _input) {
-    for (auto ptr : menu_view_model) delete ptr;
-    menu_view_model.clear();
-    QVector<QFood>& temp = *(getCurrentStall()->getEditableMenu());
-    for (QFood& qfood : temp) {
-        if (categoryIsVisible(qfood.getType()) && qfood.getName().contains(_input)) {
-            QObject * qfoodptr = new QFood(qfood);
-            menu_view_model.append(qfoodptr);
+    for (auto p : menu_view_model) {
+        QFood& qfood = *(QFood *) p;
+        if (!categoryIsVisible(qfood.getType()) || !(qfood.getName().contains(_input) || _input.isEmpty())) {
+            qfood.setMatching(false);
         }
+        else qfood.setMatching(true);
     }
     p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
 }
