@@ -23,7 +23,7 @@ Rectangle {
         anchors.topMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 10
-        fillMode: Image.PreserveAspectFit
+        fillMode: Image.PreserveAspectCrop
         source: "qrc:/qtquickplugin/images/template_image.png"
     }
 
