@@ -29,5 +29,5 @@ OrderDelegateForm {
            }
        }
 
-       itemImage.source: backend.getItemImagePath(backend.getCurrentStallIdx(), model.modelData.getFoodIdx())
+       itemImage.source: backend.getItemImagePath(model.modelData.getFoodIdx())
 }
