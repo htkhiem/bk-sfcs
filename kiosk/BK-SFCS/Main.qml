@@ -8,13 +8,13 @@ MainForm {
     property bool isSearching: false
     backButton.onClicked: {
         if (isSearching) {
-            backend.populateMenuViewModel()
-            isSearching = false
+            isSearching = false;
+            backend.searchFilter(); // Only filter by category now
         } else {
             homeFormLoader.source = "HomeForm.ui.qml"
             stallLoadWait.wait(300)
             stackView.pop()
-            stallMenuLoader.source = ""
+            stallMenuLoader.sourceComponent = undefined;
         }
     }
     backButton.visible: (stackView.depth > 1 && isReady()) ? true : false
@@ -24,16 +24,31 @@ MainForm {
     }
     Loader {
         id: homeFormLoader
-        source: "HomeForm.ui.qml"
+        sourceComponent: homeMenu
+    } 
+    Component {
+        id: homeMenu
+        HomeForm {
+        }
     }
     Loader {
         id: stallMenuLoader
+    }
+    Component {
+        id: stallMenu
+        StallMenu {
+        }
     }
     SearchPopup {
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
         id: searchPopup
         onOpened: isSearching = true;
+        searchButton.onClicked:{
+            searchMenu();
+            close();
+        }
+        onClosed: refocus();
     }
 
     // Signal spies to wait for signals before doing stuff
@@ -49,14 +64,23 @@ MainForm {
         signalName: "loaded"
     }
 
+    function searchMenu() {
+        if (isSearching) {
+            // Search by both name and category
+            backend.searchFilter(searchPopup.searchField.text);
+        }
+        else // Search only by category
+            backend.searchFilter();
+    }
+
     function openMenu(stallIdx) {
         backend.setCurrentStallIdx(stallIdx);
         backend.getStallMenu(stallIdx); // load menu
-        stallMenuLoader.source = "StallMenu.qml"
-        stackView.push(stallMenuLoader)
-        menuLoadWait.wait(300);
+        stallMenuLoader.sourceComponent = stallMenu;
         stallMenuLoader.item.title = backend.getCurrentStallName();
-        homeFormLoader.source = ""; // unload stall list
+        stallMenuLoader.item.pageBg.source = backend.getCurrentStallImagePath();
+        stackView.push(stallMenuLoader);
+        homeFormLoader.sourceComponent = undefined; // unload stall list
         console.log(stackView.depth);
     }
 }

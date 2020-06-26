@@ -12,6 +12,7 @@ class QFood : public Jsonable {
   Q_PROPERTY(int estimatedTime READ getTime WRITE setTime)
   Q_PROPERTY(bool isOOS READ isOOS WRITE setOOS)
   Q_PROPERTY(bool isValid READ isValid WRITE setValid)
+  Q_PROPERTY(bool matching READ getMatching WRITE setMatching NOTIFY matchingStatusChanged)
   /** Basic fields  */
   QString name, type, description, image_name;
   double price;
@@ -20,6 +21,8 @@ class QFood : public Jsonable {
 
   /** Runtime field for MenuEditor only */
   bool is_valid;
+  /** Runtime field for search functions */
+  bool matching;
 public:
   /**
    * Basic constructor, links to QObject through Jsonable.
@@ -66,9 +69,12 @@ public slots:
   void setOOS(bool oos);
   void setTime(int _time);
   int getTime();
-
   bool isValid();
   void setValid(bool valid);
+  bool getMatching() const;
+  void setMatching(bool value);
+signals:
+  void matchingStatusChanged();
 };
 
 #endif // FOOD_H

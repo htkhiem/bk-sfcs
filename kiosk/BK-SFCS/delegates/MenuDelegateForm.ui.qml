@@ -77,7 +77,6 @@ Item {
         anchors.horizontalCenter: itemBg.horizontalCenter
         anchors.top: itemBg.top
         anchors.topMargin: 5
-        source: "qrc:/qtquickplugin/images/template_image.png"
         fillMode: Image.PreserveAspectCrop
         layer.enabled: true
         layer.effect: OpacityMask {
