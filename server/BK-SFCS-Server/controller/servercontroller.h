@@ -32,7 +32,9 @@ class ServerController : public QObject
   bool loginStallasManager(int idx, const QString& psw);
   QJsonObject getStallMenu(int idx);
   QByteArray getMenuItemImage(int sidx, int midx);
+  QByteArray getFullResMenuItemImage(int sidx, int midx);
   bool setStallData(int idx, const QJsonObject& data);
+  void resizeToThumbnail(QImage& source);
 public:
   explicit ServerController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
   ~ServerController();

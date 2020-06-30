@@ -83,22 +83,28 @@ void AbstractController::onBinaryMessageReceived(const QByteArray& message) {
     int sz1 = message.mid(2, 2).toInt();
 
     if (result) {
-        int sz2 = message.mid(4, 2).toInt();
-        QString request(message.mid(6, sz1));
-        QString text(message.mid(6 + sz1, sz2));
+        int sz2 = message.mid(4, 4).toInt();
+        QString request(message.mid(8, sz1));
+        QString text(message.mid(8 + sz1, sz2));
         QStringList request_tokens = request.split(' ', QString::SkipEmptyParts);
         qDebug() << "Binary message decoded: " << result <<
                     "sz1 = " << sz1 << ", sz2 = " << sz2 << "Text: " << text << ", R: " << request_tokens[0];
         if (request_tokens[0] == "IS") { // Stall image
-            saveStallImage(request_tokens[1].toInt(), text, message.right(message.size() - 6 - sz1 - sz2));
+            saveStallImage(request_tokens[1].toInt(), text, message.right(message.size() - 8 - sz1 - sz2));
             emit stallImageChanged(request_tokens[1].toInt());
         }
         else if (request_tokens[0] == "IM") { // Menu item image
             int stall_idx = request_tokens[1].toInt();
             int item_idx = request_tokens[2].toInt();
-            saveMenuItemImage(stall_idx, item_idx, text, message.right(message.size() - 6 - sz1 - sz2));
+            saveMenuItemImage(stall_idx, item_idx, text, message.right(message.size() - 8 - sz1 - sz2));
             emit itemImageChanged(stall_idx, item_idx);
         }
+        else if (request_tokens[0] == "IP") { // Full-res Menu item image => just set target QFood to use this item instead
+            int stall_idx = request_tokens[1].toInt();
+            int item_idx = request_tokens[2].toInt();
+            saveMenuItemImage(stall_idx, item_idx, text, message.right(message.size() - 8 - sz1 - sz2));
+            emit itemImageChanged(stall_idx, item_idx); // Popup will also listen to this signal
+          }
     }
 }
 void AbstractController::getStallList() {

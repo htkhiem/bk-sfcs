@@ -33,6 +33,7 @@ class AbstractController : public QObject {
    * Binary Outgoing Protocol:
    * 1 <idx> <sz> <name> <data>: Send new stall image with filename "name" (of length sz) for stall at index.
    * 2 <idx1> <idx2> <sz> <name> <name> <data>: Send new image with filename "name" (of length sz) for menu item idx2 of stall idx1.
+   *   Note: the sz field has FOUR digits.
    *
    * Incoming Protocol:
    * OK <out> <data>: Context-dependent action successful (replies to "out"
@@ -47,7 +48,7 @@ class AbstractController : public QObject {
    * 0 <sz1> <out>: Context-dependent failure (replies to "out").
    *  sz1 is length of <out> in UTF-8.
    *
-   * Note for binary protocols: all numeric parameters are sent as TWO ASCII digits, padded with zeroes if necessary.
+   * Note for binary protocols: all numeric parameters are sent as TWO ASCII digits, padded with zeroes if necessary (unless otherwise noted).
    */
 
   QUrl server_url;

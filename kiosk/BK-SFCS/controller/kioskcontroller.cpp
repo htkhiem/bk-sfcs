@@ -13,6 +13,12 @@ void KioskController::initOrder(int idx)
     current_order.setFoodItem(*((QFood *) menu_view_model[idx]));
     current_order.setStall(getCurrentStallIdx());
 }
+
+void KioskController::getFullResItemImage(int idx)
+{
+    QString request = "IP " + QString::number(getCurrentStallIdx()) + " " + QString::number(idx);
+    web_socket.sendTextMessage(request);
+}
 void KioskController::searchFilter(const QString& _input) {
     for (auto p : menu_view_model) {
         QFood& qfood = *(QFood *) p;
@@ -67,7 +73,6 @@ void KioskController::parseRepliesToKiosk(const QString& message) { // Only runs
         current_order.setAnswered(true);
         emit currentOrderStatusChanged(); // defaults to -1, which means rejected
     }
-
 }
 
 void KioskController::parseRepliesToStall(const QString &message) {
