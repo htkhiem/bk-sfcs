@@ -9,8 +9,18 @@ void QFood::setMatching(bool value)
   matching = value;
 }
 
+int QFood::getIdx() const
+{
+    return idx;
+}
+
+void QFood::setIdx(int value)
+{
+    idx = value;
+}
+
 QFood::QFood(QObject *parent) :
-  Jsonable(parent), type("Main dishes"), price(0), is_OOS(false), estimated_time(0), is_valid(false), matching(true) {}
+    Jsonable(parent), type("Main dishes"), price(0), is_OOS(false), estimated_time(0), is_valid(false), matching(true), idx(0) {}
 QFood::QFood(const QFood &_food, QObject *parent) :
   Jsonable(parent)
 {

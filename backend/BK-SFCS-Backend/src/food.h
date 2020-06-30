@@ -13,11 +13,13 @@ class QFood : public Jsonable {
   Q_PROPERTY(bool isOOS READ isOOS WRITE setOOS)
   Q_PROPERTY(bool isValid READ isValid WRITE setValid)
   Q_PROPERTY(bool matching READ getMatching WRITE setMatching NOTIFY matchingStatusChanged)
+  Q_PROPERTY(int foodIdx READ getIdx WRITE setIdx)
   /** Basic fields  */
   QString name, type, description, image_name;
   double price;
   bool is_OOS;
   int estimated_time;
+  int idx;
 
   /** Runtime field for MenuEditor only */
   bool is_valid;
@@ -52,6 +54,8 @@ public:
    * @param json Target object to write into.
    */
   void write(QJsonObject &json) const;
+
+
 public slots:
   /** Basic getters/setters */
   /** getImagePath and setImagePath needs stall name for absolute path */
@@ -73,6 +77,8 @@ public slots:
   void setValid(bool valid);
   bool getMatching() const;
   void setMatching(bool value);
+  int getIdx() const;
+  void setIdx(int value);
 signals:
   void matchingStatusChanged();
 };

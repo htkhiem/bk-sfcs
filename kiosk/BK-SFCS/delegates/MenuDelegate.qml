@@ -2,6 +2,7 @@ import QtQuick 2.4
 import "../"
 MenuDelegateForm {
     property bool matching: true
+    property int foodIdx
     Connections {
         target: backend
         function onItemImageChanged(sidx, midx) {
