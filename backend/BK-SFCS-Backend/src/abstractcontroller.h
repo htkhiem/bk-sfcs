@@ -25,6 +25,7 @@ class AbstractController : public QObject {
    *  Stall must already have been logged in with basic rights.
    * GM <idx> = get menu for stall at given index.
    * IM <stall idx> <menu idx> = get image of menu item at given index of stall at given index.
+   * IP <stall idx> <menu idx> = get full-resolution image of menu item at given idex of stall at given index (for popup).
    * SS <idx> <serialised stall JSON object> = set stall data (for stall app)
    *  Stall must already have been logged in with administrative rights.
    * OD <idx1> <idx2> <serialised OrderInfo object> = send order from kiosk idx1 to stall idx2

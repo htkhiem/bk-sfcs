@@ -79,6 +79,7 @@ Page {
                         itemPrice.text: model.modelData.price
                         itemName.text: model.modelData.name
                         matching: model.modelData.matching
+                        oos: model.modelData.isOOS
                     }
                 }
             }

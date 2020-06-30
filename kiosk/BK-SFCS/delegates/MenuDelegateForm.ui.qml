@@ -2,6 +2,7 @@ import QtQuick 2.4
 import QtGraphicalEffects 1.14
 
 Item {
+    id: element
     width: 200
     height: 320
     property alias itemPrice: itemPrice
@@ -68,6 +69,7 @@ Item {
         x: 145
         y: 285
         anchors.fill: itemBg
+        enabled: true
     }
     Image {
         id: itemImage
@@ -92,11 +94,45 @@ Item {
             }
         }
     }
+    states: [
+        State {
+            name: "hidden"
+            PropertyChanges {
+                target: element
+                opacity: 0.3
+            }
+            PropertyChanges {
+                target: itemMouseArea
+                enabled: false
+            }
+        },
+        State {
+            name: "oos"
+            PropertyChanges {
+                target: element
+                opacity: 0.3
+            }
+            PropertyChanges {
+                target: itemMouseArea
+                enabled: false
+            }
+
+            PropertyChanges {
+                target: itemPrice
+                text: qsTr("OUT OF STOCK")
+            }
+
+            PropertyChanges {
+                target: priceBg
+                color: "#cc0000"
+            }
+        }
+    ]
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.25}
+    D{i:0;formeditorZoom:1.5}
 }
 ##^##*/
 

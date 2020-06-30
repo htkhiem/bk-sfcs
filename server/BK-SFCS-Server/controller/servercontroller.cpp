@@ -366,12 +366,10 @@ QJsonObject ServerController::getStallMenu(int idx)
   Stall& s = *((Stall *) stall_view_model[idx]);
   const QVector<QFood>& menu_vec = *(s.getMenu());
   for (auto f : menu_vec) {
-      if (!(f.isOOS())) {
-          QJsonObject json;
-          f.write(json);
-          json["image_path"] = ""; // empty path since image has not been downloaded
-          menu.append(json);
-        }
+      QJsonObject json;
+      f.write(json);
+      json["image_path"] = ""; // empty path since image has not been downloaded
+      menu.append(json);
     }
   result["menu"] = menu;
   return result;
@@ -398,7 +396,7 @@ bool ServerController::setStallData(int idx, const QJsonObject &data)
     data_cursor.cd(s.getStallName());
     QFile stall_data_file(data_cursor.filePath(s.getStallName() + QString(".json")));
     if (!stall_data_file.open(QIODevice::WriteOnly))
-      throw runtime_error("Could not load stall image from disk.");
+      throw runtime_error("Could not write stall data to disk.");
     QJsonDocument stall_data_json_doc(data);
     stall_data_file.write(stall_data_json_doc.toJson());
     stall_data_file.close();

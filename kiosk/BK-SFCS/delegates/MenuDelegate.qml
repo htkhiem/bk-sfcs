@@ -2,6 +2,7 @@ import QtQuick 2.4
 import "../"
 MenuDelegateForm {
     property bool matching: true
+    property bool oos: false
     property int foodIdx
     Connections {
         target: backend
@@ -11,16 +12,23 @@ MenuDelegateForm {
                 itemImage.source = backend.getItemImagePath(midx);
         }
     }
-    Component.onCompleted: itemImage.source = backend.getItemImagePath(index);
-    onMatchingChanged: {
+    Component.onCompleted: {
         itemImage.source = backend.getItemImagePath(index);
-        if (matching) {
-            opacity = 1;
-            itemMouseArea.enabled = true;
-        }
-        else {
-            opacity = 0.3;
-            itemMouseArea.enabled = false;
+    }
+
+    onOosChanged: {
+        if (oos) state = "oos";
+        else state = matching? "base" : "hidden";
+    }
+
+    onMatchingChanged: {
+        if (!oos) {
+            if (matching) {
+                state = "base";
+            }
+            else {
+                state = "hidden"
+            }
         }
     }
 
