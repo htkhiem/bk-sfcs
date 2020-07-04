@@ -23,12 +23,13 @@ QBarSeries Sales::drawQuantityBarGraph() {
     QVector<QPair<QString, int>> foodList;
     while (end <= latestDate) {
         for (int i = 0; i < salesData.size(); i++) {
-            if (start <= salesData[i].getFinished() && salesData[i].getFinished() <= end) {
+            OrderInfo& od = *(OrderInfo *) salesData[i];
+            if (start <= od.getFinished() && od.getFinished() <= end) {
                 for (int j = 0; j < foodList.size(); j++) {
-                    if (foodList[i].first == salesData[i].getItemName())
-                        foodList[i].second += salesData[i].getQuantity();
+                    if (foodList[i].first == od.getItemName())
+                        foodList[i].second += od.getQuantity();
                     else
-                        foodList.push_back(qMakePair(salesData[i].getItemName(), salesData[i].getQuantity()));
+                        foodList.push_back(qMakePair(od.getItemName(), od.getQuantity()));
                 }
             }
         }
@@ -79,9 +80,10 @@ QLineSeries Sales::drawTimeLineGraph() {
     while (end <= latestDate) {
         int avg_response = 0, avg_processing = 0, n = 0;
         for (int i = 0; i < salesData.size(); i++) {
-            if (start <= salesData[i].getFinished() && salesData[i].getFinished() <= end) {
-                avg_response += salesData[i].getResponseTime();
-                avg_processing += salesData[i].getProcessingTime();
+            OrderInfo& od = *(OrderInfo *) salesData[i];
+            if (start <= od.getFinished() && od.getFinished() <= end) {
+                avg_response += od.getResponseTime();
+                avg_processing += od.getProcessingTime();
                 n++;
             }
         }
@@ -133,8 +135,9 @@ QBarSeries Sales::drawRejectedBarGraph() {
     while (end <= latestDate) {
         int reject = 0;
         for (int i = 0; i < salesData.size(); i++) {
-            if (start <= salesData[i].getFinished() && salesData[i].getFinished() <= end) {
-                if (salesData[i].getStatus() == OrderStatus::rejected) reject++;
+            OrderInfo& od = *(OrderInfo *) salesData[i];
+            if (start <= od.getFinished() && od.getFinished() <= end) {
+                if (od.getStatus() == OrderStatus::rejected) reject++;
             }
         }
         *set << reject;
