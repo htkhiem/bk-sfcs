@@ -1,4 +1,4 @@
-QT += quick charts
+QT += quick websockets charts
 
 CONFIG += c++11
 
@@ -17,6 +17,7 @@ SOURCES += \
     ../../backend/BK-SFCS-Backend/src/sales.cpp \
     ../../backend/BK-SFCS-Backend/src/controller.cpp \
     ../../backend/BK-SFCS-Backend/src/orderinfo.cpp \
+    controller/sales.cpp \
         controller/stallmgmtcontroller.cpp \
         main.cpp \
         ../../backend/BK-SFCS-Backend/src/abstractcontroller.cpp \
@@ -47,7 +48,7 @@ HEADERS += \
     ../../backend/BK-SFCS-Backend/src/common.h \
     ../../backend/BK-SFCS-Backend/src/controller.h \
     ../../backend/BK-SFCS-Backend/src/orderinfo.h \
-    ../../backend/BK-SFCS-Backend/src/sales.h \
+    controller/sales.h \
     controller/stallmgmtcontroller.h \
     ../../backend/BK-SFCS-Backend/src/abstractcontroller.h \
         ../../backend/BK-SFCS-Backend/src/food.h \
