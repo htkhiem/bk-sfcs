@@ -6,26 +6,27 @@
 #include "jsonable.h"
 #include "orderinfo.h"
 
-class Sales : public QObject {
+class sales : public Jsonable {
     Q_OBJECT
 
     /* Fields */
-    QVector<OrderInfo> salesData;
-    bool quantity, response, rejectedOrder;
+    QList<OrderInfo> salesData;
+    bool revenue, quantity, response, rejectedOrder;
     QDateTime oldestDate;
     QDateTime latestDate;
 
 public:
     /* Constructor */
-    Sales(QObject *parent = nullptr);
+    sales(QObject *parent = nullptr);
 
     /* Functions */
-    void updateOldestDate(QDateTime date);
-    void updateLatestDate(QDateTime date);
+    double getRevenue();
+    void updateDate(QDateTime date);
+    QBarSeries drawRevenueBarGraph();
     QBarSeries drawQuantityBarGraph();
     QLineSeries drawTimeLineGraph();
     QBarSeries drawRejectedBarGraph();
-    void advancedExport();
+    void advancedExport(bool revenue, bool quantity, bool response, bool rejectedOrder);
 };
 
 #endif // SALES_H

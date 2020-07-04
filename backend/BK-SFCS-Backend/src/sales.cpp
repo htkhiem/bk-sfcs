@@ -1,4 +1,3 @@
-#include "sales.h"
 
 Sales::Sales(QObject *parent) : QObject(parent) {
 

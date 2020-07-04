@@ -1,4 +1,4 @@
-QT += quick
+QT += quick charts
 
 CONFIG += c++11
 

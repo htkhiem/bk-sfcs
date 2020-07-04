@@ -1,6 +1,5 @@
 # QT -= gui
-QT += qml websockets
-QT += qml charts
+QT += qml websockets charts
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
