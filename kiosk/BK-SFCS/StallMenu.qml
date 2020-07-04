@@ -34,6 +34,7 @@ StallMenuForm {
         orderPopup.estTime.text = qsTr("Estimated waiting time: ") + time + qsTr(" minutes");
         orderPopup.price = parseFloat(price);
         orderPopup.quantitySelector.currentIndex = 0;
+        backend.getFullResItemImage(idx);
         orderPopup.image.source = backend.getItemImagePath(idx);
         orderPopup.orderButton.text = price + " VND\nORDER";
         blurUnfocused();

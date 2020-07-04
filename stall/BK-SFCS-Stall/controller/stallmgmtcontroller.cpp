@@ -1,4 +1,5 @@
 #include "stallmgmtcontroller.h"
+#include <QImage>
 
 StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *parent)
     : AbstractController(eng, "BK-SFCS Stall Manager", parent), management_mode(false)
@@ -89,7 +90,7 @@ void StallMgmtController::updateStallData(bool also_update_images) {
             throw runtime_error("Could not load stall image from disk.");
         message += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
         message += QString("%1").arg(getCurrentStallIdx(), 2, 10, QChar('0')).toUtf8();
-        message += QString("%1").arg(filename.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+        message += QString("%1").arg(filename.toUtf8().size(), 4, 10, QChar('0')).toUtf8();
         message += filename.toUtf8();
         message += stall_image.readAll();
         web_socket.sendBinaryMessage(message);
@@ -101,12 +102,12 @@ void StallMgmtController::updateStallData(bool also_update_images) {
             QFile item_image(cursor.filePath(getCurrentStall()->getMenu()->at(i).getImageName()));
             filename = item_image.fileName();
             if (!item_image.open(QIODevice::ReadOnly))
-                throw runtime_error("Could not load item image from disk.");
+                qDebug() << "Skipped updating a menu item's image (full-res version not present - we did not update it)";
             filename = item_image.fileName();
             message += QString("%1").arg(2, 2, 10, QChar('0')).toUtf8();
             message += QString("%1").arg(getCurrentStallIdx(), 2, 10, QChar('0')).toUtf8();
             message += QString("%1").arg(i, 2, 10, QChar('0')).toUtf8();
-            message += QString("%1").arg(filename.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+            message += QString("%1").arg(filename.toUtf8().size(), 4, 10, QChar('0')).toUtf8();
             message += filename.toUtf8();
             message += item_image.readAll();
             web_socket.sendBinaryMessage(message);
@@ -129,9 +130,24 @@ bool StallMgmtController::setStallMgmtPassword(const QString& mgmtpsw) {
     return true;
 }
 bool StallMgmtController::setStallImage(const QUrl& imgpath) {
-    // Copy the file to the stall folder
-    manualCopy(imgpath);
-    // Set name to stall JSON
+    QImage original(imgpath.toLocalFile());
+    QImage resized;
+    if (original.width() > original.height()) {
+        resized = original.copy((original.width() - original.height())/2, 0, original.height(), original.height());
+      }
+    else if (original.width() < original.height()) {
+        resized = original.copy(0, (original.height() - original.width())/2, original.width(), original.width());
+      }
+    else resized = original;
+
+    // Resize down to 190x190 (the size it would appear in the kiosks).
+    resized = resized.scaled(190, 190, Qt::KeepAspectRatio);
+
+    QDir cursor = getAppFolder();
+    cursor.cd(getCurrentStallName());
+    resized.save(cursor.filePath(imgpath.fileName()));
+
+    // Set name to in-memory stall data for now
     getCurrentStall()->setImageName(imgpath.fileName());
     return true;
 }

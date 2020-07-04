@@ -1,5 +1,6 @@
 #include "servercontroller.h"
 #include "../../backend/BK-SFCS-Backend/src/menu.h"
+#include <QImage>
 
 ServerController::ServerController(QQmlApplicationEngine *eng, QObject *parent) :
   QObject(parent),
@@ -101,7 +102,7 @@ void ServerController::processTextMessage(const QString& message) {
         QByteArray name = stall->getImageName().toUtf8();
         QByteArray image = getStallImage(idx);
         response += QString("%1").arg(message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
-        response += QString("%1").arg(name.size(), 2, 10, QChar('0')).toUtf8();
+        response += QString("%1").arg(name.size(), 4, 10, QChar('0')).toUtf8();
         response += message.toUtf8() + name + image;
         qDebug() << "Replying with " << response.left(48) << " (...)";
         client->sendBinaryMessage(response);
@@ -145,7 +146,31 @@ void ServerController::processTextMessage(const QString& message) {
       }
       client->sendTextMessage(response);
     }
-  else if (request[0] == "IM") { // get Image of Menu item
+  else if (request[0] == "IM") { // get thumbnail Image of Menu item
+      QByteArray response;
+      try {
+        response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
+        int sidx = request[1].toInt();
+        int midx = request[2].toInt();
+        QDir stall_path = getAppFolder();
+        Stall *stall = (Stall *) stall_view_model[sidx];
+        stall_path.cd(stall->getStallName());
+        QString thumbnail_name = "THUMB_" + stall->getMenu()->at(midx).getImageName();
+        QByteArray name = thumbnail_name.toUtf8();
+        QByteArray image = getMenuItemImage(sidx, midx);
+        response += QString("%1").arg(message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+        response += QString("%1").arg(name.size(), 4, 10, QChar('0')).toUtf8();
+        response += message.toUtf8() + name + image;
+        qDebug() << "Replying with " << response.left(48) << " (...)";
+        client->sendBinaryMessage(response);
+      }  catch (...) {
+        response.clear();
+        response += QString("%1").arg(0, 2, 10, QChar('0')).toUtf8();
+        response += message.toUtf8().size();
+        response += message.toUtf8();
+      }
+    }
+  else if (request[0] == "IP") { // get the full-resolution Image of the menu item (for Popups)
       QByteArray response;
       try {
         response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
@@ -154,10 +179,11 @@ void ServerController::processTextMessage(const QString& message) {
         QDir stall_path = getAppFolder();
         stall_path.cd(((Stall *) stall_view_model[sidx])->getStallName());
         Stall *stall = (Stall *) stall_view_model[sidx];
-        QByteArray name = stall->getMenu()->at(midx).getImageName().toUtf8();
-        QByteArray image = getMenuItemImage(sidx, midx);
+        QString thumbnail_name = stall->getMenu()->at(midx).getImageName();
+        QByteArray name = thumbnail_name.toUtf8();
+        QByteArray image = getFullResMenuItemImage(sidx, midx);
         response += QString("%1").arg(message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
-        response += QString("%1").arg(name.size(), 2, 10, QChar('0')).toUtf8();
+        response += QString("%1").arg(name.size(), 4, 10, QChar('0')).toUtf8();
         response += message.toUtf8() + name + image;
         qDebug() << "Replying with " << response.left(48) << " (...)";
         client->sendBinaryMessage(response);
@@ -221,8 +247,8 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
   int request = message.left(2).toInt();
   if (request == 1) { // Set new stall image
       int idx = message.mid(2, 2).toInt();
-      int sz = message.mid(4, 2).toInt();
-      QString filename = message.mid(6, sz);
+      int sz = message.mid(4, 4).toInt();
+      QString filename = message.mid(8, sz);
       QDir data_cursor = this->getAppFolder();
       data_cursor.mkdir(((Stall *) stall_view_model[idx])->getStallName());
       data_cursor.cd(((Stall *) stall_view_model[idx])->getStallName());
@@ -230,7 +256,7 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
       if (!stall_image.open(QIODevice::WriteOnly)) {
           throw runtime_error("Unable to write uploaded stall image to disk");
         }
-      QByteArray image_binary = message.right(message.size() - 6 - sz);
+      QByteArray image_binary = message.right(message.size() - 8 - sz);
       stall_image.write(image_binary);
       stall_image.close();
       ((Stall *) stall_view_model[idx])->setImageName(filename);
@@ -241,7 +267,7 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
               QByteArray response;
               response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
               response += QString("%1").arg(self_message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
-              response += QString("%1").arg(filename.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+              response += QString("%1").arg(filename.toUtf8().size(), 4, 10, QChar('0')).toUtf8();
               response += self_message.toUtf8() + filename.toUtf8() + image_binary;
               qDebug() << "Replying with " << response.left(48) << " (...)";
               c->sendBinaryMessage(response);
@@ -251,28 +277,37 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
   else if (request == 2) { // Set menu item image
       int stall_idx = message.mid(2, 2).toInt();
       int item_idx = message.mid(4, 2).toInt();
-      int sz = message.mid(6, 2).toInt();
-      QString filename = message.mid(8, sz);
+      int sz = message.mid(6, 4).toInt();
+      QString filename = message.mid(10, sz);
       QDir data_cursor = this->getAppFolder();
       data_cursor.mkdir(((Stall *) stall_view_model[stall_idx])->getStallName());
       data_cursor.cd(((Stall *) stall_view_model[stall_idx])->getStallName());
-      QFile stall_image(data_cursor.filePath(filename));
-      if (!stall_image.open(QIODevice::WriteOnly)) {
-          throw runtime_error("Unable to write uploaded stall image to disk");
+
+      QByteArray image_binary = message.right(message.size() - 10 - sz);
+      QFile item_image_file(data_cursor.filePath(filename));
+      if (!item_image_file.open(QIODevice::WriteOnly)) {
+          throw runtime_error("Could not write newly-uploaded item image file.");
         }
-      QByteArray image_binary = message.right(message.size() - 8 - sz);
-      stall_image.write(image_binary);
-      stall_image.close();
+      item_image_file.write(image_binary);
+      item_image_file.close();
+
+      // create a low-resolution version of the file to facilitate thumbnail view
+      QImage lowres;
+      lowres.loadFromData(image_binary);
+      resizeToThumbnail(lowres);
+      // Resize down to 190x190 (the size it would appear in the kiosks).
+      lowres = lowres.scaled(190, 190, Qt::KeepAspectRatio);
+      lowres.save(data_cursor.filePath("THUMB_" + filename));
       (*((Stall *) stall_view_model[stall_idx])->getEditableMenu())[item_idx].setImageName(filename);
 
-      // Update any stall viewing the menu that has this image
+      // Update any kiosk viewing the menu that has this image
       QString self_message = "IM " + QString::number(stall_idx) + " " + QString::number(item_idx);
       for (auto c : clients) {
           if (c->getType() == ClientType::kiosk) {
               QByteArray response;
               response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
               response += QString("%1").arg(self_message.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
-              response += QString("%1").arg(filename.toUtf8().size(), 2, 10, QChar('0')).toUtf8();
+              response += QString("%1").arg(filename.toUtf8().size(), 4, 10, QChar('0')).toUtf8();
               response += self_message.toUtf8() + filename.toUtf8() + image_binary;
               c->sendBinaryMessage(response);
             }
@@ -281,6 +316,17 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
   else { // unknown request
       client->sendTextMessage("NO WTF");
     }
+}
+
+void ServerController::resizeToThumbnail(QImage& source) {
+  if (source.width() > source.height()) {
+      source = source.copy((source.width() - source.height())/2, 0, source.height(), source.height());
+    }
+  else if (source.width() < source.height()) {
+      source = source.copy(0, (source.height() - source.width())/2, source.width(), source.width());
+    }
+  // Resize down to 190x190 (the size it would appear in the kiosks).
+  source = source.scaled(190, 190, Qt::KeepAspectRatio);
 }
 
 QDir ServerController::getAppFolder() {
@@ -366,19 +412,33 @@ QJsonObject ServerController::getStallMenu(int idx)
   Stall& s = *((Stall *) stall_view_model[idx]);
   const QVector<QFood>& menu_vec = *(s.getMenu());
   for (auto f : menu_vec) {
-      if (!(f.isOOS())) {
-          QJsonObject json;
-          f.write(json);
-          json["image_path"] = ""; // empty path since image has not been downloaded
-          menu.append(json);
-        }
+      QJsonObject json;
+      f.write(json);
+      json["image_path"] = ""; // empty path since image has not been downloaded
+      menu.append(json);
     }
   result["menu"] = menu;
   return result;
 }
 
 QByteArray ServerController::getMenuItemImage(int sidx, int midx)
-{
+{ // Get LOWRES version, that is, the one prepended with THUMB_.
+  Stall& s = *((Stall *) stall_view_model[sidx]);
+  QDir stall_path = getAppFolder();
+  stall_path.cd(s.getStallName());
+  QFile item_img(stall_path.filePath("THUMB_" + s.getMenu()->at(midx).getImageName()));
+  if (!item_img.open(QIODevice::ReadOnly)) {
+      // LEGACY: lowres version does not exist, make one now
+      QImage lowres(stall_path.filePath(s.getMenu()->at(midx).getImageName()));
+      resizeToThumbnail(lowres);
+      lowres.save(stall_path.filePath("THUMB_" + s.getMenu()->at(midx).getImageName()));
+      item_img.open(QIODevice::ReadOnly);
+    }
+  return item_img.readAll();
+}
+
+QByteArray ServerController::getFullResMenuItemImage(int sidx, int midx)
+{ // Get full-resolution version for displaying in popups
   Stall& s = *((Stall *) stall_view_model[sidx]);
   QDir stall_path = getAppFolder();
   stall_path.cd(s.getStallName());
@@ -398,7 +458,7 @@ bool ServerController::setStallData(int idx, const QJsonObject &data)
     data_cursor.cd(s.getStallName());
     QFile stall_data_file(data_cursor.filePath(s.getStallName() + QString(".json")));
     if (!stall_data_file.open(QIODevice::WriteOnly))
-      throw runtime_error("Could not load stall image from disk.");
+      throw runtime_error("Could not write stall data to disk.");
     QJsonDocument stall_data_json_doc(data);
     stall_data_file.write(stall_data_json_doc.toJson());
     stall_data_file.close();
