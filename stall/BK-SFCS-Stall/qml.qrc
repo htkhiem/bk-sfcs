@@ -23,5 +23,8 @@
         <file>menu_editor/MenuEditorForm.ui.qml</file>
         <file>order_process/WaitList.qml</file>
         <file>order_process/WaitlistForm.ui.qml</file>
+        <file>RejectedBarGraph.qml</file>
+        <file>QuantityBarGraph.qml</file>
+        <file>TimeLineGraph.qml</file>
     </qresource>
 </RCC>
