@@ -17,5 +17,31 @@ HomeForm {
         }
     }
 
-
+    GridView {
+        id: gridView
+        x: 10
+        y: 182
+        width: 140
+        height: 140
+        cellWidth: width/2
+        cellHeight: height/2
+        model: ListModel {
+            ListElement {
+                component: "QuantityBarGraph.qml"
+            }
+            ListElement {
+                component: "TimeLineGraph"
+            }
+            ListElement {
+                component: "RejectedBarGraph.qml"
+            }
+        }
+        delegate: Loader {
+            width: gridView.width
+            height: gridView.height
+            source: component
+            asynchronous: true
+            onLoaded: sourceLoaded = true
+        }
+    }
 }
