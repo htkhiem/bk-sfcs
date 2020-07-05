@@ -29,19 +29,15 @@ Page {
             flickableDirection: Flickable.HorizontalFlick
             model: ListModel {
                 ListElement {
-                    name: "Daily sales (1 week)"
+                    name: "Quantity"
                     checked: true
                 }
                 ListElement {
-                    name: "Monthly sales (3D weeks)"
+                    name: "Response and processing time"
                     checked: true
                 }
                 ListElement {
-                    name: "Daily average response delay"
-                    checked: true
-                }
-                ListElement {
-                    name: "Weekly item market share"
+                    name: "Rejected orders"
                     checked: true
                 }
             }
@@ -77,6 +73,8 @@ Page {
 
         RangeSlider {
             id: dataRangeSlider
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
             anchors.bottomMargin: 0
             anchors.top: dataRangeLabel.bottom
             anchors.right: parent.right
@@ -157,29 +155,17 @@ Page {
             id: gridView
             x: 10
             y: 180
-            width: 1260
-            height: 525
             cellWidth: width / 2
             cellHeight: height / 2
             model: ListModel {
                 ListElement {
-                    name: "Grey"
-                    colorCode: "grey"
+                    QuantityBarGraph {}
                 }
-
                 ListElement {
-                    name: "Red"
-                    colorCode: "red"
+                    TimeLineGraph {}
                 }
-
                 ListElement {
-                    name: "Blue"
-                    colorCode: "blue"
-                }
-
-                ListElement {
-                    name: "Green"
-                    colorCode: "green"
+                    RejectedBarGraph {}
                 }
             }
             delegate: Item {
@@ -209,9 +195,10 @@ Page {
 /*##^##
 Designer {
     D{i:0;formeditorZoom:0.75}D{i:2;anchors_height:160;anchors_width:110}D{i:1;anchors_width:200;anchors_x:8;anchors_y:10}
-D{i:9;anchors_y:112}D{i:11;anchors_height:40;anchors_width:205;anchors_x:"-58";anchors_y:304}
-D{i:10;anchors_width:1260;anchors_x:10;anchors_y:66}D{i:15;anchors_y:112}D{i:16;anchors_y:112}
-D{i:18;anchors_height:140;anchors_width:140;anchors_x:10;anchors_y:182}D{i:17;anchors_height:200;anchors_width:200;anchors_x:0;anchors_y:249}
+D{i:8;anchors_y:112}D{i:10;anchors_height:40;anchors_width:205;anchors_x:"-58";anchors_y:304}
+D{i:11;anchors_height:40;anchors_width:205;anchors_x:"-58";anchors_y:304}D{i:9;anchors_width:1260;anchors_x:10;anchors_y:66}
+D{i:14;anchors_y:112}D{i:15;anchors_y:112}D{i:18;anchors_height:140;anchors_width:140;anchors_x:10;anchors_y:182}
+D{i:17;anchors_height:140;anchors_width:140;anchors_x:10;anchors_y:182}D{i:16;anchors_height:200;anchors_width:200;anchors_x:0;anchors_y:249}
 }
 ##^##*/
 
