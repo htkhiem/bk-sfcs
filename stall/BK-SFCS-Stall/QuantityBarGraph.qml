@@ -27,7 +27,7 @@ ChartView {
         axisX: BarCategoryAxis {
             categories: ["Item 1", "Item 2", "Item 3"]
         }
-        BarSet: {
+        BarSet {
             label: "Number of orders";
             values: [2, 3, 4]
         }
