@@ -6,7 +6,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    QGuiApplication app(argc, argv);
+    // QApplication instead of QGuiApplication due to Qt Graphics View Framework dependency
+    QApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
 

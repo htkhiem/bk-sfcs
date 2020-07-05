@@ -155,37 +155,32 @@ Page {
             id: gridView
             x: 10
             y: 180
+            width: parent.width
+            height: parent.height
             cellWidth: width / 2
             cellHeight: height / 2
             model: ListModel {
                 ListElement {
-                    QuantityBarGraph {}
+                    name: qsTr("Ordered quantities")
+                    chart: "QuantityBarGraph.qml"
                 }
                 ListElement {
-                    TimeLineGraph {}
+                    name: qsTr("Processing time")
+                    chart: "TimeLineGraph.qml"
                 }
                 ListElement {
-                    RejectedBarGraph {}
+                    name: qsTr("Rejected order counts")
+                    chart: "RejectedBarGraph.qml"
                 }
             }
-            delegate: Item {
-                x: 5
-                height: 50
-                Column {
-                    Rectangle {
-                        width: 40
-                        height: 40
-                        color: colorCode
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-
-                    Text {
-                        x: 5
-                        text: name
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        font.bold: true
-                    }
-                    spacing: 5
+            delegate: Rectangle {
+                border.color: "silver"
+                border.width: 1
+                height: gridView.cellHeight - 10
+                width: gridView.cellWidth - 10
+                Loader {
+                    source: chart
+                    anchors.fill: parent
                 }
             }
         }
@@ -197,8 +192,7 @@ Designer {
     D{i:0;formeditorZoom:0.75}D{i:2;anchors_height:160;anchors_width:110}D{i:1;anchors_width:200;anchors_x:8;anchors_y:10}
 D{i:8;anchors_y:112}D{i:10;anchors_height:40;anchors_width:205;anchors_x:"-58";anchors_y:304}
 D{i:11;anchors_height:40;anchors_width:205;anchors_x:"-58";anchors_y:304}D{i:9;anchors_width:1260;anchors_x:10;anchors_y:66}
-D{i:14;anchors_y:112}D{i:15;anchors_y:112}D{i:18;anchors_height:140;anchors_width:140;anchors_x:10;anchors_y:182}
-D{i:17;anchors_height:140;anchors_width:140;anchors_x:10;anchors_y:182}D{i:16;anchors_height:200;anchors_width:200;anchors_x:0;anchors_y:249}
+D{i:14;anchors_y:112}D{i:15;anchors_y:112}D{i:16;anchors_height:200;anchors_width:200;anchors_x:0;anchors_y:249}
 }
 ##^##*/
 
