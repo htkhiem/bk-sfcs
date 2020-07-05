@@ -14,13 +14,14 @@ void Sales::updateLatestDate(QDateTime date) {
         latestDate = date;
 }
 
-QBarSeries Sales::drawQuantityBarGraph() {
-    QBarSeries *quantity = new QBarSeries();
+void Sales::drawQuantityBarGraph(QAbstractSeries *series) {
+    QAbstractBarSeries *barSeries = static_cast<QAbstractBarSeries *>(series);
 
     QDateTime start = oldestDate;
     start.setTime(QTime());
     QDateTime end = start.addSecs(86399);
     QVector<QPair<QString, int>> foodList;
+
     while (end <= latestDate) {
         for (int i = 0; i < salesData.size(); i++) {
             OrderInfo& od = *(OrderInfo *) salesData[i];
@@ -40,43 +41,18 @@ QBarSeries Sales::drawQuantityBarGraph() {
     for (int i = 0; i < foodList.size(); i++) {
         QBarSet *set = new QBarSet(foodList[i].first);
         *set << foodList[i].second;
-        quantity->append(set);
+        barSeries->append(set);
     }
-
-    QChart *chart = new QChart();
-    chart->addSeries(quantity);
-    chart->legend()->hide();
-    chart->setTitle("Quantity Chart");
-
-    QDateTimeAxis *axisX = new QDateTimeAxis;
-    axisX->setTickCount(10);
-    axisX->setFormat("dd:mm:yyyy");
-    axisX->setTitleText("Date");
-    chart->addAxis(axisX, Qt::AlignBottom);
-    quantity->attachAxis(axisX);
-
-    QValueAxis *axisY = new QValueAxis;
-    axisY->setLabelFormat("%i");
-    axisY->setTitleText("Orders");
-    chart->addAxis(axisY, Qt::AlignLeft);
-    quantity->attachAxis(axisY);
-
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    QMainWindow window;
-    window.setCentralWidget(chartView);
-    window.resize(820, 600);
-    window.show();
 }
 
-QLineSeries Sales::drawTimeLineGraph() {
-    QLineSeries *response = new QLineSeries();
-    QLineSeries *processing = new QLineSeries();
+void Sales::drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2) {
+    QXYSeries *xySeries1 = static_cast<QXYSeries *>(series1);
+    QXYSeries *xySeries2 = static_cast<QXYSeries *>(series2);
 
     QDateTime start = oldestDate;
     start.setTime(QTime());
     QDateTime end = start.addSecs(86399);
+
     while (end <= latestDate) {
         int avg_response = 0, avg_processing = 0, n = 0;
         for (int i = 0; i < salesData.size(); i++) {
@@ -89,49 +65,23 @@ QLineSeries Sales::drawTimeLineGraph() {
         }
         avg_response /= n;
         avg_processing /= n;
-        response->append(start.toMSecsSinceEpoch(), avg_response);
-        processing->append(start.toMSecsSinceEpoch(), avg_processing);
+
+        xySeries1->append(start.toMSecsSinceEpoch(), avg_response);
+        xySeries2->append(start.toMSecsSinceEpoch(), avg_processing);
+
         start = start.addDays(1);
         end = end.addDays(1);
     }
-
-    QChart *chart = new QChart();
-    chart->addSeries(response);
-    chart->addSeries(processing);
-    chart->legend()->hide();
-    chart->setTitle("Response and Processing Time Per Day");
-
-    QDateTimeAxis *axisX = new QDateTimeAxis;
-    axisX->setTickCount(10);
-    axisX->setFormat("dd:mm:yyyy");
-    axisX->setTitleText("Date");
-    chart->addAxis(axisX, Qt::AlignBottom);
-    response->attachAxis(axisX);
-    processing->attachAxis(axisX);
-
-    QValueAxis *axisY = new QValueAxis;
-    axisY->setLabelFormat("%i");
-    axisY->setTitleText("Seconds");
-    chart->addAxis(axisY, Qt::AlignLeft);
-    response->attachAxis(axisY);
-    processing->attachAxis(axisY);
-
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    QMainWindow window;
-    window.setCentralWidget(chartView);
-    window.resize(820, 600);
-    window.show();
 }
 
-QBarSeries Sales::drawRejectedBarGraph() {
-    QBarSeries *rejected = new QBarSeries();
+void Sales::drawRejectedBarGraph(QAbstractSeries *series) {
+    QAbstractBarSeries *barSeries = static_cast<QAbstractBarSeries *>(series);
     QBarSet *set = new QBarSet("Rejected Order");
 
     QDateTime start = oldestDate;
     start.setTime(QTime());
     QDateTime end = start.addSecs(86399);
+
     while (end <= latestDate) {
         int reject = 0;
         for (int i = 0; i < salesData.size(); i++) {
@@ -144,33 +94,8 @@ QBarSeries Sales::drawRejectedBarGraph() {
         start = start.addDays(1);
         end = end.addDays(1);
     }
-    rejected->append(set);
 
-    QChart *chart = new QChart();
-    chart->addSeries(rejected);
-    chart->legend()->hide();
-    chart->setTitle("Rejected Order Per Day");
-
-    QDateTimeAxis *axisX = new QDateTimeAxis;
-    axisX->setTickCount(10);
-    axisX->setFormat("dd:mm:yyyy");
-    axisX->setTitleText("Date");
-    chart->addAxis(axisX, Qt::AlignBottom);
-    rejected->attachAxis(axisX);
-
-    QValueAxis *axisY = new QValueAxis;
-    axisY->setLabelFormat("%i");
-    axisY->setTitleText("Orders");
-    chart->addAxis(axisY, Qt::AlignLeft);
-    rejected->attachAxis(axisY);
-
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    QMainWindow window;
-    window.setCentralWidget(chartView);
-    window.resize(820, 600);
-    window.show();
+    barSeries->append(set);
 }
 
 void Sales::advancedExport() {

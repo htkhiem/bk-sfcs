@@ -22,9 +22,9 @@ public:
     /* Functions */
     void updateOldestDate(QDateTime date);
     void updateLatestDate(QDateTime date);
-    QBarSeries drawQuantityBarGraph();
-    QLineSeries drawTimeLineGraph();
-    QBarSeries drawRejectedBarGraph();
+    void drawQuantityBarGraph(QAbstractSeries *series);
+    void drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
+    void drawRejectedBarGraph(QAbstractSeries *series);
     void advancedExport();
 };
 
