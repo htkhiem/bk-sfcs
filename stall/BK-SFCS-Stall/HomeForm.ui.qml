@@ -144,6 +144,7 @@ Page {
 
     ScrollView {
         id: scrollView
+        anchors.bottomMargin: 15
         anchors.rightMargin: 10
         anchors.leftMargin: 10
         anchors.top: dataRangeFrame.bottom
@@ -155,11 +156,11 @@ Page {
         GridView {
             id: gridView
             x: 10
-            y: 182
-            width: 140
-            height: 140
-            cellWidth: 70
-            cellHeight: 70
+            y: 180
+            width: 1260
+            height: 525
+            cellWidth: width / 2
+            cellHeight: height / 2
             model: ListModel {
                 ListElement {
                     name: "Grey"

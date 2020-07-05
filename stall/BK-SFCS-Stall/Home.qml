@@ -36,12 +36,5 @@ HomeForm {
                 component: "RejectedBarGraph.qml"
             }
         }
-        delegate: Loader {
-            width: gridView.width
-            height: gridView.height
-            source: component
-            asynchronous: true
-            onLoaded: sourceLoaded = true
-        }
     }
 }
