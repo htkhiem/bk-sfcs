@@ -11,10 +11,6 @@ class ServerController : public QObject
   QHostAddress address;
   QString app_name;
   QDir getAppFolder();
-  QList<Client *> clients;
-
-  QList<QObject *> menu_view_model;
-  QList<QObject *> stall_view_model;
 
   QQmlApplicationEngine* p_engine;
 
@@ -36,6 +32,10 @@ class ServerController : public QObject
   bool setStallData(int idx, const QJsonObject& data);
   void resizeToThumbnail(QImage& source);
 public:
+  QList<QObject *> clients;
+  QList<QObject *> menu_view_model;
+  QList<QObject *> stall_view_model;
+
   explicit ServerController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
   ~ServerController();
 public slots:

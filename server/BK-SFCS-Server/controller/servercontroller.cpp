@@ -204,7 +204,8 @@ void ServerController::processTextMessage(const QString& message) {
         setStallData(idx, data);
         response = "OK " + request[0] + " " + request[1]; // do not send the JSON part back
         // Notify each currently-viewing kiosk about menu changes
-        for (auto c : clients) {
+        for (auto p : clients) {
+            Client* c = (Client *) p;
             if (c->getType() == ClientType::kiosk && c->getCurrentlyViewingStall() == idx) {
                 // Re-send menu (stall will instantly update GUI menu)
                 c->sendTextMessage("OK GM " + QString::number(idx) + " " + QJsonDocument(getStallMenu(idx)).toJson());
@@ -217,11 +218,12 @@ void ServerController::processTextMessage(const QString& message) {
     }
   else if (request[0] == "OD") { // OrDer item (kiosk)
       for (auto p : clients) {
-          if (p->getType() == ClientType::stall) {
-              if (p->getClientIdx() == request[2].toInt()) {
+          Client *c = (Client *) p;
+          if (c->getType() == ClientType::stall) {
+              if (c->getClientIdx() == request[2].toInt()) {
                   // Forward order request to stall
                   qDebug() << "Forwarding order to stall " << request[2] << "...";
-                  p->sendTextMessage(message);
+                  c->sendTextMessage(message);
                   return;
                 }
             }
@@ -231,7 +233,7 @@ void ServerController::processTextMessage(const QString& message) {
   else if (request[0] == "OK" || request[0] == "NO") { // from Stall client (order replies)
       // Third element should be kiosk index
       int kiosk_idx = request[2].toInt();
-      clients[kiosk_idx]->sendTextMessage(message);
+      ((Client *) clients[kiosk_idx])->sendTextMessage(message);
     }
   else if (request[0] == "KX") {
       client->sendTextMessage("OK KX " + QString::number(client->getClientIdx()));
@@ -262,7 +264,8 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
       ((Stall *) stall_view_model[idx])->setImageName(filename);
       // Update all kiosks with new image
       QString self_message = "IS " + QString::number(idx);
-      for (auto c : clients) {
+      for (auto p : clients) {
+          Client* c = (Client *) p;
           if (c->getType() == ClientType::kiosk) {
               QByteArray response;
               response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
@@ -302,7 +305,8 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
 
       // Update any kiosk viewing the menu that has this image
       QString self_message = "IM " + QString::number(stall_idx) + " " + QString::number(item_idx);
-      for (auto c : clients) {
+      for (auto p : clients) {
+          Client* c = (Client *) p;
           if (c->getType() == ClientType::kiosk) {
               QByteArray response;
               response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
