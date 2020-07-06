@@ -34,7 +34,7 @@ OrderDelegateForm {
     function setHeld() {
         timer.running = false;
         stepButton.text = "Finish";
-        stepButton.pressed = 0;
+        stepButton.progress = 0;
         rejectButton.enabled = false;
     }
 
