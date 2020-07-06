@@ -39,9 +39,14 @@ public:
   explicit ServerController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
   ~ServerController();
 public slots:
+  void createNewStall(const QString& name, const QUrl& imgpath, const QString& psw, const QString& mgr_psw);
+  QUrl getStallImagePath(int stall_idx);
+  void removeStall(int stall_idx);
+
   void onNewConnection();
   void processTextMessage(const QString& message);
   void processBinaryMessage(const QByteArray& message);
+  int getStallClientIdx(int stall_idx); // can return -1 in which case that stall is not logged in
   void disconnect(int idx);
   void socketDisconnected();
 signals:

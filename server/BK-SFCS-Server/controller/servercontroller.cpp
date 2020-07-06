@@ -52,6 +52,67 @@ ServerController::~ServerController() {
   qDeleteAll(clients.begin(), clients.end());
 }
 
+void ServerController::createNewStall(const QString &name, const QUrl &imgpath, const QString &psw, const QString &mgr_psw)
+{
+    Stall *new_stall = new Stall();
+    new_stall->setStallName(name);
+    new_stall->setPassword(psw);
+    new_stall->setMgmtPassword(mgr_psw);
+    new_stall->setImageName(imgpath.fileName());
+
+    // Prepare a folder for this stall
+    QDir cursor = getAppFolder();
+    cursor.mkdir(name);
+    cursor.cd(name);
+
+    // Copy image to server folder and resize it
+    QImage original(imgpath.toLocalFile());
+    QImage resized;
+    if (original.width() > original.height()) {
+        resized = original.copy((original.width() - original.height())/2, 0, original.height(), original.height());
+      }
+    else if (original.width() < original.height()) {
+        resized = original.copy(0, (original.height() - original.width())/2, original.width(), original.width());
+      }
+    else resized = original;
+
+    // Resize down to 190x190 (the size it would appear in the kiosks).
+    resized = resized.scaled(190, 190, Qt::KeepAspectRatio);
+    resized.save(cursor.filePath(imgpath.fileName()));
+
+    // Add stall to view model
+    stall_view_model.append(new_stall);
+    p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
+
+    // Write stall data to JSON
+    QJsonObject new_stall_data;
+    new_stall->write(new_stall_data);
+    QFile new_stall_file(cursor.filePath(name + ".json"));
+    if (!new_stall_file.open(QIODevice::WriteOnly)) throw runtime_error("Cannot write new stall data to disk!");
+    new_stall_file.write(QJsonDocument(new_stall_data).toJson());
+    new_stall_file.close();
+}
+
+QUrl ServerController::getStallImagePath(int stall_idx)
+{
+    QDir cursor = getAppFolder();
+    QString stall_name;
+    Stall * s = (Stall *) stall_view_model[stall_idx];
+    cursor.cd(s->getStallName());
+    return QUrl::fromLocalFile(cursor.filePath(s->getImageName()));
+}
+
+void ServerController::removeStall(int idx)
+{
+    stall_view_model.removeAt(idx);
+    QDir cursor = getAppFolder();
+    QString stall_name;
+    Stall * s = (Stall *) stall_view_model[idx];
+    cursor.cd(s->getStallName());
+    cursor.removeRecursively();
+    p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
+}
+
 void ServerController::onNewConnection() {
   Client *client = new Client(web_socket_server->nextPendingConnection());
   connect(client, &Client::textMessageReceived, this, &ServerController::processTextMessage);
@@ -323,6 +384,15 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
   else { // unknown request
       client->sendTextMessage("NO WTF");
   }
+}
+
+int ServerController::getStallClientIdx(int stall_idx)
+{
+    for (int i = 0; i < clients.size(); ++i) {
+        Client* c = (Client *) clients[i];
+        if (c->isStall() && c->getClientIdx() == stall_idx) return i;
+    }
+    return -1;
 }
 
 void ServerController::disconnect(int idx)

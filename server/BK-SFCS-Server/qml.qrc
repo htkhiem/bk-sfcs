@@ -10,5 +10,7 @@
         <file>client_tab/ClientDelegateForm.ui.qml</file>
         <file>stall_tab/StallList.qml</file>
         <file>stall_tab/StallListForm.ui.qml</file>
+        <file>stall_tab/StallDelegate.qml</file>
+        <file>stall_tab/StallDelegateForm.ui.qml</file>
     </qresource>
 </RCC>

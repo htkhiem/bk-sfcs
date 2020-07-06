@@ -11,7 +11,7 @@ Page {
         width: parent.width
         anchors.top: parent.top
         anchors.topMargin: 0
-        currentIndex: 1
+        currentIndex: 0
         TabButton {
             text: qsTr("Clients")
             onClicked: tabLoader.source = "client_tab/ClientList.qml"
