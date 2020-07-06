@@ -25,6 +25,7 @@ Page {
                 qtyNumber.text: model.modelData.quantity
                 nameText.text: model.modelData.itemName
                 priceText.text: model.modelData.total
+                hold: accepted
             }
         }
     }

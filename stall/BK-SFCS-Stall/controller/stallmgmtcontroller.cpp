@@ -180,7 +180,19 @@ void StallMgmtController::complete(int idx)
     //  // Don't forget to set status before logging.
     // This will have to wait until we have a pager display emulator.
 
-
+    OrderInfo& target_order = *(OrderInfo *) waitlist_view_model[idx];
+    target_order.setFinished();
+    QDir cursor = getAppFolder();
+    cursor.cd(getCurrentStallName());
+    cursor.mkdir("logs");
+    cursor.cd("logs");
+    QString filename = QString::number(target_order.getFinished().toMSecsSinceEpoch());
+    QFile old_order_file(cursor.filePath(filename + "json"));
+    if (!old_order_file.open(QIODevice::WriteOnly)) throw("Cannot log order!");
+    QJsonObject target_order_json;
+    target_order.write(target_order_json);
+    old_order_file.write(QJsonDocument(target_order_json).toJson());
+    old_order_file.close();
 
     waitlist_view_model.removeAt(idx);
     p_engine->rootContext()->setContextProperty("waitlistViewModel", QVariant::fromValue(waitlist_view_model));

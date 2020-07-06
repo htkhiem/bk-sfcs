@@ -181,3 +181,8 @@ QString OrderInfo::getItemName() const {
 QString OrderInfo::getImageName() const {
   return food.getImageName();
 }
+
+bool OrderInfo::isAccepted() const
+{
+  return (status == processing || status == finished);
+}
