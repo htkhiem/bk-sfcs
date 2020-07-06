@@ -5,6 +5,8 @@ Page {
     id: page
     width: 1280
     height: 720
+    property alias gridView: gridView
+    property alias reloadGraphsButton: reloadGraphsButton
     anchors.fill: parent
     title: qsTr("Stall info")
 
@@ -186,13 +188,3 @@ Page {
         }
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:0.75}D{i:2;anchors_height:160;anchors_width:110}D{i:1;anchors_width:200;anchors_x:8;anchors_y:10}
-D{i:8;anchors_y:112}D{i:10;anchors_height:40;anchors_width:205;anchors_x:"-58";anchors_y:304}
-D{i:11;anchors_height:40;anchors_width:205;anchors_x:"-58";anchors_y:304}D{i:9;anchors_width:1260;anchors_x:10;anchors_y:66}
-D{i:14;anchors_y:112}D{i:15;anchors_y:112}D{i:16;anchors_height:200;anchors_width:200;anchors_x:0;anchors_y:249}
-}
-##^##*/
-

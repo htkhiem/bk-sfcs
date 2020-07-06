@@ -25,11 +25,15 @@ ChartView {
     BarSeries {
         id: quantityBarGraph
         axisX: BarCategoryAxis {
-            categories: ["Item 1", "Item 2", "Item 3"]
+            //categories: ["Item 1", "Item 2", "Item 3"]
         }
         BarSet {
             label: "Number of orders";
-            values: [2, 3, 4]
+            //values: [2, 3, 4]
         }
+    }
+
+    function refresh() {
+        sales.drawRejectedBarGraph(chartView.series(0))
     }
 }

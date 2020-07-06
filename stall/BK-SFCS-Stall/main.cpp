@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "controller/stallmgmtcontroller.h"
+#include "controller/sales.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +13,9 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     StallMgmtController backend(&engine);
+    Sales management;
     engine.rootContext()->setContextProperty("backend", &backend);
+    engine.rootContext()->setContextProperty("sales", &management);
 
     const QUrl url(QStringLiteral("qrc:/Login.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

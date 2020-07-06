@@ -45,9 +45,9 @@ void Sales::drawQuantityBarGraph(QAbstractSeries *series) {
     }
 }
 
-void Sales::drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2) {
-    QXYSeries *xySeries1 = static_cast<QXYSeries *>(series1);
-    QXYSeries *xySeries2 = static_cast<QXYSeries *>(series2);
+void Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *processing) {
+    QXYSeries *responseXYSeries = static_cast<QXYSeries *>(response);
+    QXYSeries *processingXYSeries = static_cast<QXYSeries *>(processing);
 
     QDateTime start = oldestDate;
     start.setTime(QTime());
@@ -66,8 +66,8 @@ void Sales::drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2
         avg_response /= n;
         avg_processing /= n;
 
-        xySeries1->append(start.toMSecsSinceEpoch(), avg_response);
-        xySeries2->append(start.toMSecsSinceEpoch(), avg_processing);
+        responseXYSeries->append(start.toMSecsSinceEpoch(), avg_response);
+        processingXYSeries->append(start.toMSecsSinceEpoch(), avg_processing);
 
         start = start.addDays(1);
         end = end.addDays(1);

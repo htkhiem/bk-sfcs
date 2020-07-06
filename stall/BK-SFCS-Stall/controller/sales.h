@@ -18,7 +18,7 @@ class Sales : public QObject {
 public:
     /* Constructor */
     Sales(QObject *parent = nullptr);
-
+public slots:
     /* Functions */
     void updateOldestDate(QDateTime date);
     void updateLatestDate(QDateTime date);
