@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 
 Page {
     id: page
-    width: 1280
+    width: 500
     height: 720
     TabBar {
         id: navBar
@@ -14,11 +14,11 @@ Page {
         currentIndex: 1
         TabButton {
             text: qsTr("Clients")
-            onClicked: tabLoader.source = "Home.qml"
+            onClicked: tabLoader.source = "client_tab/ClientList.qml"
         }
         TabButton {
             text: qsTr("Stall list")
-            onClicked: tabLoader.source = "order_process/WaitList.qml"
+            onClicked: tabLoader.source = "stall_tab/StallList.qml"
         }
     }
     Loader {
@@ -29,7 +29,7 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.topMargin: 0
-        source: "ClientList.qml"
+        source: "client_tab/ClientList.qml"
     }
 }
 

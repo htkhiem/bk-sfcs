@@ -60,6 +60,7 @@ void ServerController::onNewConnection() {
   client->setClientIdx(clients.size());
   qDebug() << "New client connected with index " << clients.size();
   clients.append(client);
+  p_engine->rootContext()->setContextProperty("clientViewModel", QVariant::fromValue(clients));
 }
 
 void ServerController::socketDisconnected() {
@@ -68,6 +69,7 @@ void ServerController::socketDisconnected() {
   if (client) {
       clients.removeAll(client);
       client->deleteLater();
+      p_engine->rootContext()->setContextProperty("clientViewModel", QVariant::fromValue(clients));
     }
 }
 
@@ -118,6 +120,7 @@ void ServerController::processTextMessage(const QString& message) {
       if (loginStall(request[1].toInt(), request[2])) {
           client->setType(stall);
           client->setClientIdx(request[1].toInt());
+          p_engine->rootContext()->setContextProperty("clientViewModel", QVariant::fromValue(clients));
           response = "OK " + message;
         }
       else {
@@ -319,7 +322,14 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
     }
   else { // unknown request
       client->sendTextMessage("NO WTF");
-    }
+  }
+}
+
+void ServerController::disconnect(int idx)
+{
+    ((Client *) clients[idx])->close();
+    clients.removeAt(idx);
+    p_engine->rootContext()->setContextProperty("clientViewModel", QVariant::fromValue(clients));
 }
 
 void ServerController::resizeToThumbnail(QImage& source) {

@@ -8,6 +8,8 @@ enum ClientType {kiosk, stall};
 class Client : public QObject
 {
   Q_OBJECT
+  Q_PROPERTY(QString id READ getId) // id is client's IP, additionally with stall ID in case of a logged-in stall client.
+  Q_PROPERTY(bool isStall READ isStall)
   ClientType type;
   int idx; // if type != stall, this field is the same as index within list of clients.
   QWebSocket* socket;
@@ -26,7 +28,10 @@ public:
 
   int getCurrentlyViewingStall() const;
   void setCurrentlyViewingStall(int value);
-
+  void close();
+public slots:
+  QString getId();
+  bool isStall();
 signals:
   void textMessageReceived(const QString& message);
   void binaryMessageReceived(const QByteArray& message);

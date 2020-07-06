@@ -3,8 +3,8 @@ import QtQuick.Controls 2.5
 
 ApplicationWindow {
     visible: true
-    width: 640
-    height: 480
+    width: 500
+    height: 720
     title: qsTr("BK-SFCS Server")
 
     Main {}
