@@ -6,6 +6,7 @@ Page {
     id: page
     width: 1280
     height: 720
+    property alias addButton: addButton
 
     ScrollView {
         id: scrollView

@@ -12,5 +12,7 @@
         <file>stall_tab/StallListForm.ui.qml</file>
         <file>stall_tab/StallDelegate.qml</file>
         <file>stall_tab/StallDelegateForm.ui.qml</file>
+        <file>stall_tab/StallCreationWizard.qml</file>
+        <file>stall_tab/StallCreationWizardForm.ui.qml</file>
     </qresource>
 </RCC>
