@@ -187,7 +187,7 @@ void StallMgmtController::complete(int idx)
     cursor.mkdir("logs");
     cursor.cd("logs");
     QString filename = QString::number(target_order.getFinished().toMSecsSinceEpoch());
-    QFile old_order_file(cursor.filePath(filename + "json"));
+    QFile old_order_file(cursor.filePath(filename + ".json"));
     if (!old_order_file.open(QIODevice::WriteOnly)) throw("Cannot log order!");
     QJsonObject target_order_json;
     target_order.write(target_order_json);
@@ -206,8 +206,8 @@ void StallMgmtController::reject(int idx)
     cursor.cd(getCurrentStallName());
     cursor.mkdir("logs");
     cursor.cd("logs");
-    QString filename = QString::number(target_order.getFinished().toMSecsSinceEpoch());
-    QFile old_order_file(cursor.filePath(filename + "json"));
+    QString filename = QString::number(target_order.getAnswered().toMSecsSinceEpoch());
+    QFile old_order_file(cursor.filePath(filename + ".json"));
     if (!old_order_file.open(QIODevice::WriteOnly)) throw("Cannot log order!");
     QJsonObject target_order_json;
     target_order.write(target_order_json);
