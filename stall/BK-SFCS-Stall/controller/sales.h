@@ -10,10 +10,11 @@ class Sales : public QObject {
     Q_OBJECT
 
     /* Fields */
-    QList<QObject*> salesData;
+    QVector<OrderInfo> salesData;
     bool quantity, response, rejectedOrder;
     QDateTime oldestDate;
     QDateTime latestDate;
+    void loadData();
 
 public:
     /* Constructor */
