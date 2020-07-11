@@ -46,7 +46,7 @@ void Sales::drawQuantityBarGraph(QAbstractSeries *series) {
 
     while (end <= latestDate) {
         for (int i = 0; i < salesData.size(); i++) {
-            OrderInfo& od = *(OrderInfo *) salesData[i];
+            OrderInfo& od = salesData[i];
             if (start <= od.getFinished() && od.getFinished() <= end) {
                 for (int j = 0; j < foodList.size(); j++) {
                     if (foodList[i].first == od.getItemName())
@@ -78,7 +78,7 @@ void Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *proces
     while (end <= latestDate) {
         int avg_response = 0, avg_processing = 0, n = 0;
         for (int i = 0; i < salesData.size(); i++) {
-            OrderInfo& od = *(OrderInfo *) salesData[i];
+            OrderInfo& od = salesData[i];
             if (start <= od.getFinished() && od.getFinished() <= end) {
                 avg_response += od.getResponseTime();
                 avg_processing += od.getProcessingTime();
@@ -107,7 +107,7 @@ void Sales::drawRejectedBarGraph(QAbstractSeries *series) {
     while (end <= latestDate) {
         int reject = 0;
         for (int i = 0; i < salesData.size(); i++) {
-            OrderInfo& od = *(OrderInfo *) salesData[i];
+            OrderInfo& od = salesData[i];
             if (start <= od.getFinished() && od.getFinished() <= end) {
                 if (od.getStatus() == OrderStatus::rejected) reject++;
             }
