@@ -26,14 +26,12 @@ void Sales::loadData() {
     }
 }
 
-void Sales::updateOldestDate(QDateTime date) {
-    if (date.daysTo(latestDate) <= 30)
-        oldestDate = date;
+void Sales::setStartRange() {
+
 }
 
-void Sales::updateLatestDate(QDateTime date) {
-    if (oldestDate.daysTo(date) <= 30)
-        latestDate = date;
+void Sales::setEndRange() {
+
 }
 
 void Sales::drawQuantityBarGraph(QAbstractSeries *series) {

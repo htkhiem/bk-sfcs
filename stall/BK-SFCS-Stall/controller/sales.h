@@ -11,9 +11,8 @@ class Sales : public QObject {
 
     /* Fields */
     QVector<OrderInfo*> salesData;
-    bool quantity, response, rejectedOrder;
-    QDateTime oldestDate;
-    QDateTime latestDate;
+    QDateTime oldestDate, latestDate;
+    QDateTime rangeLeft, rangeRight;
     void loadData();
 
 public:
@@ -21,8 +20,8 @@ public:
     Sales(QObject *parent = nullptr);
 public slots:
     /* Functions */
-    void updateOldestDate(QDateTime date);
-    void updateLatestDate(QDateTime date);
+    void setStartRange();
+    void setEndRange();
     void drawQuantityBarGraph(QAbstractSeries *series);
     void drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
     void drawRejectedBarGraph(QAbstractSeries *series);
