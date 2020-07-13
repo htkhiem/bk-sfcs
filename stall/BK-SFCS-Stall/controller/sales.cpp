@@ -26,23 +26,37 @@ void Sales::loadData() {
     }
 }
 
-void Sales::setStartRange() {
-
+void Sales::getOldestDate() {
+    if (salesData.first()->getStatus() == OrderStatus::rejected)
+        oldestDate = salesData.first()->getAnswered();
+    else
+        oldestDate = salesData.first()->getFinished();
 }
 
-void Sales::setEndRange() {
+void Sales::getLatestDate() {
+    if (salesData.last()->getStatus() == OrderStatus::rejected)
+        latestDate = salesData.last()->getAnswered();
+    else
+        latestDate = salesData.last()->getFinished();
+}
 
+void Sales::setStartRange(double pos) {
+    rangeLeft = oldestDate.addMSecs((latestDate.toMSecsSinceEpoch() - oldestDate.toMSecsSinceEpoch()) * pos);
+}
+
+void Sales::setEndRange(double pos) {
+    rangeRight = latestDate.addMSecs((latestDate.toMSecsSinceEpoch() - oldestDate.toMSecsSinceEpoch()) * pos);
 }
 
 void Sales::drawQuantityBarGraph(QAbstractSeries *series) {
     QAbstractBarSeries *barSeries = static_cast<QAbstractBarSeries *>(series);
 
-    QDateTime start = oldestDate;
+    QDateTime start = rangeLeft;
     start.setTime(QTime());
     QDateTime end = start.addSecs(86399);
     QVector<QPair<QString, int>> foodList;
 
-    while (end <= latestDate) {
+    while (end <= rangeRight) {
         for (int i = 0; i < salesData.size(); i++) {
             OrderInfo& od = *salesData[i];
             if (start <= od.getFinished() && od.getFinished() <= end) {
@@ -69,11 +83,11 @@ void Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *proces
     QXYSeries *responseXYSeries = static_cast<QXYSeries *>(response);
     QXYSeries *processingXYSeries = static_cast<QXYSeries *>(processing);
 
-    QDateTime start = oldestDate;
+    QDateTime start = rangeLeft;
     start.setTime(QTime());
     QDateTime end = start.addSecs(86399);
 
-    while (end <= latestDate) {
+    while (end <= rangeRight) {
         int avg_response = 0, avg_processing = 0, n = 0;
         for (int i = 0; i < salesData.size(); i++) {
             OrderInfo& od = *salesData[i];
@@ -98,11 +112,11 @@ void Sales::drawRejectedBarGraph(QAbstractSeries *series) {
     QAbstractBarSeries *barSeries = static_cast<QAbstractBarSeries *>(series);
     QBarSet *set = new QBarSet("Rejected Order");
 
-    QDateTime start = oldestDate;
+    QDateTime start = rangeLeft;
     start.setTime(QTime());
     QDateTime end = start.addSecs(86399);
 
-    while (end <= latestDate) {
+    while (end <= rangeRight) {
         int reject = 0;
         for (int i = 0; i < salesData.size(); i++) {
             OrderInfo& od = *salesData[i];

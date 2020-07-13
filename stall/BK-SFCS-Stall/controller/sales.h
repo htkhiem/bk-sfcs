@@ -20,8 +20,10 @@ public:
     Sales(QObject *parent = nullptr);
 public slots:
     /* Functions */
-    void setStartRange();
-    void setEndRange();
+    void getOldestDate();
+    void getLatestDate();
+    void setStartRange(double pos);
+    void setEndRange(double pos);
     void drawQuantityBarGraph(QAbstractSeries *series);
     void drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
     void drawRejectedBarGraph(QAbstractSeries *series);
