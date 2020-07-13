@@ -83,8 +83,8 @@ Page {
             anchors.bottom: dataRangeStart.top
             anchors.left: parent.left
             anchors.topMargin: 0
-            first.value: 0.25
-            second.value: 0.75
+            first.value: 0
+            second.value: 1
         }
 
         Text {

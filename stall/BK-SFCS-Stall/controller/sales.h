@@ -12,7 +12,7 @@ class Sales : public QObject {
     /* Fields */
     QVector<OrderInfo*> salesData;
     QDateTime oldestDate, latestDate;
-    QDateTime rangeLeft, rangeRight;
+    QDateTime rangeLeft = oldestDate, rangeRight = latestDate;
     void loadData();
 
 public:

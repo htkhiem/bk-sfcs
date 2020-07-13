@@ -1,7 +1,8 @@
 #include "sales.h"
 
 Sales::Sales(QObject *parent) : QObject(parent) {
-
+    getOldestDate();
+    getLatestDate();
 }
 
 void Sales::loadData() {
