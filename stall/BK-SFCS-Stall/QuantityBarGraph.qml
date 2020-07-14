@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtCharts 2.3
 
 ChartView {
+    id: chartView
     title: "Quantity of food items"
     legend.alignment: Qt.AlignBottom
     antialiasing: true
@@ -21,19 +22,21 @@ ChartView {
 //        }
 //    }
 
+    ValueAxis {
+        id: yAxis
+        min: 0
+        max: 20
+    }
 
     BarSeries {
         id: quantityBarGraph
         axisX: BarCategoryAxis {
-            //categories: ["Item 1", "Item 2", "Item 3"]
+            categories: ["(incl. rejected orders)"]
         }
-        BarSet {
-            label: "Number of orders";
-            //values: [2, 3, 4]
-        }
+        axisY: yAxis
     }
 
     function refresh() {
-        sales.drawRejectedBarGraph(chartView.series(0))
+        yAxis.max = sales.drawQuantityBarGraph(chartView.series(0))
     }
 }

@@ -1,8 +1,8 @@
 #include "stallmgmtcontroller.h"
 #include <QImage>
 
-StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *parent)
-    : AbstractController(eng, "BK-SFCS Stall Manager", parent), management_mode(false)
+StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, Sales* sales_backend, QObject *parent)
+    : AbstractController(eng, "BK-SFCS Stall Manager", parent), sales(sales_backend), management_mode(false)
 {
     // Also get all other data of this stall for easier syncing
 }
@@ -236,6 +236,7 @@ void StallMgmtController::parseRepliesToStall(const QString &message)
             if (response_tokens[0] == "OK") {
                 current_stall_idx = response_tokens[2].toInt();
                 web_socket.sendTextMessage("GS " + QString::number(getCurrentStallIdx()));
+                sales->loadData(getCurrentStallName());
             }
             else {
                 qDebug() << "Failed to log in.";

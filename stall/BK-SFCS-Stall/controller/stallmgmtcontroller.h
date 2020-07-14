@@ -2,6 +2,7 @@
 #define STALLMGMTCONTROLLER_H
 
 #include "../../../backend/BK-SFCS-Backend/src/abstractcontroller.h"
+#include "./sales.h"
 
 class StallMgmtController : public AbstractController {
   Q_OBJECT
@@ -9,6 +10,8 @@ class StallMgmtController : public AbstractController {
   Q_PROPERTY(bool managementMode READ isManagementModeEnabled NOTIFY managementModeChanged)
 
   bool management_mode;
+
+  Sales *sales;
 
   void parseRepliesToStall(const QString& message) override;
   void parseRepliesToKiosk(const QString& message) override;
@@ -24,7 +27,7 @@ public:
    * See AbstractController's constructor in backend/abstractcontroller.h for
    * more details.
    */
-  explicit StallMgmtController(QQmlApplicationEngine *eng,
+  StallMgmtController(QQmlApplicationEngine *eng, Sales* sales_backend,
                                QObject *parent = nullptr);
 
   /** Destructor. Calls saveData() to save stall data to JSON.

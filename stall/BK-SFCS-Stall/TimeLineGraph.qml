@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtCharts 2.3
 
 ChartView {
+    id: chartView
     title: "Response and processing time"
     legend.alignment: Qt.AlignBottom
     antialiasing: true
@@ -36,6 +37,6 @@ ChartView {
     }
 
     function refresh() {
-        sales.drawRejectedBarGraph(chartView.series(0))
+        sales.drawTimeLineBarGraph(chartView.series(0), chartView.series(1))
     }
 }

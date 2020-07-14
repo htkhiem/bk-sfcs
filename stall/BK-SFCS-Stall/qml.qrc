@@ -26,5 +26,7 @@
         <file>RejectedBarGraph.qml</file>
         <file>QuantityBarGraph.qml</file>
         <file>TimeLineGraph.qml</file>
+        <file>delegates/ChartDelegate.qml</file>
+        <file>delegates/ChartDelegateForm.ui.qml</file>
     </qresource>
 </RCC>

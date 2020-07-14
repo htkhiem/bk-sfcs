@@ -12,8 +12,8 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    StallMgmtController backend(&engine);
     Sales management;
+    StallMgmtController backend(&engine, &management);
     engine.rootContext()->setContextProperty("backend", &backend);
     engine.rootContext()->setContextProperty("sales", &management);
 

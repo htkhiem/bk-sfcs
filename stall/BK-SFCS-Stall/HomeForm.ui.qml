@@ -1,10 +1,13 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import "./delegates"
 
 Page {
     id: page
     width: 1280
     height: 720
+    property alias dataRangeEnd: dataRangeEnd
+    property alias dataRangeStart: dataRangeStart
     property alias gridView: gridView
     property alias reloadGraphsButton: reloadGraphsButton
     anchors.fill: parent
@@ -175,15 +178,10 @@ Page {
                     chart: "RejectedBarGraph.qml"
                 }
             }
-            delegate: Rectangle {
-                border.color: "silver"
-                border.width: 1
+            delegate: ChartDelegate {
                 height: gridView.cellHeight - 10
                 width: gridView.cellWidth - 10
-                Loader {
-                    source: chart
-                    anchors.fill: parent
-                }
+                loader.source: chart
             }
         }
     }

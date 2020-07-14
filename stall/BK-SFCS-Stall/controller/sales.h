@@ -13,21 +13,24 @@ class Sales : public QObject {
     QVector<OrderInfo*> salesData;
     QDateTime oldestDate, latestDate;
     QDateTime rangeLeft = oldestDate, rangeRight = latestDate;
-    void loadData();
-
 public:
     /* Constructor */
     Sales(QObject *parent = nullptr);
+    void loadData(const QString& stall_name);
 public slots:
     /* Functions */
+    QString getRangeLeftStr() const;
+    QString getRangeRightStr() const;
     void getOldestDate();
     void getLatestDate();
     void setStartRange(double pos);
     void setEndRange(double pos);
-    void drawQuantityBarGraph(QAbstractSeries *series);
+    unsigned drawQuantityBarGraph(QAbstractSeries *series);
     void drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
     void drawRejectedBarGraph(QAbstractSeries *series);
     void advancedExport();
+signals:
+    void timeRangeChanged();
 };
 
 #endif // SALES_H
