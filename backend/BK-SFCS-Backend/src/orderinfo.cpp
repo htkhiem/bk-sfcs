@@ -1,22 +1,22 @@
 #include "orderinfo.h"
 int OrderInfo::getKiosk() const
 {
-    return kiosk;
+  return kiosk;
 }
 
 void OrderInfo::setKiosk(int value)
 {
-    kiosk = value;
+  kiosk = value;
 }
 
 int OrderInfo::getStall() const
 {
-    return stall;
+  return stall;
 }
 
 void OrderInfo::setStall(int value)
 {
-    stall = value;
+  stall = value;
 }
 
 int OrderInfo::getFoodIdx() const
@@ -36,7 +36,7 @@ OrderInfo::OrderInfo(QObject *parent) :
 
 }
 OrderStatus OrderInfo::getStatus() const {
-    return this->status;
+  return this->status;
 }
 void OrderInfo::setStatus(OrderStatus _status) {
   this->status = _status;
@@ -59,10 +59,10 @@ void OrderInfo::setQuantity(int quantity) {
   this->quantity = quantity;
 }
 void OrderInfo::setSlipNumber(int _number) {
-    this->slip_number = _number;
+  this->slip_number = _number;
 }
 int OrderInfo::getSlipNumber() const {
-    return this->slip_number;
+  return this->slip_number;
 }
 double OrderInfo::getTotal() const {
   return (this->food.getPrice() * this->quantity);
@@ -97,36 +97,34 @@ void OrderInfo::read(const QJsonObject &json) {
   food.read(json["order"].toObject());
   if (json.contains("quantity") && json["quantity"].isDouble())
     quantity = json["quantity"].toInt();
+
   if (json.contains("food_idx") && json["food_idx"].isDouble())
     food_idx = json["food_idx"].toInt();
+
   if (json.contains("kiosk") && json["kiosk"].isDouble())
     kiosk = json["kiosk"].toInt();
+
   if (json.contains("stall") && json["stall"].isDouble())
     stall = json["stall"].toInt();
+
   if (json.contains("slip_number") && json["slip_number"].isDouble())
-      slip_number = json["slip_number"].toInt();
-  if (json.contains("status") && json["status"].isDouble())
-    {
+    slip_number = json["slip_number"].toInt();
+
+  if (json.contains("status") && json["status"].isDouble()) {
       int ienum = json["status"].toInt();
       status = static_cast<OrderStatus>(ienum);
     }
-  if (json.contains("time received") && json["time received"].isDouble())
-    {
-      if (status == OrderStatus::waiting) time_received = QDateTime::currentDateTime();
-      else
-        {
-          int t_rcv = json["time received"].toInt();
-          time_received = QDateTime::fromMSecsSinceEpoch(t_rcv);
-        }
+
+  if (json.contains("time_received") && json["time_received"].isDouble()) {
+      int t_rcv = json["time received"].toInt();
+      time_received = QDateTime::fromMSecsSinceEpoch(t_rcv);
     }
-  if (json.contains("time answered") && json["time answered"].isDouble())
-    {
+  if (json.contains("time_answered") && json["time_answered"].isDouble()) {
       int t_ans = json["time answered"].toInt();
       time_answered = QDateTime::fromMSecsSinceEpoch(t_ans);
     }
-  if (json.contains("time finished") && json["time finished"].isDouble())
-    {
-      int t_fin = json["time finished"].toInt();
+  if (json.contains("time_finished") && json["time_finished"].isDouble()) {
+      int t_fin = json["time_finished"].toInt();
       time_finished = QDateTime::fromMSecsSinceEpoch(t_fin);
     }
 }
@@ -140,34 +138,10 @@ void OrderInfo::write(QJsonObject &json) const {
   json["stall"] = stall;
   json["order"] = temp;
   json["status"] = status;
-  json["time received"] = time_received.toMSecsSinceEpoch();
-  switch (status)
-    {
-    case OrderStatus::processing :
-      {
-        double t_ans = time_answered.toMSecsSinceEpoch();
-        json["time answered"] = t_ans;
-        break;
-      }
-    case OrderStatus::finished :
-      {
-        double t_fin = time_finished.toMSecsSinceEpoch();
-        json["time finished"] = t_fin;
-        break;
-      }
-    case OrderStatus::rejected :
-      {
-        double t_ans = time_answered.toMSecsSinceEpoch();
-        json["time answered"] = t_ans;
-        double t_fin = time_finished.toMSecsSinceEpoch();
-        json["time rejected"] = t_fin;
-        break;
-      }
-    case OrderStatus::waiting :
-      {
-        json["time answered"] = 0;
-        json["time finished"] = 0;
-      }
+  json["time_received"] = time_received.toMSecsSinceEpoch();
+  json["time_answered"] = time_answered.toMSecsSinceEpoch();
+  if (status == finished) {
+      json["time_finished"] = time_finished.toMSecsSinceEpoch();
     }
 }
 const QFood * OrderInfo::getFoodItem() const {
