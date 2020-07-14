@@ -96,7 +96,12 @@ void QFood::setPrice(double price) {
 }
 
 void QFood::write(QJsonObject &json) const {
-  json["image_path"] = image_name;
+  // Remove "THUMB_" from filenames (avoid loop with server)
+  if (image_name.leftRef(6) == "THUMB_")
+    json["image_path"] = image_name.right(image_name.length() - 6);
+  else
+    json["image_path"] = image_name;
+
   json["name"] = name;
   json["description"] = description;
   json["type"] = type;

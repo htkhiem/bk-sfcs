@@ -46,7 +46,7 @@ MenuEditorForm {
         backend.getStallMenu(backend.getCurrentStallIdx());
     }
 
-    confirmButton.onActivated: backend.applyProposal();
+    confirmButton.onActivated: backend.applyProposal(needsToUpdateImages);
     Component {
         id: fullListView
         ListView {
