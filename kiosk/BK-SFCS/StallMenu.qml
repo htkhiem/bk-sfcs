@@ -14,6 +14,9 @@ StallMenuForm {
             }
             waitingPopup.allowClose();
         }
+        function onConnectionLost() {
+            waitingPopup.close(); // replaced by reconnection popup. Also, the ordering process is cancelled.
+        }
     }
 
     pageBg.source: backend.getCurrentStallImagePath();
