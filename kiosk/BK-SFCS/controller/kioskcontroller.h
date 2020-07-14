@@ -12,6 +12,10 @@ class KioskController : public AbstractController
   OrderInfo current_order;
   void parseRepliesToKiosk(const QString& message) override;
   void parseRepliesToStall(const QString& message) override;
+  QTimer reconnection_timer;
+  void startReconnectionLoop();
+  void tryReconnect();
+  void finishReconnection();
 public:
   explicit KioskController(QQmlApplicationEngine *eng, QObject *parent = nullptr);
 public slots:
@@ -28,6 +32,8 @@ public slots:
 
   signals:
   void currentOrderStatusChanged(int slip = -1);
+  void connectionLost();
+  void connectionBack();
 };
 
 #endif // KIOSKCONTROLLER_H

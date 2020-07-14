@@ -100,6 +100,7 @@ signals:
   void currentStallIndexChanged();
   void managementModeChanged();
   void stallDataUpdateFinished();
+  void connectionLost();
 };
 
 #endif // STALLMGMTCONTROLLER_H

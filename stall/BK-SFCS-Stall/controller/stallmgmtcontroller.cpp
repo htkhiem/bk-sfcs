@@ -4,7 +4,7 @@
 StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *parent)
     : AbstractController(eng, "BK-SFCS Stall Manager", parent), management_mode(false)
 {
-    // Also get all other data of this stall for easier syncing
+    connect(&web_socket, &QWebSocket::disconnected, this, &StallMgmtController::connectionLost);
 }
 
 StallMgmtController::~StallMgmtController()
