@@ -26,7 +26,7 @@ public slots:
     void setStartRange(double pos);
     void setEndRange(double pos);
     unsigned drawQuantityBarGraph(QAbstractSeries *series);
-    unsigned drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
+    int drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
     unsigned drawRejectedBarGraph(QAbstractSeries *series);
     void advancedExport();
 signals:
