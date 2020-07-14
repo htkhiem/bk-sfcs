@@ -537,10 +537,14 @@ bool ServerController::setStallData(int idx, const QJsonObject &data)
 {
   try {
     Stall* s = ((Stall *) stall_view_model[idx]);
-    s->read(data);
 
+    // Change path name to new stall name
     QDir data_cursor = getAppFolder();
-    data_cursor.cd(s->getStallName());
+    data_cursor.rename(s->getStallName(), data["stall_name"].toString());
+    data_cursor.cd(data["stall_name"].toString());
+    QFile::remove(data_cursor.filePath(s->getStallName()) + ".json");
+
+    s->read(data);
     QFile stall_data_file(data_cursor.filePath(s->getStallName() + QString(".json")));
     if (!stall_data_file.open(QIODevice::WriteOnly))
       throw runtime_error("Could not write stall data to disk.");
