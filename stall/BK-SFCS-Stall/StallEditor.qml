@@ -47,7 +47,7 @@ StallEditorForm {
         }
         if (stallMgmtPswField.text != "") {
             if (stallMgmtPswField.text == stallMgmtPswConfField.text)
-                backend.setStallPassword(stallPswField.text)
+                backend.setStallMgmtPassword(stallMgmtPswField.text)
             else {
                 valid = false;
                 stallMgmtPswField.text = "";
