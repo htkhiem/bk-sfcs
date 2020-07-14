@@ -26,5 +26,9 @@
         <file>RejectedBarGraph.qml</file>
         <file>QuantityBarGraph.qml</file>
         <file>TimeLineGraph.qml</file>
+        <file>popups/DisconnectPopup.qml</file>
+        <file>popups/DisconnectPopupForm.ui.qml</file>
+        <file>popups/WaitingPopup.qml</file>
+        <file>popups/WaitingPopupForm.ui.qml</file>
     </qresource>
 </RCC>

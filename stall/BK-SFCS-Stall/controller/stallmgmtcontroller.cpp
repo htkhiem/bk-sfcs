@@ -11,6 +11,13 @@ StallMgmtController::~StallMgmtController()
 {
 }
 
+void StallMgmtController::flushWaitList()
+{
+  while (!waitlist_view_model.empty()) {
+      reject(waitlist_view_model.size() - 1); // remove from end to begin is faster
+    }
+}
+
 void StallMgmtController::manualCopy(const QUrl &from)
 {
     QFile source(from.toLocalFile());
@@ -256,6 +263,9 @@ void StallMgmtController::parseRepliesToStall(const QString &message)
                 throw runtime_error("Failed to receive stall data.");
             }
         }
+        else if (message.midRef(3, 2) == "SS") {
+            emit stallDataUpdateFinished();
+          }
     }
 }
 

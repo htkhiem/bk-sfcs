@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, &backend, &StallMgmtController::flushWaitList);
     engine.load(url);
 
     return app.exec();

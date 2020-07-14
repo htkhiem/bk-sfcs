@@ -1,14 +1,26 @@
 import QtQuick 2.0
 import "../delegates"
+import "../popups"
 MenuEditorForm {
     id: menuEditorForm
+    WaitingPopup {
+        id: waitingPopup
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
+    }
     Connections {
         target: backend
-        onManagementModeChanged: check_authorization();
+        function onManagementModeChanged() {
+            check_authorization();
+        }
+        function onStallDataUpdateFinished() {
+            waitingPopup.close();
+        }
     }
     property bool needsToUpdateImages: false
     authorizeButton.onClicked: {
         backend.loginAsManager(mgrPswField.text);
+        waitingPopup.open();
     }
     function get_category_idx(name) {
         for (var i = 0; i < categoryViewModel.length; ++i) {
@@ -31,6 +43,7 @@ MenuEditorForm {
             mgrPswField.text = "";
             mgrPswField.placeholderText = "Wrong password"
         }
+        waitingPopup.close();
     }
     function markUpdateImages() {
         needsToUpdateImages = true;
@@ -46,7 +59,10 @@ MenuEditorForm {
         backend.getStallMenu(backend.getCurrentStallIdx());
     }
 
-    confirmButton.onActivated: backend.applyProposal(needsToUpdateImages);
+    confirmButton.onActivated: {
+        backend.applyProposal(needsToUpdateImages);
+        waitingPopup.open();
+    }
     Component {
         id: fullListView
         ListView {

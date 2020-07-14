@@ -1,11 +1,22 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
-
+import "./popups"
 StallEditorForm {
+    WaitingPopup {
+        id: waitingPopup
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
+    }
+
     Connections {
         target: backend
-        onManagementModeChanged: checkAuthorization();
+        function onManagementModeChanged() {
+            checkAuthorization();
+        }
+        function onStallDataUpdateFinished() {
+            waitingPopup.close();
+        }
     }
 
     property bool needsToUpdateImage: false;
@@ -18,6 +29,7 @@ StallEditorForm {
             authPswField.text = "";
             authPswField.placeholderText = "Wrong password"
         }
+        waitingPopup.close();
     }
 
     function checkAndApplyEdits() {
@@ -77,13 +89,17 @@ StallEditorForm {
             close()
         }
     }
-    authorizeButton.onClicked: backend.loginAsManager(authPswField.text);
+    authorizeButton.onClicked: {
+        waitingPopup.open();
+        backend.loginAsManager(authPswField.text);
+    }
     changeImageButton.onClicked: {
         imageBrowser.open();
     }
     confirmButton.onClicked: {
         if (checkAndApplyEdits()) {
             backend.updateStallData(needsToUpdateImage);
+            waitingPopup.open();
             console.log("Stall data uploaded.");
         }
     }
