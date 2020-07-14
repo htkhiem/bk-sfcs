@@ -6,9 +6,11 @@ Page {
     id: page
     width: 1280
     height: 720
+    property alias timeGraph: timeGraph
+    property alias rejectGraph: rejectGraph
+    property alias qtyGraph: qtyGraph
     property alias dataRangeEnd: dataRangeEnd
     property alias dataRangeStart: dataRangeStart
-    property alias gridView: gridView
     property alias reloadGraphsButton: reloadGraphsButton
     anchors.fill: parent
     title: qsTr("Stall info")
@@ -155,33 +157,41 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.topMargin: 10
-
-        GridView {
-            id: gridView
-            x: 10
-            y: 180
+        clip: true
+        Column {
             width: parent.width
-            height: parent.height
-            cellWidth: width / 2
-            cellHeight: height / 2
-            model: ListModel {
-                ListElement {
-                    name: qsTr("Ordered quantities")
-                    chart: "QuantityBarGraph.qml"
-                }
-                ListElement {
-                    name: qsTr("Processing time")
-                    chart: "TimeLineGraph.qml"
-                }
-                ListElement {
-                    name: qsTr("Rejected order counts")
-                    chart: "RejectedBarGraph.qml"
+            Rectangle {
+                id: qtyGraphBg
+                width: parent.width
+                height: 400
+                border.color: "silver"
+                border.width: 1
+                QuantityBarGraph {
+                    id: qtyGraph
+                    anchors.fill: parent
                 }
             }
-            delegate: ChartDelegate {
-                height: gridView.cellHeight - 10
-                width: gridView.cellWidth - 10
-                loader.source: chart
+            Rectangle {
+                id: rejectGraphBg
+                height: 400
+                width: parent.width
+                border.color: "silver"
+                border.width: 1
+                RejectedBarGraph {
+                    id: rejectGraph
+                    anchors.fill: parent
+                }
+            }
+            Rectangle {
+                id: timeGraphBg
+                height: 400
+                width: parent.width
+                border.color: "silver"
+                border.width: 1
+                TimeLineGraph {
+                    id: timeGraph
+                    anchors.fill: parent
+                }
             }
         }
     }

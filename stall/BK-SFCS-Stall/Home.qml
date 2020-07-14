@@ -12,14 +12,14 @@ HomeForm {
     Component.onCompleted: {
         dataRangeStart.text = sales.getRangeLeftStr()
         dataRangeEnd.text = sales.getRangeRightStr()
-        for (var childIdx in gridView.contentItem.children) {
-            gridView.contentItem.children[childIdx].loader.item.refresh();
-        }
+        rejectGraph.refresh();
+        qtyGraph.refresh();
+        timeGraph.refresh();
     }
 
     reloadGraphsButton.onClicked: {
-        for (var childIdx in gridView.contentItem.children) {
-            gridView.contentItem.children[childIdx].loader.item.refresh();
-        }
+        rejectGraph.refresh();
+        qtyGraph.refresh();
+        timeGraph.refresh();
     }
 }
