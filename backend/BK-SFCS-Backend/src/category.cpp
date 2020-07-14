@@ -9,7 +9,7 @@ Category::Category(QObject *parent)
     visible(true)
 {
 }
-Category::Category(const QString& cat_name, QChar sym, QColor start, QColor end, QObject *parent)
+Category::Category(const QString& cat_name, QString sym, QColor start, QColor end, QObject *parent)
   : QObject(parent),
     name(cat_name),
     symbol(sym),
@@ -25,10 +25,10 @@ void Category::setName(const QString& new_name) {
   if (new_name.isEmpty()) throw invalid_argument("Category name must not be empty");
   name = new_name;
 }
-QChar Category::getSymbol() const {
+QString Category::getSymbol() const {
   return symbol;
 }
-void Category::setSymbol(QChar new_symbol) {
+void Category::setSymbol(QString new_symbol) {
   symbol = new_symbol;
 }
 QColor Category::getStartColor() const {

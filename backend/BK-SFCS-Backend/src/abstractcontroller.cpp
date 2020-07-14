@@ -155,11 +155,11 @@ QDir AbstractController::getAppFolder() {
 void AbstractController::populateCategoryViewModel() { // Offline
     category_view_model.clear();
     // Run only once on startup
-    category_view_model.append(new Category("Main dishes", QChar(127837), "#EF5350", "#EF5350"));
-    category_view_model.append(new Category("Side dishes", QChar(129367), "#9CCC65", "#9CCC65"));
-    category_view_model.append(new Category("Drinks", QChar(129380), "#03A9F4", "#03A9F4"));
-    category_view_model.append(new Category("Desserts", QChar(127848), "#F48FB1", "#F48FB1"));
-    category_view_model.append(new Category("Specials", QChar(127841), "#FFFF00", "#FFFF00"));
+    category_view_model.append(new Category("Main dishes", QString::fromUtf8("\xF0\x9F\x98\x83"), "#EF5350", "#EF5350"));
+    category_view_model.append(new Category("Side dishes", QString::fromUtf8("\xF0\x9F\x98\x83"), "#9CCC65", "#9CCC65"));
+    category_view_model.append(new Category("Drinks", QString::fromUtf8("\xF0\x9F\x98\x83"), "#03A9F4", "#03A9F4"));
+    category_view_model.append(new Category("Desserts", QString::fromUtf8("\xF0\x9F\x98\x83"), "#F48FB1", "#F48FB1"));
+    category_view_model.append(new Category("Specials", QString::fromUtf8("\xF0\x9F\x98\x83"), "#FFFF00", "#FFFF00"));
 
     p_engine->rootContext()->setContextProperty("categoryViewModel", QVariant::fromValue(category_view_model));
 }
