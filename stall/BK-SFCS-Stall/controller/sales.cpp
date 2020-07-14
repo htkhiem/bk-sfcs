@@ -71,15 +71,14 @@ void Sales::setEndRange(double pos) {
 unsigned Sales::drawQuantityBarGraph(QAbstractSeries *series) {
     QAbstractBarSeries *barSeries = static_cast<QAbstractBarSeries *>(series);
     barSeries->clear();
-    QDateTime start = rangeLeft;
-    start.setTime(QTime());
-    QDateTime end = start.addSecs(86399);
-    QHash<QString, unsigned> food_counts;
 
+    QHash<QString, unsigned> food_counts;
     unsigned max_quantity = 0;
+
     for (auto od : salesData) {
         const QString& name = od->getFoodItem()->getName();
         const QDateTime& time = od->getAnswered();
+
         if (food_counts.find(name) == food_counts.end() && time <= rangeRight && time >= rangeLeft) {
             food_counts.insert(name, 0);
           }
@@ -88,6 +87,7 @@ unsigned Sales::drawQuantityBarGraph(QAbstractSeries *series) {
             if (food_counts[name] > max_quantity) max_quantity = food_counts[name];
           }
       }
+
     QHash<QString, unsigned>::const_iterator i = food_counts.constBegin();
     while (i != food_counts.constEnd()) {
         QBarSet *set = new QBarSet(i.key());
@@ -95,17 +95,27 @@ unsigned Sales::drawQuantityBarGraph(QAbstractSeries *series) {
         barSeries->append(set);
         ++i;
     }
+
     return max_quantity;
 }
 
-void Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *processing) {
+unsigned Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *processing) {
     QXYSeries *responseXYSeries = static_cast<QXYSeries *>(response);
     QXYSeries *processingXYSeries = static_cast<QXYSeries *>(processing);
+    responseXYSeries->clear();
+    processingXYSeries->clear();
 
-    QDateTime start = rangeLeft;
-    start.setTime(QTime());
-    QDateTime end = start.addSecs(86399);
+    for (auto od : salesData) {
+        const QDateTime& time = od->getAnswered();
 
+        if (time <= rangeRight && time >= rangeLeft) {
+
+        }
+        else {
+
+        }
+    }
+    /*
     while (end <= rangeRight) {
         int avg_response = 0, avg_processing = 0, n = 0;
         for (int i = 0; i < salesData.size(); i++) {
@@ -125,30 +135,40 @@ void Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *proces
         start = start.addDays(1);
         end = end.addDays(1);
     }
+    */
 }
 
-void Sales::drawRejectedBarGraph(QAbstractSeries *series) {
+unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {
     QAbstractBarSeries *barSeries = static_cast<QAbstractBarSeries *>(series);
-    QBarSet *set = new QBarSet("Rejected Order");
+    barSeries->clear();
 
-    QDateTime start = rangeLeft;
-    start.setTime(QTime());
-    QDateTime end = start.addSecs(86399);
+    QHash<QDate, unsigned> rejected_counts;
+    unsigned max_order = 0;
 
-    while (end <= rangeRight) {
-        int reject = 0;
-        for (int i = 0; i < salesData.size(); i++) {
-            OrderInfo& od = *salesData[i];
-            if (start <= od.getFinished() && od.getFinished() <= end) {
-                if (od.getStatus() == OrderStatus::rejected) reject++;
-            }
-        }
-        *set << reject;
-        start = start.addDays(1);
-        end = end.addDays(1);
+    for (auto od : salesData) {
+        const OrderStatus& status = od->getStatus();
+        const QDateTime& time = od->getAnswered();
+        const QDate date = time.date();
+
+        if (rejected_counts.find(date) == rejected_counts.end() && status == OrderStatus::rejected
+                && time <= rangeRight && time >= rangeLeft) {
+            rejected_counts.insert(date, 0);
+          }
+        else {
+            ++rejected_counts[date];
+            if (rejected_counts[date] > max_order) max_order = rejected_counts[date];
+          }
+      }
+
+    QHash<QDate, unsigned>::const_iterator i = rejected_counts.constBegin();
+    while (i != rejected_counts.constEnd()) {
+        QBarSet *set = new QBarSet(i.key().toString());
+        *set << i.value();
+        barSeries->append(set);
+        ++i;
     }
 
-    barSeries->append(set);
+    return max_order;
 }
 
 void Sales::advancedExport() {

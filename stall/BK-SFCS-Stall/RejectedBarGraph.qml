@@ -22,13 +22,21 @@ ChartView {
 //        }
 //    }
 
-
+    ValueAxis {
+        id: yAxis
+        min: 0
+        max: 20
+    }
 
     BarSeries {
         id: rejectedBarGraph
+        axisX: BarCategoryAxis {
+            categories: ["Rejected Orders"]
+        }
+        axisY: yAxis
     }
 
     function refresh() {
-        sales.drawRejectedBarGraph(chartView.series(0))
+        yAxis.max = sales.drawRejectedBarGraph(chartView.series(0))
     }
 }
