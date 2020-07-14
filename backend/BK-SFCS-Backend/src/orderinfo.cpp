@@ -84,6 +84,7 @@ QDateTime OrderInfo::getFinished() const {
   return this->time_finished;
 }
 void OrderInfo::setFinished() {
+  this->setStatus(finished);
   this->time_finished = QDateTime::currentDateTime();
 }
 int OrderInfo::getResponseTime() const {
