@@ -218,6 +218,7 @@ signals:
   void currentStallImagePathChanged();
   void stallImageChanged(int idx);
   void itemImageChanged(int sidx, int midx);
+  void menuJsonUpdated(); // for notifying opened popup of out-of-stock status
 };
 
 #endif // ABSTRACTCONTROLLER_H

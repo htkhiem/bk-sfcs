@@ -78,6 +78,14 @@ void StallMgmtController::applyProposal(bool also_update_images) { // offline
     current_menu->clear();
     for (auto ptr : menu_view_model) current_menu->append(*(QFood *) ptr);
     updateStallData(also_update_images);
+    // Reject all pending orders whose items have just been marked OOS
+    for (int i = 0; i < waitlist_view_model.size(); ++i) {
+        OrderInfo& od = *(OrderInfo *) waitlist_view_model[i];
+        if (((QFood *) menu_view_model[od.getFoodIdx()])->isOOS()) {
+            reject(i);
+            i--;
+          }
+      }
 }
 
 void StallMgmtController::updateStallData(bool also_update_images) { // online

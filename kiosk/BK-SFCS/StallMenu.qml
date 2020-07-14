@@ -32,6 +32,7 @@ StallMenuForm {
     }
 
     function populateOrderPopup(name, desc, time, price, idx) {
+        orderPopup.index = idx;
         orderPopup.name.text = name;
         orderPopup.desc.text = desc;
         orderPopup.estTime.text = qsTr("Estimated waiting time: ") + time + qsTr(" minutes");
