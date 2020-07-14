@@ -73,18 +73,18 @@ bool StallMgmtController::proposeRemoveFood(int idx) {
         return false;
     }
 }
-void StallMgmtController::applyProposal(bool also_update_images) {
+void StallMgmtController::applyProposal(bool also_update_images) { // offline
     QVector<QFood>* current_menu = getCurrentStall()->getEditableMenu();
     current_menu->clear();
     for (auto ptr : menu_view_model) current_menu->append(*(QFood *) ptr);
     updateStallData(also_update_images);
 }
 
-void StallMgmtController::updateStallData(bool also_update_images) {
+void StallMgmtController::updateStallData(bool also_update_images) { // online
     QJsonObject stall_json;
     getCurrentStall()->write(stall_json);
     // Serialise current stall data into JSON and send it
-    QString request = "SS " + QString::number(getClientIdx()) + " " + QJsonDocument(stall_json).toJson();
+    QString request = "SS " + QString::number(getCurrentStallIdx()) + " " + QJsonDocument(stall_json).toJson();
     web_socket.sendTextMessage(request);
     
     if (also_update_images) {

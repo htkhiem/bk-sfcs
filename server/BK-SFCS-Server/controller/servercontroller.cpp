@@ -535,12 +535,12 @@ QByteArray ServerController::getFullResMenuItemImage(int sidx, int midx)
 bool ServerController::setStallData(int idx, const QJsonObject &data)
 {
   try {
-    Stall& s = *((Stall *) stall_view_model[idx]);
-    s.read(data);
+    Stall* s = ((Stall *) stall_view_model[idx]);
+    s->read(data);
 
     QDir data_cursor = getAppFolder();
-    data_cursor.cd(s.getStallName());
-    QFile stall_data_file(data_cursor.filePath(s.getStallName() + QString(".json")));
+    data_cursor.cd(s->getStallName());
+    QFile stall_data_file(data_cursor.filePath(s->getStallName() + QString(".json")));
     if (!stall_data_file.open(QIODevice::WriteOnly))
       throw runtime_error("Could not write stall data to disk.");
     QJsonDocument stall_data_json_doc(data);
