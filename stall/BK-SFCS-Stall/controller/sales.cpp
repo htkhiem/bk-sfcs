@@ -8,23 +8,35 @@ Sales::Sales(QObject *parent) : QObject(parent) {
 
 void Sales::loadData() {
     QDir data_cursor = QDir::home();
-    data_cursor.mkdir("BK-SFC Stall Manager");
-    data_cursor.cd("BK-SFC Stall Manager");
+    data_cursor.mkdir("BK-SFCS Stall Manager");
+    data_cursor.cd("BK-SFCS Stall Manager");
 
-    data_cursor.setFilter(QDir::Files | QDir::NoDotAndDotDot);
+    data_cursor.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
     QStringList stall_dirs = data_cursor.entryList();
     for (auto qstr : stall_dirs) {
         data_cursor.cd(qstr);
-        QFile stall_data_file(data_cursor.filePath(qstr + QString(".json")));
-        if (!stall_data_file.open(QIODevice::ReadOnly))
-            throw runtime_error("Cannot read data file: " + qstr.toStdString());
+        if (data_cursor.cd("logs")) {
+            QDir log_dir = data_cursor;
+            log_dir.setFilter(QDir::Files | QDir::NoDotAndDotDot);
+            QStringList log_list = log_dir.entryList();
+            //read json files
+            for (auto log : log_list) {
+                QFile log_file(log_dir.filePath(log));
+                if (!log_file.open(QIODevice::ReadOnly))
+                    throw runtime_error("Cannot read data file: " + log.toStdString());
 
-        QJsonDocument stall_data_json_doc(QJsonDocument::fromJson(stall_data_file.readAll()));
-        OrderInfo* order_info = new OrderInfo();
-        order_info->read(stall_data_json_doc.object());
-        salesData.append(order_info);
-        stall_data_file.close();
-        data_cursor.cdUp();
+                QJsonDocument log_json_doc(QJsonDocument::fromJson(log_file.readAll()));
+                OrderInfo* order_info = new OrderInfo();
+                order_info->read(log_json_doc.object());
+                salesData.append(order_info);
+                log_file.close();
+            }
+
+            data_cursor.cdUp();
+            data_cursor.cdUp();
+        }
+        else
+            data_cursor.cdUp();
     }
 }
 
