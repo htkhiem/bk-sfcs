@@ -205,6 +205,7 @@ void ServerController::processTextMessage(const QString& message) {
       try {
         response = "OK " + message + " "
             + QJsonDocument(getStallMenu(request[1].toInt())).toJson();
+        client->setCurrentlyViewingStall(request[1].toInt());
       }  catch (...) {
         response = "NO " + message;
       }

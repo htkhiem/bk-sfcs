@@ -17,6 +17,7 @@ MenuEditorForm {
             waitingPopup.close();
         }
     }
+    Component.onCompleted: backend.getStallMenu();
     property bool needsToUpdateImages: false
     authorizeButton.onClicked: {
         backend.loginAsManager(mgrPswField.text);

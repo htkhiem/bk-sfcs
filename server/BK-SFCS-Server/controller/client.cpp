@@ -69,7 +69,7 @@ bool Client::isStall()
 }
 
 Client::Client(QWebSocket *sk, QObject *parent) :
-    QObject(parent), type(kiosk), idx(-1), socket(sk)
+    QObject(parent), type(kiosk), idx(-1), socket(sk), currently_viewing_stall(-1)
 {
     connect(sk, &QWebSocket::textMessageReceived, this, &Client::textMessageReceived);
   connect(sk, &QWebSocket::binaryMessageReceived, this, &Client::binaryMessageReceived);
