@@ -10,22 +10,28 @@ class Sales : public QObject {
     Q_OBJECT
 
     /* Fields */
-    QList<QObject*> salesData;
-    bool quantity, response, rejectedOrder;
-    QDateTime oldestDate;
-    QDateTime latestDate;
-
+    QVector<OrderInfo*> salesData;
+    QDateTime oldestDate, latestDate;
+    QDateTime rangeLeft = oldestDate, rangeRight = latestDate;
 public:
     /* Constructor */
     Sales(QObject *parent = nullptr);
+    void loadData(const QString& stall_name);
 public slots:
     /* Functions */
-    void updateOldestDate(QDateTime date);
-    void updateLatestDate(QDateTime date);
-    void drawQuantityBarGraph(QAbstractSeries *series);
-    void drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
-    void drawRejectedBarGraph(QAbstractSeries *series);
+    QString getRangeLeftStr() const;
+    QString getRangeRightStr() const;
+    void getOldestDate();
+    void getLatestDate();
+    unsigned getRangeLength() const;
+    void setStartRange(double pos);
+    void setEndRange(double pos);
+    unsigned drawQuantityBarGraph(QAbstractSeries *series);
+    double drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
+    unsigned drawRejectedBarGraph(QAbstractSeries *series);
     void advancedExport();
+signals:
+    void timeRangeChanged();
 };
 
 #endif // SALES_H

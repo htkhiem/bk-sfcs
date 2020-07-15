@@ -1,9 +1,25 @@
 import QtQuick 2.0
 
 HomeForm {
-    reloadGraphsButton.onClicked: {
-        for (var child in gridView.contentItem.children) {
-            child.refresh();
+    Connections {
+        target: sales
+        function onTimeRangeChanged() {
+            dataRangeStart.text = sales.getRangeLeftStr()
+            dataRangeEnd.text = sales.getRangeRightStr()
         }
+    }
+
+    Component.onCompleted: {
+        dataRangeStart.text = sales.getRangeLeftStr()
+        dataRangeEnd.text = sales.getRangeRightStr()
+        rejectGraph.refresh();
+        qtyGraph.refresh();
+        timeGraph.refresh();
+    }
+
+    reloadGraphsButton.onClicked: {
+        rejectGraph.refresh();
+        qtyGraph.refresh();
+        timeGraph.refresh();
     }
 }

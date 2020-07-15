@@ -1,11 +1,16 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import "./delegates"
 
 Page {
     id: page
     width: 1280
     height: 720
-    property alias gridView: gridView
+    property alias timeGraph: timeGraph
+    property alias rejectGraph: rejectGraph
+    property alias qtyGraph: qtyGraph
+    property alias dataRangeEnd: dataRangeEnd
+    property alias dataRangeStart: dataRangeStart
     property alias reloadGraphsButton: reloadGraphsButton
     anchors.fill: parent
     title: qsTr("Stall info")
@@ -83,8 +88,8 @@ Page {
             anchors.bottom: dataRangeStart.top
             anchors.left: parent.left
             anchors.topMargin: 0
-            first.value: 0.25
-            second.value: 0.75
+            first.value: 0
+            second.value: 1
         }
 
         Text {
@@ -152,36 +157,39 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.topMargin: 10
-
-        GridView {
-            id: gridView
-            x: 10
-            y: 180
+        clip: true
+        Column {
             width: parent.width
-            height: parent.height
-            cellWidth: width / 2
-            cellHeight: height / 2
-            model: ListModel {
-                ListElement {
-                    name: qsTr("Ordered quantities")
-                    chart: "QuantityBarGraph.qml"
-                }
-                ListElement {
-                    name: qsTr("Processing time")
-                    chart: "TimeLineGraph.qml"
-                }
-                ListElement {
-                    name: qsTr("Rejected order counts")
-                    chart: "RejectedBarGraph.qml"
-                }
-            }
-            delegate: Rectangle {
+            Rectangle {
+                id: qtyGraphBg
+                width: parent.width
+                height: 400
                 border.color: "silver"
                 border.width: 1
-                height: gridView.cellHeight - 10
-                width: gridView.cellWidth - 10
-                Loader {
-                    source: chart
+                QuantityBarGraph {
+                    id: qtyGraph
+                    anchors.fill: parent
+                }
+            }
+            Rectangle {
+                id: rejectGraphBg
+                height: 400
+                width: parent.width
+                border.color: "silver"
+                border.width: 1
+                RejectedBarGraph {
+                    id: rejectGraph
+                    anchors.fill: parent
+                }
+            }
+            Rectangle {
+                id: timeGraphBg
+                height: 400
+                width: parent.width
+                border.color: "silver"
+                border.width: 1
+                TimeLineGraph {
+                    id: timeGraph
                     anchors.fill: parent
                 }
             }

@@ -1,8 +1,8 @@
 #include "stallmgmtcontroller.h"
 #include <QImage>
 
-StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, QObject *parent)
-    : AbstractController(eng, "BK-SFCS Stall Manager", parent), management_mode(false)
+StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, Sales* sales_backend, QObject *parent)
+    : AbstractController(eng, "BK-SFCS Stall Manager", parent), sales(sales_backend), management_mode(false)
 {
     connect(&web_socket, &QWebSocket::disconnected, this, &StallMgmtController::connectionLost);
 }
@@ -202,7 +202,7 @@ void StallMgmtController::complete(int idx)
     cursor.mkdir("logs");
     cursor.cd("logs");
     QString filename = QString::number(target_order.getFinished().toMSecsSinceEpoch());
-    QFile old_order_file(cursor.filePath(filename + "json"));
+    QFile old_order_file(cursor.filePath(filename + ".json"));
     if (!old_order_file.open(QIODevice::WriteOnly)) throw("Cannot log order!");
     QJsonObject target_order_json;
     target_order.write(target_order_json);
@@ -215,12 +215,21 @@ void StallMgmtController::complete(int idx)
 
 void StallMgmtController::reject(int idx)
 {
-    OrderInfo *rejected_order = ((OrderInfo *) waitlist_view_model[idx]);
-    web_socket.sendTextMessage("NO OD " + QString::number(rejected_order->getKiosk())
+    OrderInfo& target_order = *((OrderInfo *) waitlist_view_model[idx]);
+    target_order.setAnswered(true); // true = reject
+    QDir cursor = getAppFolder();
+    cursor.cd(getCurrentStallName());
+    cursor.mkdir("logs");
+    cursor.cd("logs");
+    QString filename = QString::number(target_order.getAnswered().toMSecsSinceEpoch());
+    QFile old_order_file(cursor.filePath(filename + ".json"));
+    if (!old_order_file.open(QIODevice::WriteOnly)) throw("Cannot log order!");
+    QJsonObject target_order_json;
+    target_order.write(target_order_json);
+    old_order_file.write(QJsonDocument(target_order_json).toJson());
+    old_order_file.close();
+    web_socket.sendTextMessage("NO OD " + QString::number(target_order.getKiosk())
                                + " " + QString::number(getCurrentStallIdx()));
-    // TODO: log then deallocate this OrderInfo and update waitlist
-    // Don't forget to set status before logging.
-    rejected_order->setAnswered(true);
     waitlist_view_model.removeAt(idx);
     p_engine->rootContext()->setContextProperty("waitlistViewModel", QVariant::fromValue(waitlist_view_model));
 }
@@ -242,6 +251,7 @@ void StallMgmtController::parseRepliesToStall(const QString &message)
             if (response_tokens[0] == "OK") {
                 current_stall_idx = response_tokens[2].toInt();
                 web_socket.sendTextMessage("GS " + QString::number(getCurrentStallIdx()));
+                sales->loadData(getCurrentStallName());
             }
             else {
                 qDebug() << "Failed to log in.";

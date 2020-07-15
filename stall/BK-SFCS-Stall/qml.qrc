@@ -32,5 +32,7 @@
         <file>popups/WaitingPopupForm.ui.qml</file>
         <file>popups/UnsavedChangesPopup.qml</file>
         <file>popups/UnsavedChangesPopupForm.ui.qml</file>
+        <file>delegates/ChartDelegate.qml</file>
+        <file>delegates/ChartDelegateForm.ui.qml</file>
     </qresource>
 </RCC>
