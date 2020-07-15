@@ -55,7 +55,8 @@ Page {
                     orientation: ListView.Horizontal
                     model: categoryViewModel
                     delegate: CategoryDelegate {
-                        text: model.modelData.symbol + ' ' + model.modelData.name
+                        text: model.modelData.name
+                        image.source: symbol
                         gradStart.color: model.modelData.colorStart
                         gradEnd.color: model.modelData.colorEnd
                     }

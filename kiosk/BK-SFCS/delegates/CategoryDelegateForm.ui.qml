@@ -6,6 +6,10 @@ Button {
     id: button
     contentItem: Text {
         text: button.text
+        anchors.left: image.right
+        anchors.leftMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 8
         font: button.font
         color: "#FFFFFFFF"
         horizontalAlignment: Text.AlignHCenter
@@ -13,6 +17,7 @@ Button {
         elide: Text.ElideRight
     }
     height: 70
+    property alias image: image
     font.family: "Arial"
     font.pointSize: 15
     width: 200
@@ -47,6 +52,19 @@ Button {
             source: buttonBg
             cached: true
         }
+    }
+
+    Image {
+        id: image
+        width: 50
+        anchors.top: parent.top
+        anchors.topMargin: 12
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 8
+        anchors.left: parent.left
+        anchors.leftMargin: 8
+        source: "qrc:/qtquickplugin/images/template_image.png"
+        fillMode: Image.PreserveAspectFit
     }
 }
 

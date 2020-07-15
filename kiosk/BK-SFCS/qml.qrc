@@ -23,5 +23,10 @@
         <file>assets/loader_animated.gif</file>
         <file>assets/success.gif</file>
         <file>assets/rejected.png</file>
+        <file>assets/dessert.png</file>
+        <file>assets/Drink.png</file>
+        <file>assets/maindish.png</file>
+        <file>assets/side.png</file>
+        <file>assets/special.png</file>
     </qresource>
 </RCC>
