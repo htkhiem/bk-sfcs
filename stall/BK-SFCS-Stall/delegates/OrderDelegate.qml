@@ -4,30 +4,39 @@ OrderDelegateForm {
 
     property bool hold: false;
 
+    onHoldChanged: {
+        if (hold) {
+            setHeld();
+        }
+    }
+
     stepButton.onActivated: {
-           if (hold) backend.complete(index);
+        if (hold) backend.complete(index);
+        else {
+            setHeld();
+            hold = true;
+            backend.hold(index);
+        }
+    }
+    rejectButton.onClicked: {
+        backend.reject(index);
 
-           else {
-               timer.running = false;
-               stepButton.text = "Finish";
-               backend.hold(index);
-               hold = true;
+    }
+    Timer {
+        id: timer
+        interval: 15000
+        running: true
+        repeat: false
+        onTriggered: {
+            backend.reject(index)
+        }
+    }
+    function setHeld() {
+        timer.running = false;
+        stepButton.text = "Finish";
+        stepButton.progress = 0;
+        rejectButton.enabled = false;
+    }
 
-           };
-       }
-       rejectButton.onClicked: {
-           backend.reject(index);
-
-       }
-       Timer {
-           id: timer
-           interval: 15000
-           running: true
-           repeat: false
-           onTriggered: {
-               backend.reject(index)
-           }
-       }
-
-       itemImage.source: backend.getItemImagePath(model.modelData.getFoodIdx())
+    itemImage.source: backend.getItemImagePath(model.modelData.getFoodIdx())
 }

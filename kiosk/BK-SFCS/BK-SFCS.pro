@@ -1,4 +1,4 @@
-QT += quick websockets
+QT += quick websockets charts
 
 CONFIG += c++11
 

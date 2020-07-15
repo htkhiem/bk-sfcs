@@ -1,4 +1,4 @@
-QT += quick websockets
+QT += quick websockets charts
 
 CONFIG += c++11
 
@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     ../../backend/BK-SFCS-Backend/src/controller.cpp \
     ../../backend/BK-SFCS-Backend/src/orderinfo.cpp \
+    controller/sales.cpp \
         controller/stallmgmtcontroller.cpp \
         main.cpp \
         ../../backend/BK-SFCS-Backend/src/abstractcontroller.cpp \
@@ -46,8 +47,9 @@ HEADERS += \
     ../../backend/BK-SFCS-Backend/src/common.h \
     ../../backend/BK-SFCS-Backend/src/controller.h \
     ../../backend/BK-SFCS-Backend/src/orderinfo.h \
+    controller/sales.h \
     controller/stallmgmtcontroller.h \
-        ../../backend/BK-SFCS-Backend/src/abstractcontroller.h \
+    ../../backend/BK-SFCS-Backend/src/abstractcontroller.h \
         ../../backend/BK-SFCS-Backend/src/food.h \
         ../../backend/BK-SFCS-Backend/src/menu.h \
         ../../backend/BK-SFCS-Backend/src/jsonable.h \

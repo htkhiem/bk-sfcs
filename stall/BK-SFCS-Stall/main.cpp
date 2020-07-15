@@ -1,17 +1,21 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "controller/stallmgmtcontroller.h"
+#include "controller/sales.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    QGuiApplication app(argc, argv);
+    // QApplication instead of QGuiApplication due to Qt Graphics View Framework dependency
+    QApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
 
-    StallMgmtController backend(&engine);
+    Sales management;
+    StallMgmtController backend(&engine, &management);
     engine.rootContext()->setContextProperty("backend", &backend);
+    engine.rootContext()->setContextProperty("sales", &management);
 
     const QUrl url(QStringLiteral("qrc:/Login.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

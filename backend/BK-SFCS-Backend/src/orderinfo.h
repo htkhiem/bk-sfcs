@@ -12,6 +12,7 @@ class OrderInfo : public Jsonable {
   Q_PROPERTY(int quantity READ getQuantity)
   Q_PROPERTY(QString itemName READ getItemName)
   Q_PROPERTY(double total READ getTotal)
+  Q_PROPERTY(bool accepted READ isAccepted)
   OrderStatus status;
   int food_idx;
   QFood food;
@@ -69,6 +70,7 @@ public slots:
   QString getItemName() const;
   double getTotal() const;
   QString getImageName() const;
+  bool isAccepted() const;
 
   int getFoodIdx() const;
   void setFoodIdx(int value);
