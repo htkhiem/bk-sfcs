@@ -45,7 +45,7 @@ void Sales::getOldestDate() {
       oldestDate = salesData.first()->getAnswered();
   else
       oldestDate = salesData.first()->getFinished();
-  oldestDate.fromSecsSinceEpoch(oldestDate.toSecsSinceEpoch() % 86400);
+  oldestDate.fromSecsSinceEpoch(oldestDate.toSecsSinceEpoch() / 86400 * 86400);
   rangeLeft = oldestDate;
   emit timeRangeChanged();
 }
@@ -55,7 +55,7 @@ void Sales::getLatestDate() {
         latestDate = salesData.last()->getAnswered();
     else
         latestDate = salesData.last()->getFinished();
-    latestDate.fromSecsSinceEpoch(latestDate.toSecsSinceEpoch() % 86400 + 86400);
+    latestDate.fromSecsSinceEpoch(latestDate.toSecsSinceEpoch() / 86400 * 86400 + 86400);
     rangeRight = latestDate;
     emit timeRangeChanged();
 }
@@ -107,9 +107,51 @@ int Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *process
     responseXYSeries->clear();
     processingXYSeries->clear();
 
-    int max_time = 0;
+    struct timeData {
+        int totalResponse = 0;
+        int totalProcessing = 0;
+        int totalOrders = 0;
+        int totalRejected = 0;
+        int avgResponse = 0;
+        int avgProcessing = 0;
+    };
 
-    return max_time;
+    unsigned size = rangeLeft.date().daysTo(rangeRight.date()) + 1;
+    QVector<timeData> timeLine(size);
+    int max_avg_time = 0;
+
+    //processing doesn't include rejected orders
+    for (auto od : salesData) {
+        const OrderStatus& od_status = od->getStatus();
+        const int& od_response = od->getResponseTime();
+        const int& od_processing = od->getProcessingTime();
+        const QDateTime& od_time = od->getAnswered();
+        unsigned index = rangeLeft.date().daysTo(od_time.date());
+
+        if (od_time <= rangeRight && od_time >= rangeLeft) {
+            timeLine[index].totalResponse += od_response;
+            timeLine[index].totalProcessing += od_processing;
+            timeLine[index].totalOrders++;
+            if (od_status == OrderStatus::rejected) {
+                timeLine[index].totalRejected++;
+            }
+        }
+    }
+
+    for (unsigned i = 0; i < size; i++) {
+        timeLine[i].avgResponse = timeLine[i].totalResponse / timeLine[i].totalOrders;
+        timeLine[i].avgProcessing = timeLine[i].totalProcessing / (timeLine[i].totalOrders - timeLine[i].totalRejected);
+        if (timeLine[i].avgResponse > max_avg_time) max_avg_time = timeLine[i].avgResponse;
+        if (timeLine[i].avgProcessing > max_avg_time) max_avg_time = timeLine[i].avgProcessing;
+    }
+
+    for (unsigned i = 0; i < size; i++) {
+        QDateTime od_date = rangeLeft.addDays(i);
+        responseXYSeries->append(od_date.toMSecsSinceEpoch(), timeLine[i].avgResponse);
+        processingXYSeries->append(od_date.toMSecsSinceEpoch(), timeLine[i].avgProcessing);
+    }
+
+    return max_avg_time;
 }
 
 unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {

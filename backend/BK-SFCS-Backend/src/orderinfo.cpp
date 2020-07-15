@@ -116,15 +116,15 @@ void OrderInfo::read(const QJsonObject &json) {
     }
 
   if (json.contains("time_received") && json["time_received"].isDouble()) {
-      int t_rcv = json["time received"].toInt();
+      unsigned long long t_rcv = (unsigned long long) json["time_received"].toDouble();
       time_received = QDateTime::fromMSecsSinceEpoch(t_rcv);
     }
   if (json.contains("time_answered") && json["time_answered"].isDouble()) {
-      int t_ans = json["time answered"].toInt();
+      unsigned long long t_ans = (unsigned long long) json["time_answered"].toDouble();
       time_answered = QDateTime::fromMSecsSinceEpoch(t_ans);
     }
   if (json.contains("time_finished") && json["time_finished"].isDouble()) {
-      int t_fin = json["time_finished"].toInt();
+      unsigned long long t_fin = (unsigned long long) json["time_finished"].toDouble();
       time_finished = QDateTime::fromMSecsSinceEpoch(t_fin);
     }
 }
