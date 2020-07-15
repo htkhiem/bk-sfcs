@@ -30,5 +30,7 @@
         <file>popups/DisconnectPopupForm.ui.qml</file>
         <file>popups/WaitingPopup.qml</file>
         <file>popups/WaitingPopupForm.ui.qml</file>
+        <file>popups/UnsavedChangesPopup.qml</file>
+        <file>popups/UnsavedChangesPopupForm.ui.qml</file>
     </qresource>
 </RCC>

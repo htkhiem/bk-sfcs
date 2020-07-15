@@ -34,6 +34,7 @@ MenuEditorForm {
             confirmButton.enabled = true;
         else confirmButton.enabled = false;
         revertButton.enabled = true;
+        activateConfirmExit();
     }
     function check_authorization() {
         if (backend.isManagementModeEnabled()) {
@@ -63,6 +64,7 @@ MenuEditorForm {
     confirmButton.onActivated: {
         backend.applyProposal(needsToUpdateImages);
         waitingPopup.open();
+        deactivateConfirmExit();
     }
     Component {
         id: fullListView

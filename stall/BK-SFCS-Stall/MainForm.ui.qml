@@ -7,6 +7,11 @@ Page {
     id: page
     width: 1280
     height: 720
+    property alias tabLoader: tabLoader
+    property alias stallEditorTabButton: stallEditorTabButton
+    property alias menuEditorTabButton: menuEditorTabButton
+    property alias waitlistTabButton: waitlistTabButton
+    property alias salesTabButton: salesTabButton
     TabBar {
         id: navBar
         width: parent.width
@@ -14,20 +19,20 @@ Page {
         anchors.topMargin: 0
         currentIndex: 1
         TabButton {
+            id: salesTabButton
             text: qsTr("Sales report")
-            onClicked: tabLoader.source = "Home.qml"
         }
         TabButton {
+            id: waitlistTabButton
             text: qsTr("Waitlist")
-            onClicked: tabLoader.source = "order_process/WaitList.qml"
         }
         TabButton {
+            id: menuEditorTabButton
             text: qsTr("Menu")
-            onClicked: tabLoader.source = "menu_editor/MenuEditor.qml"
         }
         TabButton {
+            id: stallEditorTabButton
             text: qsTr("Stall")
-            onClicked: tabLoader.source = "StallEditor.qml"
         }
     }
     Loader {
