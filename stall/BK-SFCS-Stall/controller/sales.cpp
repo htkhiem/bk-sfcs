@@ -116,8 +116,6 @@ unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {
     QAbstractBarSeries *barSeries = static_cast<QAbstractBarSeries *>(series);
     barSeries->clear();
 
-    qDebug() << rangeLeft;
-    qDebug() << rangeRight;
     unsigned size = rangeLeft.date().daysTo(rangeRight.date()) + 1;
     QVector<unsigned> rejected(size, 0);
     unsigned max_order = 0;
