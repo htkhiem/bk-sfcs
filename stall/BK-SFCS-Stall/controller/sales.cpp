@@ -100,31 +100,30 @@ unsigned Sales::drawQuantityBarGraph(QAbstractSeries *series) {
 
     return max_quantity;
 }
-
-int Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *processing) {
+unsigned long long Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *processing) {
     QXYSeries *responseXYSeries = static_cast<QXYSeries *>(response);
     QXYSeries *processingXYSeries = static_cast<QXYSeries *>(processing);
     responseXYSeries->clear();
     processingXYSeries->clear();
 
     struct timeData {
-        int totalResponse = 0;
-        int totalProcessing = 0;
+        unsigned long long totalResponse = 0;
+        unsigned long long totalProcessing = 0;
         int totalOrders = 0;
         int totalRejected = 0;
-        int avgResponse = 0;
-        int avgProcessing = 0;
+        unsigned long long avgResponse = 0;
+        unsigned long long avgProcessing = 0;
     };
 
     unsigned size = rangeLeft.date().daysTo(rangeRight.date()) + 1;
-    QVector<timeData> timeLine(size);
-    int max_avg_time = 0;
+    QVector<timeData> timeLine(size, timeData());
+    unsigned long long max_avg_time = 0;
 
     //processing doesn't include rejected orders
     for (auto od : salesData) {
         const OrderStatus& od_status = od->getStatus();
-        const int& od_response = od->getResponseTime();
-        const int& od_processing = od->getProcessingTime();
+        const unsigned long long& od_response = od->getResponseTime();
+        const unsigned long long& od_processing = od->getProcessingTime();
         const QDateTime& od_time = od->getAnswered();
         unsigned index = rangeLeft.date().daysTo(od_time.date());
 
@@ -146,9 +145,10 @@ int Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *process
     }
 
     for (unsigned i = 0; i < size; i++) {
-        QDateTime od_date = rangeLeft.addDays(i);
-        responseXYSeries->append(od_date.toMSecsSinceEpoch(), timeLine[i].avgResponse);
-        processingXYSeries->append(od_date.toMSecsSinceEpoch(), timeLine[i].avgProcessing);
+        responseXYSeries->append(i, timeLine[i].avgResponse);
+        processingXYSeries->append(i, timeLine[i].avgProcessing);
+        qDebug() << timeLine[i].avgResponse;
+        qDebug() << timeLine[i].avgProcessing;
     }
 
     return max_avg_time;

@@ -25,7 +25,7 @@ ChartView {
     ValueAxis {
         id: yAxis
         min: 0
-        max: 10000
+        max: 100
     }
 
     LineSeries {
@@ -39,6 +39,6 @@ ChartView {
     }
 
     function refresh() {
-        yAxis.max = sales.drawTimeLineBarGraph(chartView.series(0), chartView.series(1))
+        yAxis.max = sales.drawTimeLineGraph(chartView.series(0), chartView.series(1))
     }
 }
