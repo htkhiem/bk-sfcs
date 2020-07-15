@@ -60,6 +60,11 @@ void Sales::getLatestDate() {
     emit timeRangeChanged();
 }
 
+unsigned Sales::getRangeLength() const
+{
+    return rangeLeft.daysTo(rangeRight);
+}
+
 void Sales::setStartRange(double pos) {
     rangeLeft = oldestDate.addMSecs((latestDate.toMSecsSinceEpoch() - oldestDate.toMSecsSinceEpoch()) * pos);
     rangeLeft.fromSecsSinceEpoch(rangeLeft.toSecsSinceEpoch() % 86400);
@@ -100,28 +105,23 @@ unsigned Sales::drawQuantityBarGraph(QAbstractSeries *series) {
 
     return max_quantity;
 }
-unsigned long long Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *processing) {
-    QXYSeries *responseXYSeries = static_cast<QXYSeries *>(response);
-    QXYSeries *processingXYSeries = static_cast<QXYSeries *>(processing);
-    responseXYSeries->clear();
-    processingXYSeries->clear();
+double Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *processing) {
+    QLineSeries *responseLineSeries = static_cast<QLineSeries *>(response);
+    QLineSeries *processingLineSeries = static_cast<QLineSeries *>(processing);
+    responseLineSeries->clear();
+    processingLineSeries->clear();
 
     struct timeData {
         unsigned long long totalResponse = 0;
         unsigned long long totalProcessing = 0;
-        int totalOrders = 0;
-        int totalRejected = 0;
-        unsigned long long avgResponse = 0;
-        unsigned long long avgProcessing = 0;
     };
 
     unsigned size = rangeLeft.date().daysTo(rangeRight.date()) + 1;
     QVector<timeData> timeLine(size, timeData());
-    unsigned long long max_avg_time = 0;
+    unsigned long long max_time = 0;
 
     //processing doesn't include rejected orders
     for (auto od : salesData) {
-        const OrderStatus& od_status = od->getStatus();
         const unsigned long long& od_response = od->getResponseTime();
         const unsigned long long& od_processing = od->getProcessingTime();
         const QDateTime& od_time = od->getAnswered();
@@ -130,28 +130,20 @@ unsigned long long Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstract
         if (od_time <= rangeRight && od_time >= rangeLeft) {
             timeLine[index].totalResponse += od_response;
             timeLine[index].totalProcessing += od_processing;
-            timeLine[index].totalOrders++;
-            if (od_status == OrderStatus::rejected) {
-                timeLine[index].totalRejected++;
-            }
         }
     }
 
     for (unsigned i = 0; i < size; i++) {
-        timeLine[i].avgResponse = timeLine[i].totalResponse / timeLine[i].totalOrders;
-        timeLine[i].avgProcessing = timeLine[i].totalProcessing / (timeLine[i].totalOrders - timeLine[i].totalRejected);
-        if (timeLine[i].avgResponse > max_avg_time) max_avg_time = timeLine[i].avgResponse;
-        if (timeLine[i].avgProcessing > max_avg_time) max_avg_time = timeLine[i].avgProcessing;
+        if (timeLine[i].totalResponse > max_time) max_time = timeLine[i].totalResponse;
+        if (timeLine[i].totalProcessing > max_time) max_time = timeLine[i].totalProcessing;
     }
 
     for (unsigned i = 0; i < size; i++) {
-        responseXYSeries->append(i, timeLine[i].avgResponse);
-        processingXYSeries->append(i, timeLine[i].avgProcessing);
-        qDebug() << timeLine[i].avgResponse;
-        qDebug() << timeLine[i].avgProcessing;
+        responseLineSeries->append(i, timeLine[i].totalResponse / (double) 60000);
+        processingLineSeries->append(i, timeLine[i].totalProcessing / (double) 60000);
     }
 
-    return max_avg_time;
+    return max_time / (double) 60000 * 1.25;
 }
 
 unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {

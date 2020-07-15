@@ -21,6 +21,11 @@ ChartView {
 //            openGL = false
 //        }
 //    }
+    ValueAxis {
+        id: xAxis
+        min: 0
+        max: 4
+    }
 
     ValueAxis {
         id: yAxis
@@ -30,15 +35,18 @@ ChartView {
 
     LineSeries {
         name: "Response time"
+        axisX: xAxis
         axisY: yAxis
     }
 
     LineSeries {
         name: "Processing time"
+        axisX: xAxis
         axisY: yAxis
     }
 
     function refresh() {
         yAxis.max = sales.drawTimeLineGraph(chartView.series(0), chartView.series(1))
+        xAxis.max = sales.getRangeLength();
     }
 }

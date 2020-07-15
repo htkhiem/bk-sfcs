@@ -23,10 +23,11 @@ public slots:
     QString getRangeRightStr() const;
     void getOldestDate();
     void getLatestDate();
+    unsigned getRangeLength() const;
     void setStartRange(double pos);
     void setEndRange(double pos);
     unsigned drawQuantityBarGraph(QAbstractSeries *series);
-    unsigned long long drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
+    double drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
     unsigned drawRejectedBarGraph(QAbstractSeries *series);
     void advancedExport();
 signals:
