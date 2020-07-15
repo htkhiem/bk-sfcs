@@ -3,6 +3,7 @@ import "../delegates"
 import "../popups"
 MenuEditorForm {
     id: menuEditorForm
+    property bool needsToUpdateImages: false
     WaitingPopup {
         id: waitingPopup
         x: Math.round((parent.width - width) / 2)
@@ -18,7 +19,6 @@ MenuEditorForm {
         }
     }
     Component.onCompleted: backend.getStallMenu(backend.getCurrentStallIdx());
-    property bool needsToUpdateImages: false
     authorizeButton.onClicked: {
         backend.loginAsManager(mgrPswField.text);
         waitingPopup.open();

@@ -18,6 +18,9 @@ StallDelegateForm {
     }
     disconnectButton.onClicked: {
         if (clientIdx != -1) server.disconnect(clientIdx);
+        onlineStatus.visible = false;
+        disconnectButton.enabled = false;
+        removeButton.enabled = true;
     }
     removeButton.onClicked: {
         if (clientIdx == -1) server.removeStall(index);

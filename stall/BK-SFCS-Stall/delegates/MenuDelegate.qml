@@ -104,9 +104,9 @@ MenuDelegateForm {
         selectFolder: false
         selectMultiple: false
         onAccepted: {
-            console.log("You chose: " + imageBrowser.fileUrl)
+            console.log("You chose: " + imageBrowser.fileUrl);
             itemImage.source = imageBrowser.fileUrl;
-            model.modelData.setImagePath(backend.getCurrentStallName(),imageBrowser.fileUrl);
+            backend.setItemImage(imageBrowser.fileUrl, index);
             enable_buttons();
             markUpdateImages();
             close()

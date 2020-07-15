@@ -22,13 +22,13 @@ void StallMgmtController::manualCopy(const QUrl &from)
 {
     QFile source(from.toLocalFile());
     if (!source.open(QIODevice::ReadOnly)) {
-        throw invalid_argument("Could not access new stall image file.");
+        throw invalid_argument("Could not access image file at source!");
     }
     QDir cursor = getAppFolder();
     cursor.cd(getCurrentStallName());
     QFile dest(cursor.filePath(from.fileName()));
     if (!dest.open(QIODevice::WriteOnly)) {
-        throw invalid_argument("Could not copy new stall image to stall folder.");
+        throw invalid_argument("Could not copy image to stall folder!");
     }
     QByteArray buffer = source.readAll();
     dest.write(buffer);

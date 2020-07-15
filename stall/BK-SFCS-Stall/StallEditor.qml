@@ -3,6 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.3
 import "./popups"
 StallEditorForm {
+    property bool needsToUpdateImage: false;
     WaitingPopup {
         id: waitingPopup
         x: Math.round((parent.width - width) / 2)
@@ -19,7 +20,6 @@ StallEditorForm {
         }
     }
 
-    property bool needsToUpdateImage: false;
     function checkAuthorization() {
         if (backend.isManagementModeEnabled()) {
             state = "authorized"
