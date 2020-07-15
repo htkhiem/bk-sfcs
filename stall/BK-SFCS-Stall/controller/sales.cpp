@@ -77,9 +77,9 @@ unsigned Sales::drawQuantityBarGraph(QAbstractSeries *series) {
 
     for (auto od : salesData) {
         const QString& name = od->getFoodItem()->getName();
-        const QDateTime& time = od->getAnswered();
+        const QDateTime& od_time = od->getAnswered();
 
-        if (food_counts.find(name) == food_counts.end() && time <= rangeRight && time >= rangeLeft) {
+        if (food_counts.find(name) == food_counts.end() && od_time <= rangeRight && od_time >= rangeLeft) {
             food_counts.insert(name, 0);
           }
         else {
@@ -105,39 +105,7 @@ int Sales::drawTimeLineGraph(QAbstractSeries *response, QAbstractSeries *process
     responseXYSeries->clear();
     processingXYSeries->clear();
 
-    QHash<QDateTime, int> response_time;
-    QHash<QDateTime, int> processing_time;
     int max_time = 0;
-
-    for (auto od : salesData) {
-        const OrderStatus& status = od->getStatus();
-        const QDateTime& time = od->getAnswered();
-        const int& rtime = od->getResponseTime();
-        const int& ptime = od->getProcessingTime();
-
-        if (response_time.find(time) == response_time.end() && time <= rangeRight && time >= rangeLeft) {
-            response_time.insert(time, rtime);
-            if (response_time[time] > max_time) max_time = response_time[time];
-        }
-
-        if (processing_time.find(time) == processing_time.end() && status != OrderStatus::rejected
-                && time <= rangeRight && time >= rangeLeft) {
-            processing_time.insert(time, ptime);
-            if (processing_time[time] > max_time) max_time = processing_time[time];
-        }
-    }
-
-    QHash<QDateTime, int>::const_iterator i = response_time.constBegin();
-    while (i != response_time.constEnd()) {
-        responseXYSeries->append(i.key().toMSecsSinceEpoch(), i.value());
-        ++i;
-    }
-
-    QHash<QDateTime, int>::const_iterator j = processing_time.constBegin();
-    while (j != processing_time.constEnd()) {
-        processingXYSeries->append(j.key().toMSecsSinceEpoch(), j.value());
-        ++j;
-    }
 
     return max_time;
 }
@@ -146,30 +114,30 @@ unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {
     QAbstractBarSeries *barSeries = static_cast<QAbstractBarSeries *>(series);
     barSeries->clear();
 
-    QHash<QDate, unsigned> rejected_counts;
+    qDebug() << rangeLeft;
+    qDebug() << rangeRight;
+    unsigned size = rangeLeft.date().daysTo(rangeRight.date());
+    QVector<unsigned> rejected(size, 0);
     unsigned max_order = 0;
 
     for (auto od : salesData) {
-        const OrderStatus& status = od->getStatus();
-        const QDateTime& time = od->getAnswered();
-        const QDate& date = time.date();
+        const OrderStatus& od_status = od->getStatus();
+        const QDateTime& od_time = od->getAnswered();
+        unsigned index = rangeLeft.date().daysTo(od_time.date());
 
-        if (rejected_counts.find(date) == rejected_counts.end() && status == OrderStatus::rejected
-                && time <= rangeRight && time >= rangeLeft) {
-            rejected_counts.insert(date, 0);
-          }
-        else {
-            ++rejected_counts[date];
-            if (rejected_counts[date] > max_order) max_order = rejected_counts[date];
-          }
-      }
+        if (od_status == OrderStatus::rejected && od_time <= rangeRight && od_time >= rangeLeft) {
+            rejected[index]++;
+        }
+    }
 
-    QHash<QDate, unsigned>::const_iterator i = rejected_counts.constBegin();
-    while (i != rejected_counts.constEnd()) {
-        QBarSet *set = new QBarSet(i.key().toString());
-        *set << i.value();
+    for (unsigned i = 0; i < size; i++) {
+        if (rejected[i] > max_order) max_order = rejected[i];
+    }
+
+    for (unsigned i = 0; i < size; i++) {
+        QBarSet *set = new QBarSet(rangeLeft.date().addDays(i).toString());
+        *set << rejected[i];
         barSeries->append(set);
-        ++i;
     }
 
     return max_order;
