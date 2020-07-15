@@ -52,6 +52,67 @@ ServerController::~ServerController() {
   qDeleteAll(clients.begin(), clients.end());
 }
 
+void ServerController::createNewStall(const QString &name, const QUrl &imgpath, const QString &psw, const QString &mgr_psw)
+{
+    Stall *new_stall = new Stall();
+    new_stall->setStallName(name);
+    new_stall->setPassword(psw);
+    new_stall->setMgmtPassword(mgr_psw);
+    new_stall->setImageName(imgpath.fileName());
+
+    // Prepare a folder for this stall
+    QDir cursor = getAppFolder();
+    cursor.mkdir(name);
+    cursor.cd(name);
+
+    // Copy image to server folder and resize it
+    QImage original(imgpath.toLocalFile());
+    QImage resized;
+    if (original.width() > original.height()) {
+        resized = original.copy((original.width() - original.height())/2, 0, original.height(), original.height());
+      }
+    else if (original.width() < original.height()) {
+        resized = original.copy(0, (original.height() - original.width())/2, original.width(), original.width());
+      }
+    else resized = original;
+
+    // Resize down to 190x190 (the size it would appear in the kiosks).
+    resized = resized.scaled(190, 190, Qt::KeepAspectRatio);
+    resized.save(cursor.filePath(imgpath.fileName()));
+
+    // Add stall to view model
+    stall_view_model.append(new_stall);
+    p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
+
+    // Write stall data to JSON
+    QJsonObject new_stall_data;
+    new_stall->write(new_stall_data);
+    QFile new_stall_file(cursor.filePath(name + ".json"));
+    if (!new_stall_file.open(QIODevice::WriteOnly)) throw runtime_error("Cannot write new stall data to disk!");
+    new_stall_file.write(QJsonDocument(new_stall_data).toJson());
+    new_stall_file.close();
+}
+
+QUrl ServerController::getStallImagePath(int stall_idx)
+{
+    QDir cursor = getAppFolder();
+    QString stall_name;
+    Stall * s = (Stall *) stall_view_model[stall_idx];
+    cursor.cd(s->getStallName());
+    return QUrl::fromLocalFile(cursor.filePath(s->getImageName()));
+}
+
+void ServerController::removeStall(int idx)
+{
+    stall_view_model.removeAt(idx);
+    QDir cursor = getAppFolder();
+    QString stall_name;
+    Stall * s = (Stall *) stall_view_model[idx];
+    cursor.cd(s->getStallName());
+    cursor.removeRecursively();
+    p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
+}
+
 void ServerController::onNewConnection() {
   Client *client = new Client(web_socket_server->nextPendingConnection());
   connect(client, &Client::textMessageReceived, this, &ServerController::processTextMessage);
@@ -60,6 +121,7 @@ void ServerController::onNewConnection() {
   client->setClientIdx(clients.size());
   qDebug() << "New client connected with index " << clients.size();
   clients.append(client);
+  p_engine->rootContext()->setContextProperty("clientViewModel", QVariant::fromValue(clients));
 }
 
 void ServerController::socketDisconnected() {
@@ -68,6 +130,7 @@ void ServerController::socketDisconnected() {
   if (client) {
       clients.removeAll(client);
       client->deleteLater();
+      p_engine->rootContext()->setContextProperty("clientViewModel", QVariant::fromValue(clients));
     }
 }
 
@@ -118,6 +181,7 @@ void ServerController::processTextMessage(const QString& message) {
       if (loginStall(request[1].toInt(), request[2])) {
           client->setType(stall);
           client->setClientIdx(request[1].toInt());
+          p_engine->rootContext()->setContextProperty("clientViewModel", QVariant::fromValue(clients));
           response = "OK " + message;
         }
       else {
@@ -141,6 +205,7 @@ void ServerController::processTextMessage(const QString& message) {
       try {
         response = "OK " + message + " "
             + QJsonDocument(getStallMenu(request[1].toInt())).toJson();
+        client->setCurrentlyViewingStall(request[1].toInt());
       }  catch (...) {
         response = "NO " + message;
       }
@@ -204,7 +269,8 @@ void ServerController::processTextMessage(const QString& message) {
         setStallData(idx, data);
         response = "OK " + request[0] + " " + request[1]; // do not send the JSON part back
         // Notify each currently-viewing kiosk about menu changes
-        for (auto c : clients) {
+        for (auto p : clients) {
+            Client* c = (Client *) p;
             if (c->getType() == ClientType::kiosk && c->getCurrentlyViewingStall() == idx) {
                 // Re-send menu (stall will instantly update GUI menu)
                 c->sendTextMessage("OK GM " + QString::number(idx) + " " + QJsonDocument(getStallMenu(idx)).toJson());
@@ -217,11 +283,12 @@ void ServerController::processTextMessage(const QString& message) {
     }
   else if (request[0] == "OD") { // OrDer item (kiosk)
       for (auto p : clients) {
-          if (p->getType() == ClientType::stall) {
-              if (p->getClientIdx() == request[2].toInt()) {
+          Client *c = (Client *) p;
+          if (c->getType() == ClientType::stall) {
+              if (c->getClientIdx() == request[2].toInt()) {
                   // Forward order request to stall
                   qDebug() << "Forwarding order to stall " << request[2] << "...";
-                  p->sendTextMessage(message);
+                  c->sendTextMessage(message);
                   return;
                 }
             }
@@ -231,7 +298,7 @@ void ServerController::processTextMessage(const QString& message) {
   else if (request[0] == "OK" || request[0] == "NO") { // from Stall client (order replies)
       // Third element should be kiosk index
       int kiosk_idx = request[2].toInt();
-      clients[kiosk_idx]->sendTextMessage(message);
+      ((Client *) clients[kiosk_idx])->sendTextMessage(message);
     }
   else if (request[0] == "KX") {
       client->sendTextMessage("OK KX " + QString::number(client->getClientIdx()));
@@ -262,7 +329,8 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
       ((Stall *) stall_view_model[idx])->setImageName(filename);
       // Update all kiosks with new image
       QString self_message = "IS " + QString::number(idx);
-      for (auto c : clients) {
+      for (auto p : clients) {
+          Client* c = (Client *) p;
           if (c->getType() == ClientType::kiosk) {
               QByteArray response;
               response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
@@ -302,7 +370,8 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
 
       // Update any kiosk viewing the menu that has this image
       QString self_message = "IM " + QString::number(stall_idx) + " " + QString::number(item_idx);
-      for (auto c : clients) {
+      for (auto p : clients) {
+          Client* c = (Client *) p;
           if (c->getType() == ClientType::kiosk) {
               QByteArray response;
               response += QString("%1").arg(1, 2, 10, QChar('0')).toUtf8();
@@ -315,7 +384,23 @@ void ServerController::processBinaryMessage(const QByteArray& message) {
     }
   else { // unknown request
       client->sendTextMessage("NO WTF");
+  }
+}
+
+int ServerController::getStallClientIdx(int stall_idx)
+{
+    for (int i = 0; i < clients.size(); ++i) {
+        Client* c = (Client *) clients[i];
+        if (c->isStall() && c->getClientIdx() == stall_idx) return i;
     }
+    return -1;
+}
+
+void ServerController::disconnect(int idx)
+{
+    ((Client *) clients[idx])->close();
+    clients.removeAt(idx);
+    p_engine->rootContext()->setContextProperty("clientViewModel", QVariant::fromValue(clients));
 }
 
 void ServerController::resizeToThumbnail(QImage& source) {
@@ -451,12 +536,16 @@ QByteArray ServerController::getFullResMenuItemImage(int sidx, int midx)
 bool ServerController::setStallData(int idx, const QJsonObject &data)
 {
   try {
-    Stall& s = *((Stall *) stall_view_model[idx]);
-    s.read(data);
+    Stall* s = ((Stall *) stall_view_model[idx]);
 
+    // Change path name to new stall name
     QDir data_cursor = getAppFolder();
-    data_cursor.cd(s.getStallName());
-    QFile stall_data_file(data_cursor.filePath(s.getStallName() + QString(".json")));
+    data_cursor.rename(s->getStallName(), data["stall_name"].toString());
+    data_cursor.cd(data["stall_name"].toString());
+    QFile::remove(data_cursor.filePath(s->getStallName()) + ".json");
+
+    s->read(data);
+    QFile stall_data_file(data_cursor.filePath(s->getStallName() + QString(".json")));
     if (!stall_data_file.open(QIODevice::WriteOnly))
       throw runtime_error("Could not write stall data to disk.");
     QJsonDocument stall_data_json_doc(data);

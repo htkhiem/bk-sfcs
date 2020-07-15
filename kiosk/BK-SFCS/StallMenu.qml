@@ -14,6 +14,9 @@ StallMenuForm {
             }
             waitingPopup.allowClose();
         }
+        function onConnectionLost() {
+            waitingPopup.close(); // replaced by reconnection popup. Also, the ordering process is cancelled.
+        }
     }
 
     pageBg.source: backend.getCurrentStallImagePath();
@@ -29,6 +32,7 @@ StallMenuForm {
     }
 
     function populateOrderPopup(name, desc, time, price, idx) {
+        orderPopup.index = idx;
         orderPopup.name.text = name;
         orderPopup.desc.text = desc;
         orderPopup.estTime.text = qsTr("Estimated waiting time: ") + time + qsTr(" minutes");

@@ -50,8 +50,26 @@ void Client::setCurrentlyViewingStall(int value)
     currently_viewing_stall = value;
 }
 
+void Client::close()
+{
+    socket->close(QWebSocketProtocol::CloseCodeNormal, "Server closed connection");
+}
+
+QString Client::getId()
+{
+    QString result;
+    result += socket->peerAddress().toString();
+    if (getType() == ClientType::stall) result += "(stall ID " + QString::number(getClientIdx()) + ")";
+    return result;
+}
+
+bool Client::isStall()
+{
+    return (getType() == ClientType::stall);
+}
+
 Client::Client(QWebSocket *sk, QObject *parent) :
-    QObject(parent), type(kiosk), idx(-1), socket(sk)
+    QObject(parent), type(kiosk), idx(-1), socket(sk), currently_viewing_stall(-1)
 {
     connect(sk, &QWebSocket::textMessageReceived, this, &Client::textMessageReceived);
   connect(sk, &QWebSocket::binaryMessageReceived, this, &Client::binaryMessageReceived);

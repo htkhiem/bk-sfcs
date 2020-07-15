@@ -51,10 +51,10 @@ class AbstractController : public QObject {
    * Note for binary protocols: all numeric parameters are sent as TWO ASCII digits, padded with zeroes if necessary (unless otherwise noted).
    */
 
-  QUrl server_url;
   QString app_name;
   int client_idx;
 protected:
+  QUrl server_url;
   QWebSocket web_socket;
   QQmlApplicationEngine *p_engine; // for connecting backend to the thing
   int current_stall_idx;
@@ -218,6 +218,7 @@ signals:
   void currentStallImagePathChanged();
   void stallImageChanged(int idx);
   void itemImageChanged(int sidx, int midx);
+  void menuJsonUpdated(); // for notifying opened popup of out-of-stock status
 };
 
 #endif // ABSTRACTCONTROLLER_H

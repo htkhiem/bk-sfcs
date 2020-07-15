@@ -1,14 +1,27 @@
 import QtQuick 2.0
 import "../delegates"
+import "../popups"
 MenuEditorForm {
     id: menuEditorForm
+    WaitingPopup {
+        id: waitingPopup
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
+    }
     Connections {
         target: backend
-        onManagementModeChanged: check_authorization();
+        function onManagementModeChanged() {
+            check_authorization();
+        }
+        function onStallDataUpdateFinished() {
+            waitingPopup.close();
+        }
     }
+    Component.onCompleted: backend.getStallMenu(backend.getCurrentStallIdx());
     property bool needsToUpdateImages: false
     authorizeButton.onClicked: {
         backend.loginAsManager(mgrPswField.text);
+        waitingPopup.open();
     }
     function get_category_idx(name) {
         for (var i = 0; i < categoryViewModel.length; ++i) {
@@ -21,6 +34,7 @@ MenuEditorForm {
             confirmButton.enabled = true;
         else confirmButton.enabled = false;
         revertButton.enabled = true;
+        activateConfirmExit();
     }
     function check_authorization() {
         if (backend.isManagementModeEnabled()) {
@@ -31,6 +45,7 @@ MenuEditorForm {
             mgrPswField.text = "";
             mgrPswField.placeholderText = "Wrong password"
         }
+        waitingPopup.close();
     }
     function markUpdateImages() {
         needsToUpdateImages = true;
@@ -46,7 +61,11 @@ MenuEditorForm {
         backend.getStallMenu(backend.getCurrentStallIdx());
     }
 
-    confirmButton.onActivated: backend.applyProposal();
+    confirmButton.onActivated: {
+        backend.applyProposal(needsToUpdateImages);
+        waitingPopup.open();
+        deactivateConfirmExit();
+    }
     Component {
         id: fullListView
         ListView {

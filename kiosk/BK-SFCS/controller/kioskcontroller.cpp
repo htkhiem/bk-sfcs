@@ -3,6 +3,9 @@
 KioskController::KioskController(QQmlApplicationEngine *eng, QObject *parent)
     : AbstractController(eng, "BK-SFCS Kiosk", parent)
 {
+    connect(&web_socket, &QWebSocket::disconnected, this, &KioskController::startReconnectionLoop);
+    connect(&reconnection_timer, &QTimer::timeout, this, &KioskController::tryReconnect);
+    connect(&web_socket, &QWebSocket::connected, this, &KioskController::finishReconnection);
 }
 
 void KioskController::initOrder(int idx)
@@ -77,4 +80,22 @@ void KioskController::parseRepliesToKiosk(const QString& message) { // Only runs
 
 void KioskController::parseRepliesToStall(const QString &message) {
     qDebug() << "[WARNING] Server sent stall-specific replies to this kiosk!";
+}
+
+void KioskController::startReconnectionLoop()
+{
+    emit connectionLost();
+    web_socket.open(QUrl(server_url));
+    reconnection_timer.start(2000); // every two seconds
+}
+
+void KioskController::tryReconnect()
+{
+    web_socket.open(QUrl(server_url));
+}
+
+void KioskController::finishReconnection()
+{
+    reconnection_timer.stop();
+    emit connectionBack();
 }

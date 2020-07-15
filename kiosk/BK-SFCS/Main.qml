@@ -5,6 +5,16 @@ import QtGraphicalEffects 1.14
 import QtTest 1.14
 
 MainForm {
+    Connections {
+        target: backend
+        function onConnectionLost() {
+            reconnectingPopup.open();
+        }
+        function onConnectionBack() {
+            reconnectingPopup.close();
+        }
+    }
+
     property bool isSearching: false
     backButton.onClicked: {
         if (isSearching) {
@@ -50,9 +60,15 @@ MainForm {
         }
         onClosed: refocus();
     }
+    ReconnectingPopup {
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
+        id: reconnectingPopup
+        onOpened: blurUnfocused();
+        onClosed: refocus();
+    }
 
     // Signal spies to wait for signals before doing stuff
-
     SignalSpy {
         id: menuLoadWait
         target: stallMenuLoader

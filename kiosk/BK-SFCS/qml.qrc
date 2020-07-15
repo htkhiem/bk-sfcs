@@ -23,6 +23,8 @@
         <file>assets/loader_animated.gif</file>
         <file>assets/success.gif</file>
         <file>assets/rejected.png</file>
+        <file>ReconnectingPopup.qml</file>
+        <file>ReconnectingPopupForm.ui.qml</file>
         <file>assets/dessert.png</file>
         <file>assets/Drink.png</file>
         <file>assets/maindish.png</file>

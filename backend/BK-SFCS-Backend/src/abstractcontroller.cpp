@@ -193,6 +193,7 @@ void AbstractController::populateMenuViewModel(const QJsonObject& list_obj) {
         }
     }
     p_engine->rootContext()->setContextProperty("menuViewModel", QVariant::fromValue(menu_view_model));
+    emit menuJsonUpdated();
 
     // Now we can request images
     for (int i = 0; i < menu_view_model.size(); ++i) {

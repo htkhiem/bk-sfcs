@@ -1,8 +1,18 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>Window.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>ClientList.qml</file>
-        <file>ClientListForm.ui.qml</file>
+        <file>MainForm.ui.qml</file>
+        <file>Main.qml</file>
+        <file>client_tab/ClientList.qml</file>
+        <file>client_tab/ClientListForm.ui.qml</file>
+        <file>client_tab/ClientDelegate.qml</file>
+        <file>client_tab/ClientDelegateForm.ui.qml</file>
+        <file>stall_tab/StallList.qml</file>
+        <file>stall_tab/StallListForm.ui.qml</file>
+        <file>stall_tab/StallDelegate.qml</file>
+        <file>stall_tab/StallDelegateForm.ui.qml</file>
+        <file>stall_tab/StallCreationWizard.qml</file>
+        <file>stall_tab/StallCreationWizardForm.ui.qml</file>
     </qresource>
 </RCC>

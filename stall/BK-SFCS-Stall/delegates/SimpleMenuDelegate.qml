@@ -11,7 +11,7 @@ SimpleMenuDelegateForm {
     }
 
     itemImage.source: backend.getItemImagePath(index)
-    oosCheckbox.onCheckedChanged: {
+    oosCheckbox.onToggled: { // toggled() is only triggered via user interaction, not initialisation
         model.modelData.isOOS = oosCheckbox.checked;
         backend.applyProposal(); // no need to update images
     }

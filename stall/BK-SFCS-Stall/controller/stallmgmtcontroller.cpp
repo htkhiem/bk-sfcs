@@ -4,11 +4,18 @@
 StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, Sales* sales_backend, QObject *parent)
     : AbstractController(eng, "BK-SFCS Stall Manager", parent), sales(sales_backend), management_mode(false)
 {
-    // Also get all other data of this stall for easier syncing
+    connect(&web_socket, &QWebSocket::disconnected, this, &StallMgmtController::connectionLost);
 }
 
 StallMgmtController::~StallMgmtController()
 {
+}
+
+void StallMgmtController::flushWaitList()
+{
+  while (!waitlist_view_model.empty()) {
+      reject(waitlist_view_model.size() - 1); // remove from end to begin is faster
+    }
 }
 
 void StallMgmtController::manualCopy(const QUrl &from)
@@ -66,18 +73,26 @@ bool StallMgmtController::proposeRemoveFood(int idx) {
         return false;
     }
 }
-void StallMgmtController::applyProposal(bool also_update_images) {
+void StallMgmtController::applyProposal(bool also_update_images) { // offline
     QVector<QFood>* current_menu = getCurrentStall()->getEditableMenu();
     current_menu->clear();
     for (auto ptr : menu_view_model) current_menu->append(*(QFood *) ptr);
     updateStallData(also_update_images);
+    // Reject all pending orders whose items have just been marked OOS
+    for (int i = 0; i < waitlist_view_model.size(); ++i) {
+        OrderInfo& od = *(OrderInfo *) waitlist_view_model[i];
+        if (((QFood *) menu_view_model[od.getFoodIdx()])->isOOS()) {
+            reject(i);
+            i--;
+          }
+      }
 }
 
-void StallMgmtController::updateStallData(bool also_update_images) {
+void StallMgmtController::updateStallData(bool also_update_images) { // online
     QJsonObject stall_json;
     getCurrentStall()->write(stall_json);
     // Serialise current stall data into JSON and send it
-    QString request = "SS " + QString::number(getClientIdx()) + " " + QJsonDocument(stall_json).toJson();
+    QString request = "SS " + QString::number(getCurrentStallIdx()) + " " + QJsonDocument(stall_json).toJson();
     web_socket.sendTextMessage(request);
     
     if (also_update_images) {
@@ -266,6 +281,9 @@ void StallMgmtController::parseRepliesToStall(const QString &message)
                 throw runtime_error("Failed to receive stall data.");
             }
         }
+        else if (message.midRef(3, 2) == "SS") {
+            emit stallDataUpdateFinished();
+          }
     }
 }
 

@@ -4,10 +4,14 @@ import QtGraphicalEffects 1.14
 
 OrderPopupForm {
     property int price;
+    property int index;
     Connections {
         target: backend
         function onItemImageChanged(sidx, midx) {
             image.source = backend.getItemImagePath(midx);
+        }
+        function onMenuJsonUpdated() {
+            if (menuViewModel[orderPopup.index].isOOS === true) close();
         }
     }
     onClosed: refocus(); // stop blurring background

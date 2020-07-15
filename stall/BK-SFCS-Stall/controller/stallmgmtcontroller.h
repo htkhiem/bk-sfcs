@@ -34,6 +34,8 @@ public:
    * AbstractController doesn't do that since KioskController cannot save data.
    */
   ~StallMgmtController();
+
+  void flushWaitList();
 public slots:
   /**
    * Attempts to log into a stall's account by sending a login request to the server.
@@ -100,6 +102,8 @@ public slots:
 signals:
   void currentStallIndexChanged();
   void managementModeChanged();
+  void stallDataUpdateFinished();
+  void connectionLost();
 };
 
 #endif // STALLMGMTCONTROLLER_H
