@@ -46,6 +46,7 @@ void Sales::getOldestDate() {
   else
       oldestDate = salesData.first()->getFinished();
   oldestDate.fromSecsSinceEpoch(oldestDate.toSecsSinceEpoch() % 86400);
+  rangeLeft = oldestDate;
   emit timeRangeChanged();
 }
 
@@ -55,6 +56,7 @@ void Sales::getLatestDate() {
     else
         latestDate = salesData.last()->getFinished();
     latestDate.fromSecsSinceEpoch(latestDate.toSecsSinceEpoch() % 86400 + 86400);
+    rangeRight = latestDate;
     emit timeRangeChanged();
 }
 
@@ -116,7 +118,7 @@ unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {
 
     qDebug() << rangeLeft;
     qDebug() << rangeRight;
-    unsigned size = rangeLeft.date().daysTo(rangeRight.date());
+    unsigned size = rangeLeft.date().daysTo(rangeRight.date()) + 1;
     QVector<unsigned> rejected(size, 0);
     unsigned max_order = 0;
 
