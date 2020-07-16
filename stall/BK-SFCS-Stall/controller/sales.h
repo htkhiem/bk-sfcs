@@ -13,6 +13,7 @@ class Sales : public QObject {
     QVector<OrderInfo*> salesData;
     QDateTime oldestDate, latestDate;
     QDateTime rangeLeft = oldestDate, rangeRight = latestDate;
+    bool rep_pro_time = true, quantity = true, rejected = true;
 public:
     /* Constructor */
     Sales(QObject *parent = nullptr);
@@ -29,7 +30,7 @@ public slots:
     unsigned drawQuantityBarGraph(QAbstractSeries *series);
     double drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
     unsigned drawRejectedBarGraph(QAbstractSeries *series);
-    void advancedExport();
+    void advancedExport(bool rep_pro_time, bool quantity, bool rejected, QUrl dir);
 signals:
     void timeRangeChanged();
 };

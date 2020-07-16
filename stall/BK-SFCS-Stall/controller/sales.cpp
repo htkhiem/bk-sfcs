@@ -177,6 +177,21 @@ unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {
     return max_order;
 }
 
-void Sales::advancedExport() {
+void Sales::advancedExport(bool rep_pro_time, bool quantity, bool rejected, QUrl dir) {
+    QFile export_file("export.csv");
+    QTextStream stream(&export_file);
+    if (rep_pro_time) stream << "Response Time,Processing Time,";
+    if (quantity) stream << "Quantity,";
+    if (rejected) stream << "Rejected Orders,";
+    stream << endl;
 
+    if (export_file.open(QIODevice::WriteOnly)) {
+        for (auto od : salesData) {
+            if (rep_pro_time) stream << od->getResponseTime() << "," << od->getProcessingTime() << ",";
+            if (quantity) stream << od->getQuantity() << ",";
+            if (rejected) stream << od->getStatus() << ",";
+        }
+    }
+
+    export_file.close();
 }
