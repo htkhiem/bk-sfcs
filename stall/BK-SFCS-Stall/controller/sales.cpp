@@ -24,20 +24,22 @@ void Sales::loadData(const QString& stall_name) {
         log_dir.setFilter(QDir::Files | QDir::NoDotAndDotDot);
         QStringList log_list = log_dir.entryList();
         //read json files
-        for (auto log : log_list) {
-            QFile log_file(log_dir.filePath(log));
-            if (!log_file.open(QIODevice::ReadOnly))
-                throw runtime_error("Cannot read data file: " + log.toStdString());
+        if (!log_list.isEmpty()) {
+            for (auto log : log_list) {
+                QFile log_file(log_dir.filePath(log));
+                if (!log_file.open(QIODevice::ReadOnly))
+                    throw runtime_error("Cannot read data file: " + log.toStdString());
 
-            QJsonDocument log_json_doc(QJsonDocument::fromJson(log_file.readAll()));
-            OrderInfo* order_info = new OrderInfo();
-            order_info->read(log_json_doc.object());
-            salesData.append(order_info);
-            log_file.close();
+                QJsonDocument log_json_doc(QJsonDocument::fromJson(log_file.readAll()));
+                OrderInfo* order_info = new OrderInfo();
+                order_info->read(log_json_doc.object());
+                salesData.append(order_info);
+                log_file.close();
+            }
+            getOldestDate();
+            getLatestDate();
         }
     }
-    getOldestDate();
-    getLatestDate();
 }
 
 void Sales::getOldestDate() {
