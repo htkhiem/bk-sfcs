@@ -104,12 +104,12 @@ QUrl ServerController::getStallImagePath(int stall_idx)
 
 void ServerController::removeStall(int idx)
 {
-    stall_view_model.removeAt(idx);
     QDir cursor = getAppFolder();
     QString stall_name;
     Stall * s = (Stall *) stall_view_model[idx];
     cursor.cd(s->getStallName());
     cursor.removeRecursively();
+    stall_view_model.removeAt(idx);
     p_engine->rootContext()->setContextProperty("stallViewModel", QVariant::fromValue(stall_view_model));
 }
 
