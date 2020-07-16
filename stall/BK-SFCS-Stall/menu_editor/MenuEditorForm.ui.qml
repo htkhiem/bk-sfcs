@@ -100,8 +100,27 @@ Page {
     }
 
     RoundButton {
-        enabled: false
         id: addButton
+        enabled: false
+        width: 40
+        height: width
+        background: Rectangle {
+            width: parent.width
+            height: parent.height
+            radius: width / 2
+            color: "#0033cc"
+            opacity: enabled ? 1 : 0.2
+        }
+        contentItem: Text {
+            text: parent.text
+            font: parent.font
+            opacity: enabled ? 1.0 : 0.2
+            color: "#ffffff"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
+        }
+
         text: "+"
         highlighted: false
         flat: false
