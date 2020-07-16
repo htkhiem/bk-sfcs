@@ -2,7 +2,7 @@
 #include <QImage>
 
 StallMgmtController::StallMgmtController(QQmlApplicationEngine *eng, Sales* sales_backend, QObject *parent)
-    : AbstractController(eng, "BK-SFCS Stall Manager", parent), sales(sales_backend), management_mode(false)
+    : AbstractController(eng, "BK-SFCS Stall Manager", parent), management_mode(false), slip(0), sales(sales_backend)
 {
     connect(&web_socket, &QWebSocket::disconnected, this, &StallMgmtController::connectionLost);
 }
@@ -180,9 +180,9 @@ void StallMgmtController::hold(int idx)
 {
     OrderInfo *processing_order = ((OrderInfo *) waitlist_view_model[idx]);
     web_socket.sendTextMessage("OK OD " + QString::number(processing_order->getKiosk())
-                               + " " + QString::number(getCurrentStallIdx()));
-    // TODO: update waitlist
-    // Don't forget to set status.
+                               + " " + QString::number(getCurrentStallIdx()) + " " + QString::number(getSlip()));
+    qDebug() << "NEW SLIP: " << getSlip();
+    setSlip(getSlip() + 1); // Iterate slip number for next order
     processing_order->setAnswered(false);
 }
 
@@ -232,6 +232,16 @@ void StallMgmtController::reject(int idx)
                                + " " + QString::number(getCurrentStallIdx()));
     waitlist_view_model.removeAt(idx);
     p_engine->rootContext()->setContextProperty("waitlistViewModel", QVariant::fromValue(waitlist_view_model));
+}
+
+int StallMgmtController::getSlip() const
+{
+    return slip;
+}
+
+void StallMgmtController::setSlip(int value)
+{
+    slip = value;
 }
 
 void StallMgmtController::parseRepliesToStall(const QString &message)

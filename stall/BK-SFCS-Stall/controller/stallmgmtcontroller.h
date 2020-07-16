@@ -10,12 +10,15 @@ class StallMgmtController : public AbstractController {
   Q_PROPERTY(bool managementMode READ isManagementModeEnabled NOTIFY managementModeChanged)
 
   bool management_mode;
-
+  int slip;
   Sales *sales;
 
   void parseRepliesToStall(const QString& message) override;
   void parseRepliesToKiosk(const QString& message) override;
   void manualCopy(const QUrl& from);
+
+  int getSlip() const;
+  void setSlip(int value);
 public:
   /** TODO */
   QList<QObject *> logs_db;

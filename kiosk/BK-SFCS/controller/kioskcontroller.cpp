@@ -68,7 +68,7 @@ int KioskController::getCurrentOrderStatus() {
 void KioskController::parseRepliesToKiosk(const QString& message) { // Only runs for case "OD"
     QStringList response_tokens = message.split(' ', QString::SkipEmptyParts);
     if (response_tokens[0] == "OK") {
-        int slip = response_tokens[2].toInt();
+        int slip = response_tokens[4].toInt();
         current_order.setAnswered();
         emit currentOrderStatusChanged(slip);
     }
