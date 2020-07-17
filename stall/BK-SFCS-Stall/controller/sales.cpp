@@ -178,9 +178,7 @@ unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {
 }
 
 void Sales::advancedExport(bool rep_pro_time, bool quantity, bool rejected, QUrl dir) {
-
-
-    QFile export_file("export.csv");
+    QFile export_file(dir.toLocalFile() + "export.csv");
     QTextStream stream(&export_file);
 
     stream << "Order Item,Order Time,";
