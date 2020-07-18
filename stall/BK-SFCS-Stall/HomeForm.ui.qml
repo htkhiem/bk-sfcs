@@ -157,7 +157,7 @@ Page {
         x: 996
         width: 150
         height: 50
-        text: qsTr("Advanced export..")
+        text: qsTr("Export..")
         anchors.topMargin: 10
         anchors.top: reloadGraphsButton.bottom
         anchors.right: parent.right
