@@ -59,21 +59,25 @@ Page {
             CheckBox {
                 id: qtyBox
                 text: qsTr("Quantity")
+                checked: false
             }
 
             CheckBox {
                 id: procBox
                 text: qsTr("Process time")
+                checked: false
             }
 
             CheckBox {
                 id: respBox
                 text: qsTr("Response time")
+                checked: false
             }
 
             CheckBox {
                 id: rejectBox
                 text: qsTr("Rejected couints")
+                checked: false
             }
         }
     }
@@ -179,10 +183,10 @@ Page {
                 height: 400
                 border.color: "silver"
                 border.width: 1
-                //                QuantityBarGraph {
-                //                    id: qtyGraph
-                //                    anchors.fill: parent
-                //                }
+                QuantityBarGraph {
+                    id: qtyGraph
+                    anchors.fill: parent
+                }
             }
             Rectangle {
                 id: rejectGraphBg
@@ -190,10 +194,10 @@ Page {
                 width: parent.width
                 border.color: "silver"
                 border.width: 1
-                //                RejectedBarGraph {
-                //                    id: rejectGraph
-                //                    anchors.fill: parent
-                //                }
+                RejectedBarGraph {
+                    id: rejectGraph
+                    anchors.fill: parent
+                }
             }
             Rectangle {
                 id: timeGraphBg
@@ -201,10 +205,10 @@ Page {
                 width: parent.width
                 border.color: "silver"
                 border.width: 1
-                //                TimeLineGraph {
-                //                    id: timeGraph
-                //                    anchors.fill: parent
-                //                }
+                TimeLineGraph {
+                    id: timeGraph
+                    anchors.fill: parent
+                }
             }
         }
     }
@@ -212,7 +216,8 @@ Page {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.25}D{i:2;anchors_x:20;anchors_y:-6}D{i:3;anchors_height:400;anchors_width:200}
+    D{i:0;formeditorZoom:1.25}D{i:2;anchors_x:20;anchors_y:"-6"}D{i:3;anchors_height:400;anchors_width:200}
 D{i:14;anchors_y:112}
 }
 ##^##*/
+

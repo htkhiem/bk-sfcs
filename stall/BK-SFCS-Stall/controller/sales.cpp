@@ -178,28 +178,27 @@ unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {
 }
 
 void Sales::advancedExport(bool rep_time, bool pro_time, bool quantity, bool rejected, QUrl dir) {
-    QFile export_file(dir.toLocalFile() + "export.csv");
+    QFile export_file(dir.toLocalFile());
     QTextStream stream(&export_file);
+    export_file.open(QIODevice::WriteOnly);
 
     //generate first row
     stream << "Order Item,Order Time,";
     if (rep_time) stream << "Response Time,";
     if (pro_time) stream << "Processing Time,";
     if (quantity) stream << "Quantity,";
-    if (rejected) stream << "Rejected Orders";
+    if (rejected) stream << "Rejected Orders,";
     stream << endl;
 
     //generate datasheet
-    if (export_file.open(QIODevice::WriteOnly)) {
-        for (auto od : salesData) {
-            stream << od->getItemName() << ",";
-            stream << od->getAnswered().toString() << ",";
-            if (rep_time) stream << od->getResponseTime() << ",";
-            if (pro_time) stream << od->getProcessingTime() << ",";
-            if (quantity) stream << od->getQuantity() << ",";
-            if (rejected) stream << od->getStatus();
-            stream << endl;
-        }
+    for (auto od : salesData) {
+        stream << od->getItemName() << ",";
+        stream << od->getAnswered().toString() << ",";
+        if (rep_time) stream << od->getResponseTime() << ",";
+        if (pro_time) stream << od->getProcessingTime() << ",";
+        if (quantity) stream << od->getQuantity() << ",";
+        if (rejected) stream << od->getStatus() << ",";
+        stream << endl;
     }
 
     export_file.close();

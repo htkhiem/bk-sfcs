@@ -19,8 +19,8 @@ HomeForm {
         selectFolder: false
         selectMultiple: false
         onAccepted: {
-            console.log("Saving CSV to " + imageBrowser.fileUrl)
-            sales.advancedExport(qtyBox.checked, procBox.checked, respBox.checked, rejectBox.checked, saveDialog.fileUrl)
+            console.log("Saving CSV to " + saveDialog)
+            sales.advancedExport(respBox.checked, procBox.checked, qtyBox.checked, rejectBox.checked, saveDialog.fileUrl)
             close()
         }
         onRejected: {
