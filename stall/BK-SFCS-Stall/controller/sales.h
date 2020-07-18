@@ -30,6 +30,7 @@ public slots:
     unsigned drawQuantityBarGraph(QAbstractSeries *series);
     double drawTimeLineGraph(QAbstractSeries *series1, QAbstractSeries *series2);
     unsigned drawRejectedBarGraph(QAbstractSeries *series);
+    void setBool(bool option1, bool option2, bool option3);
     void advancedExport(bool rep_pro_time, bool quantity, bool rejected, QUrl dir);
 signals:
     void timeRangeChanged();

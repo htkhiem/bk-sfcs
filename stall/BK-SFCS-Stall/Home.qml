@@ -22,4 +22,8 @@ HomeForm {
         qtyGraph.refresh();
         timeGraph.refresh();
     }
+
+    advancedExportButton.onClicked: {
+
+    }
 }

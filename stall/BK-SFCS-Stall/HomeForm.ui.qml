@@ -6,6 +6,7 @@ Page {
     id: page
     width: 1280
     height: 720
+    property alias advancedExportButton: advancedExportButton
     property alias timeGraph: timeGraph
     property alias rejectGraph: rejectGraph
     property alias qtyGraph: qtyGraph
@@ -36,14 +37,17 @@ Page {
             flickableDirection: Flickable.HorizontalFlick
             model: ListModel {
                 ListElement {
+                    id: quantityCheck
                     name: "Quantity"
                     checked: true
                 }
                 ListElement {
+                    id: timeCheck
                     name: "Response and processing time"
                     checked: true
                 }
                 ListElement {
+                    id: rejectedCheck
                     name: "Rejected orders"
                     checked: true
                 }
@@ -119,19 +123,6 @@ Page {
             anchors.bottomMargin: 0
             anchors.bottom: parent.bottom
         }
-    }
-
-    Button {
-        id: graphExportButton
-        x: 996
-        width: 150
-        height: dataRangeFrame.height / 2 - 5
-        text: qsTr("Export graph")
-        font.bold: true
-        anchors.top: dataRangeFrame.top
-        anchors.topMargin: 0
-        anchors.rightMargin: 10
-        anchors.right: parent.right
     }
 
     Button {
