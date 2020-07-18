@@ -177,19 +177,14 @@ unsigned Sales::drawRejectedBarGraph(QAbstractSeries *series) {
     return max_order;
 }
 
-void Sales::setBool(bool option1, bool option2, bool option3) {
-    rep_pro_time = option1;
-    quantity = option2;
-    rejected = option3;
-}
-
-void Sales::advancedExport(bool rep_pro_time, bool quantity, bool rejected, QUrl dir) {
+void Sales::advancedExport(bool rep_time, bool pro_time, bool quantity, bool rejected, QUrl dir) {
     QFile export_file(dir.toLocalFile() + "export.csv");
     QTextStream stream(&export_file);
 
     //generate first row
     stream << "Order Item,Order Time,";
-    if (rep_pro_time) stream << "Response Time,Processing Time,";
+    if (rep_time) stream << "Response Time,";
+    if (pro_time) stream << "Processing Time,";
     if (quantity) stream << "Quantity,";
     if (rejected) stream << "Rejected Orders";
     stream << endl;
@@ -199,7 +194,8 @@ void Sales::advancedExport(bool rep_pro_time, bool quantity, bool rejected, QUrl
         for (auto od : salesData) {
             stream << od->getItemName() << ",";
             stream << od->getAnswered().toString() << ",";
-            if (rep_pro_time) stream << od->getResponseTime() << "," << od->getProcessingTime() << ",";
+            if (rep_time) stream << od->getResponseTime() << ",";
+            if (pro_time) stream << od->getProcessingTime() << ",";
             if (quantity) stream << od->getQuantity() << ",";
             if (rejected) stream << od->getStatus();
             stream << endl;

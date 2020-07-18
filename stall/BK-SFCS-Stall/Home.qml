@@ -26,6 +26,6 @@ HomeForm {
     dataRangeSlider.first.onMoved: sales.setStartRange(dataRangeSlider.first.position);
     dataRangeSlider.second.onMoved: sales.setEndRange(dataRangeSlider.second.position);
     advancedExportButton.onClicked: {
-
+        sales.advancedExport(qtyBox.toggle(), procBox.toggle(), respBox.toggle(), rejectBox.toggle(), );
     }
 }
