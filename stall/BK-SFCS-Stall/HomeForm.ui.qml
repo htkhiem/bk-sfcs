@@ -6,6 +6,11 @@ Page {
     id: page
     width: 1280
     height: 720
+    property alias dataRangeSlider: dataRangeSlider
+    property alias rejectBox: rejectBox
+    property alias respBox: respBox
+    property alias procBox: procBox
+    property alias qtyBox: qtyBox
     property alias advancedExportButton: advancedExportButton
     property alias timeGraph: timeGraph
     property alias rejectGraph: rejectGraph
@@ -17,12 +22,12 @@ Page {
     title: qsTr("Stall info")
 
     Frame {
-        id: vizFilterFrame
-        height: 50
-        rightPadding: 2
-        leftPadding: 2
-        bottomPadding: 2
-        topPadding: 2
+        id: exportFilterFrame
+        height: 90
+        rightPadding: 12
+        leftPadding: 12
+        bottomPadding: 12
+        topPadding: 12
         anchors.right: reloadGraphsButton.left
         anchors.rightMargin: 10
         anchors.left: parent.left
@@ -30,31 +35,45 @@ Page {
         anchors.top: parent.top
         anchors.topMargin: 10
 
-        ListView {
-            id: vizCheckboxesList
-            orientation: ListView.Horizontal
-            anchors.fill: parent
-            flickableDirection: Flickable.HorizontalFlick
-            model: ListModel {
-                ListElement {
-                    id: quantityCheck
-                    name: "Quantity"
-                    checked: true
-                }
-                ListElement {
-                    id: timeCheck
-                    name: "Response and processing time"
-                    checked: true
-                }
-                ListElement {
-                    id: rejectedCheck
-                    name: "Rejected orders"
-                    checked: true
-                }
+        Text {
+            id: exportFilterLabels
+            color: "#8b8b8b"
+            text: qsTr("Data to export")
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            font.pixelSize: 14
+        }
+
+        Row {
+            id: row
+            height: 40
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.top: exportFilterLabels.bottom
+            anchors.topMargin: 5
+
+            CheckBox {
+                id: qtyBox
+                text: qsTr("Quantity")
             }
-            delegate: CheckBox {
-                text: name
-                checked: checked
+
+            CheckBox {
+                id: procBox
+                text: qsTr("Process time")
+            }
+
+            CheckBox {
+                id: respBox
+                text: qsTr("Response time")
+            }
+
+            CheckBox {
+                id: rejectBox
+                text: qsTr("Rejected couints")
             }
         }
     }
@@ -64,7 +83,7 @@ Page {
         x: 996
         width: 150
         text: qsTr("Refresh graphs")
-        anchors.bottom: vizFilterFrame.bottom
+        anchors.bottom: exportFilterFrame.bottom
         anchors.bottomMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 10
@@ -75,11 +94,11 @@ Page {
     Frame {
         id: dataRangeFrame
         height: 100
-        anchors.right: graphExportButton.left
+        anchors.right: advancedExportButton.left
         anchors.rightMargin: 10
         anchors.left: parent.left
         anchors.leftMargin: 10
-        anchors.top: vizFilterFrame.bottom
+        anchors.top: exportFilterFrame.bottom
         anchors.topMargin: 10
 
         RangeSlider {
@@ -100,6 +119,10 @@ Page {
             id: dataRangeLabel
             color: "#8b8b8b"
             text: qsTr("Data range")
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            anchors.left: parent.left
+            anchors.leftMargin: 0
             font.pixelSize: 14
         }
 
@@ -128,14 +151,13 @@ Page {
     Button {
         id: advancedExportButton
         x: 996
-        y: 112
         width: 150
-        height: graphExportButton.height
+        height: 50
         text: qsTr("Advanced export..")
+        anchors.topMargin: 10
+        anchors.top: reloadGraphsButton.bottom
         anchors.right: parent.right
         anchors.rightMargin: 10
-        anchors.bottom: dataRangeFrame.bottom
-        anchors.bottomMargin: 0
     }
 
     ScrollView {
@@ -157,10 +179,10 @@ Page {
                 height: 400
                 border.color: "silver"
                 border.width: 1
-                QuantityBarGraph {
-                    id: qtyGraph
-                    anchors.fill: parent
-                }
+                //                QuantityBarGraph {
+                //                    id: qtyGraph
+                //                    anchors.fill: parent
+                //                }
             }
             Rectangle {
                 id: rejectGraphBg
@@ -168,10 +190,10 @@ Page {
                 width: parent.width
                 border.color: "silver"
                 border.width: 1
-                RejectedBarGraph {
-                    id: rejectGraph
-                    anchors.fill: parent
-                }
+                //                RejectedBarGraph {
+                //                    id: rejectGraph
+                //                    anchors.fill: parent
+                //                }
             }
             Rectangle {
                 id: timeGraphBg
@@ -179,11 +201,18 @@ Page {
                 width: parent.width
                 border.color: "silver"
                 border.width: 1
-                TimeLineGraph {
-                    id: timeGraph
-                    anchors.fill: parent
-                }
+                //                TimeLineGraph {
+                //                    id: timeGraph
+                //                    anchors.fill: parent
+                //                }
             }
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:1.25}D{i:2;anchors_x:20;anchors_y:-6}D{i:3;anchors_height:400;anchors_width:200}
+D{i:14;anchors_y:112}
+}
+##^##*/

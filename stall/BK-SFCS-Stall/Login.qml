@@ -10,7 +10,9 @@ Window {
     visible: true
     Connections {
         target: backend
-        onCurrentStallIndexChanged: checkLoginResults(backend.currentStallIdx);
+        function onCurrentStallIndexChanged() {
+            checkLoginResults(backend.currentStallIdx);
+        }
     }
     function setCurrentIdx(index) {
         loginForm.stallSelector.currentIndex = index;

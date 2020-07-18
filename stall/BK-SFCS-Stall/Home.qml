@@ -23,6 +23,8 @@ HomeForm {
         timeGraph.refresh();
     }
 
+    dataRangeSlider.first.onMoved: sales.setStartRange(dataRangeSlider.first.position);
+    dataRangeSlider.second.onMoved: sales.setEndRange(dataRangeSlider.second.position);
     advancedExportButton.onClicked: {
 
     }
