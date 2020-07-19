@@ -28,11 +28,15 @@ Item {
     }
     Text {
         id: itemName
-        x: 85
-        anchors.horizontalCenterOffset: 1
+        verticalAlignment: Text.AlignVCenter
+        anchors.bottom: priceBg.top
+        anchors.bottomMargin: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.right: parent.right
+        anchors.rightMargin: 10
         anchors.top: itemImage.bottom
-        anchors.topMargin: 28
-        anchors.horizontalCenter: itemBg.horizontalCenter
+        anchors.topMargin: 10
         horizontalAlignment: Text.AlignHCenter
         font.bold: false
         font.pixelSize: 14
@@ -132,7 +136,7 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.5}
+    D{i:0;formeditorZoom:1.5}D{i:3;anchors_x:85}
 }
 ##^##*/
 
