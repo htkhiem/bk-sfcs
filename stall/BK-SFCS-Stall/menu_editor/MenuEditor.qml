@@ -15,6 +15,7 @@ MenuEditorForm {
             check_authorization();
         }
         function onStallDataUpdateFinished() {
+            confirmButton.progress = 0;
             waitingPopup.close();
         }
     }
@@ -58,7 +59,10 @@ MenuEditorForm {
     }
 
     revertButton.onActivated: {
+        waitingPopup.open();
+        revertButton.progress = 0;
         backend.getStallMenu(backend.getCurrentStallIdx());
+        waitingPopup.close();
     }
 
     confirmButton.onActivated: {
